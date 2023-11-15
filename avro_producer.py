@@ -1,6 +1,6 @@
 from pyspark.sql import SparkSession
 from confluent_kafka import Producer
-import csv
+import fastavro
 import json
 
 import config
@@ -13,19 +13,19 @@ def delivery_report(err, msg):
         print('Message delivered to {} [{}]'.format(msg.topic(), msg.partition()))
 
 
-def produce_csv_to_kafka(csv_file_path, kafka_topic, bootstrap_servers):
+def produce_avro_to_kafka(avro_file_path, kafka_topic, bootstrap_servers):
     producer_config = {
         'bootstrap.servers': bootstrap_servers,
     }
 
     producer = Producer(producer_config)
 
-    with open(csv_file_path, mode='r', encoding='utf-8-sig') as csv_file:
-        csv_reader = csv.DictReader(csv_file)
-        for row in csv_reader:
-            row['field2'] = int(row['field2'])
+    with open(avro_file_path, mode='rb') as avro_file:
+        avro_reader = fastavro.reader(avro_file)
+        for record in avro_reader:
             # Convert each CSV row to JSON
-            message_value = json.dumps(row)
+            message_value = json.dumps(record)
+            print(f"message this is: {message_value}")
 
             # Produce message to Kafka
             producer.produce(kafka_topic, value=message_value, callback=delivery_report)
@@ -35,4 +35,4 @@ def produce_csv_to_kafka(csv_file_path, kafka_topic, bootstrap_servers):
 
 spark = SparkSession.builder.master(config.SPARK_MASTER).getOrCreate()
 
-produce_csv_to_kafka(config.CSV_FILE_PATH, config.KAFKA_TOPIC, config.KAFKA_BOOTSTRAP_SERVERS)
+produce_avro_to_kafka(config.AVRO_FILE_PATH, config.KAFKA_TOPIC, config.KAFKA_BOOTSTRAP_SERVERS)
