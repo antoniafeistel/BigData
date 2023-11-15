@@ -25,7 +25,6 @@ def produce_avro_to_kafka(avro_file_path, kafka_topic, bootstrap_servers):
         for record in avro_reader:
             # Convert each CSV row to JSON
             message_value = json.dumps(record)
-            print(f"message this is: {message_value}")
 
             # Produce message to Kafka
             producer.produce(kafka_topic, value=message_value, callback=delivery_report)

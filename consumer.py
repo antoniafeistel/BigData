@@ -23,7 +23,6 @@ def consume_and_append_to_spark(spark, kafka_topic, bootstrap_servers):
 
     # Parse JSON message value
     parsed_df = df.selectExpr("CAST(value AS STRING)").select(from_json("value", schema).alias("data")).select("data.*")
-    parsed_df.printSchema()
 
     # Append to Spark DataFrame
     # You can further process or write this DataFrame as needed
