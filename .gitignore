@@ -187,3 +187,5 @@ Include/
 *.sh
 media/
 **/selenium_browser.conf
+temp/
+files/
