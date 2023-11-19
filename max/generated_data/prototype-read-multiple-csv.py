@@ -11,3 +11,6 @@ from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 
 spark = SparkSession.builder.master("spark://N279WMVDJ2:7077").getOrCreate()
 
+### für alle csv.files in dem folder außer customer.csv
+### mache nimm alle daten und füge sie dem data frame hinzu
+### danach 
