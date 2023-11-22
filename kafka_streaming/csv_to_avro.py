@@ -27,7 +27,7 @@ def csv_to_avro(csv_file_path, avro_file_path):
         first_chunk = True
 
         for chunk in pd.read_csv(csv_file_path, chunksize=chunksize):
-            # Convert the chunk to dictionary format
+            # Convert the chusnk to dictionary format
             data_chunk = chunk.to_dict('records')
 
             if first_chunk:
