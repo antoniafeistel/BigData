@@ -9,7 +9,7 @@ from pyspark.ml.feature import VectorAssembler, StringIndexer
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 
 
-spark = SparkSession.builder.master("spark://N279WMVDJ2:7077").getOrCreate()
+spark = SparkSession.builder.master("spark://JVVWXW05C9:7077").getOrCreate()
 # Initialisiere die Spark-Sitzung
 #spark = SparkSession.builder.appName("FraudDetection").getOrCreate()
 
@@ -18,7 +18,7 @@ csv_file_path = './max/generated_data/adults_50up_female_urban_6-7.csv'
 # Lade das CSV-Datei in ein DataFrame
 dataFrame = spark.read.csv(csv_file_path, header=True, inferSchema=True, sep='|')
 
-feature_cols = [ 'cc_num', "lat", "long", "first" ]
+feature_cols = [ 'cc_num', "lat", "long" ]
 
 #feature_cols.remove("is_fraud")  # Entferne die Label-Spalte
 vector_assembler = VectorAssembler(inputCols=feature_cols, outputCol="features")
@@ -44,5 +44,8 @@ print("Test Accuracy = %g" % accuracy)
 # Zeige das Modell und dessen Einstellungen
 rfModel = model.trees
 print(rfModel)  # summary only
+
+model_path = "./max/generated_data/model"
+model.write().overwrite().save(model_path)
 
 spark.stop()
