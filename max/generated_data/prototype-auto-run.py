@@ -5,13 +5,13 @@ import os
 import subprocess
 
 class MyHandler(FileSystemEventHandler):
-    def on_modified(self, event):
+    def on_created(self, event):
         for filename in os.listdir(folder_to_track):
             file_path = os.path.join(folder_to_track, filename)
             subprocess.call(['python3', './max/generated_data/prototype-prediction.py', file_path])
 
 # need to change
-folder_to_track = 'max/generated_data/'
+folder_to_track = 'max/generated_data/data'
 
 event_handler = MyHandler()
 observer = Observer()

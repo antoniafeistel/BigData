@@ -9,7 +9,7 @@ from pyspark.ml.feature import VectorAssembler, StringIndexer
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 
 
-spark = SparkSession.builder.master("spark://JVVWXW05C9:7077").getOrCreate()
+spark = SparkSession.builder.master("spark://N279WMVDJ2:7077").getOrCreate()
 # Initialisiere die Spark-Sitzung
 #spark = SparkSession.builder.appName("FraudDetection").getOrCreate()
 

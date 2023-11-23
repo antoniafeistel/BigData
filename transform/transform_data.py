@@ -48,8 +48,10 @@ def encode_csv(input_path, output_path):
                 # encode profile
                 transformed_row[4] = extract_number_from_string(transformed_row[4])
 
-            # Schreibe die aktualisierte Zeile in die Ausgabedatei
-            writer.writerow(transformed_row)
+                # Schreibe die aktualisierte Zeile in die Ausgabedatei
+                writer.writerow(transformed_row)
+
+            
 
 def extract_number_from_string(input_string):
     # Verwende einen regulären Ausdruck, um die Nummer aus dem String zu extrahieren
@@ -68,7 +70,7 @@ def hash_int(input_string):
     hex_hash = hash_object.hexdigest()
 
     # Extrahiere die unteren 8 Bytes des Hexadezimal-Hash-Werts und interpretiere sie als Integer
-    hash_int = int(hex_hash[-16:], 16)
+    hash_int = int(hex_hash[-5:], 16)
 
     return hash_int
 

@@ -44,6 +44,7 @@ def csv_to_avro(raw_data_path, avro_file_path):
                 first_chunk = False
             else:
                 # Write subsequent chunks
+                data_chunk.map()
                 fastavro.writer(out, avro_schema, data_chunk, schemaless=True)
 
 
