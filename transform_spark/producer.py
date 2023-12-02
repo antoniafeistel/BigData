@@ -91,7 +91,18 @@ encodedDataFrame = streamingDataFrame.withColumns({
 vector_assembler = VectorAssembler(inputCols=relevant_columns, outputCol="features")
 encodedDataFrame = vector_assembler.transform(encodedDataFrame)
 
-query = encodedDataFrame.writeStream.outputMode("append").format("console").start()
+#query = encodedDataFrame.writeStream.outputMode("append").format("console").start()
+
+
+#weiß n icht ob das klappt
+query_kafak = (
+    encodedDataFrame
+    .writeStream
+    .format("kafka")
+    .option("kafka.bootstrap.servers", config.KAFKA_BOOTSTRAP_SERVERS)
+    .option("topic", config.KAFKA_TOPIC)
+)
 
 # Warte auf das Ende des Streams
-query.awaitTermination()
+#query.awaitTermination()
+
