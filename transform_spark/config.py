@@ -1,0 +1,1 @@
+INPUT_FOLDER='ressources/data/raw-data/train'
