@@ -4,10 +4,9 @@ findspark.init()
 import config
 import re
 import hashlib
-import pyspark
 from pyspark.sql import SparkSession
-from pyspark.sql.functions import col, udf
-from pyspark.ml.feature import VectorAssembler, StringIndexer
+from pyspark.sql.functions import udf
+from pyspark.ml.feature import VectorAssembler
 from pyspark.sql.types import DoubleType, IntegerType, LongType, StringType, StructField, StructType
 
 
@@ -33,9 +32,10 @@ def hash_int(input_string):
 
     return hash_int
 
+
 hash_udf = udf(lambda input_string: hash_int(input_string), IntegerType())
 
-spark = SparkSession.builder.master("spark://N279WMVDJ2:7077").getOrCreate()
+spark = SparkSession.builder.master(config.SPARK_MASTER).getOrCreate()
 
 schema = StructType([
     StructField("ssn", StringType(), True ),
@@ -105,4 +105,3 @@ query_kafak = (
 
 # Warte auf das Ende des Streams
 #query.awaitTermination()
-

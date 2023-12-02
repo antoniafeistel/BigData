@@ -25,4 +25,4 @@ model = lr.fit(train)
 predictions = model.transform(test)
 predictions.show()
 
-model.save(config.model_path)
+model.save(config.MODEL_PATH)
