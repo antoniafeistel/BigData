@@ -1,6 +1,6 @@
 import csv
 import re
-import config
+from config import config
 import os
 import hashlib
 import time

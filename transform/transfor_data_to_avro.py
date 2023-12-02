@@ -1,7 +1,6 @@
 import csv
-import pandas as pd
 import fastavro
-import config
+from config import config
 import os
 import time
 from watchdog.observers import Observer

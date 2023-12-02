@@ -1,7 +1,7 @@
 import pandas as pd
 import fastavro
 
-import config
+from config import config
 
 
 # Define Avro schema (must match CSV structure)

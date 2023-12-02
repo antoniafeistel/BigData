@@ -196,3 +196,5 @@ ressources/data/raw-data/test/
 ressources/data/raw-data/train/
 ressources/data/transformed-data/test/
 ressources/data/transformed-data/train/
+kafka_checkpoints
+model

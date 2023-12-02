@@ -3,7 +3,7 @@ from confluent_kafka import Producer
 import fastavro
 import json
 
-import config
+from config import config
 
 
 def delivery_report(err, msg):

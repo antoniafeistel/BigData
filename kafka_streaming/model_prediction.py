@@ -1,6 +1,6 @@
 from pyspark.ml.regression import LinearRegressionModel
 
-import config
+from config import config
 
 
 loaded = False

@@ -1,23 +1,14 @@
 from pyspark.sql import SparkSession
-from pyspark.sql.types import StructType, StructField, DoubleType
 from pyspark.ml.feature import VectorAssembler
+from pyspark.sql.functions import from_json
+from pyspark.sql.types import DoubleType, IntegerType, LongType, StructField, StructType
 
-import config
+from config import config
 from model_prediction import predict
 
 
 # Create a Spark session
 spark = SparkSession.builder.master(config.SPARK_MASTER).getOrCreate()
-
-
-# Define the schema of your CSV file
-csvSchema = StructType([
-    StructField("AT", DoubleType(), True),
-    StructField("V", DoubleType(), True),
-    StructField("AP", DoubleType(), True),
-    StructField("RH", DoubleType(), True),
-    # Add more fields as needed
-])
 
 # Define the path to the folder where the CSV files will be uploaded
 folderPath = "/Users/i741961/Documents/HKA/Big_Data/BigData/files/streaming"
@@ -26,14 +17,30 @@ folderPath = "/Users/i741961/Documents/HKA/Big_Data/BigData/files/streaming"
 csvStreamDF = (
     spark
     .readStream
-    .option("header", "true")
-    .option("sep", "|")
-    .schema(csvSchema)
-    .csv(folderPath)
+    .format("kafka")
+    .option("kafka.bootstrap.servers", config.KAFKA_BOOTSTRAP_SERVERS)
+    .option("subscribe", config.KAFKA_TOPIC)
+    .option("startingOffsets", "earliest")
+    .load()
 )
 
-assembler = VectorAssembler(inputCols=["AT", "V", "AP", "RH"], outputCol="features")
-assembledDF = assembler.transform(csvStreamDF)
+schema = StructType([
+    StructField("gender", IntegerType(), True),
+    StructField("state", IntegerType(), True),
+    StructField("city_pop", IntegerType(), True),
+    StructField("job", IntegerType(), True),
+    StructField("profile", IntegerType(), True),
+    StructField("trans_date", IntegerType(), True),
+    StructField("unix_time", LongType(), True),
+    StructField("category", IntegerType(), True),
+    StructField("amt", DoubleType(), True),
+    StructField("merchant", IntegerType(), True),
+])
+
+parsed_df = csvStreamDF.selectExpr("CAST(value AS STRING)").select(from_json("value", schema).alias("features")).select("features.*")
+
+assembler = VectorAssembler(inputCols=["gender", "state", "city_pop", "job", "profile", "trans_date", "unix_time", "category", "amt", "merchant"], outputCol="features")
+assembledDF = assembler.transform(parsed_df)
 resultDF = predict(assembledDF)
 
 # Perform any streaming operations on csvStreamDF as needed

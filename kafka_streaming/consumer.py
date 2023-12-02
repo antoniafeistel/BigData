@@ -2,7 +2,7 @@ from pyspark.sql import SparkSession
 from pyspark.sql.functions import from_json
 from pyspark.sql.types import StructType, StructField, StringType, IntegerType
 
-import config
+from config import config
 
 
 def consume_and_append_to_spark(spark, kafka_topic, bootstrap_servers):
