@@ -9,6 +9,9 @@ from pyspark.ml.classification import RandomForestClassifier, RandomForestClassi
 from pyspark.ml.feature import VectorAssembler, StringIndexer
 from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 
+import kafka_streaming.model_training
+from kafka_streaming.model_prediction import predict
+
 import sys
 
 def proceed_prediction(file_path, dataFrame):
@@ -30,7 +33,7 @@ def proceed_prediction(file_path, dataFrame):
 
     loaded_model = RandomForestClassificationModel.load(model_path)
 
-    predictions = loaded_model.transform(dataFrame)
+    predictions = predict(dataFrame)
 
     predictions.show()
 
