@@ -4,6 +4,7 @@ findspark.init()
 import pyspark
 from config import config
 from pyspark.sql import SparkSession
+from pyspark.sql import SQLContext
 from pyspark.ml import Pipeline
 from pyspark.ml.classification import RandomForestClassifier
 from pyspark.ml.feature import VectorAssembler, StringIndexer
