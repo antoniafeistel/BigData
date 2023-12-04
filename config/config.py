@@ -1,5 +1,5 @@
 INPUT_FOLDER = "/Users/i741961/Documents/HKA/Big_Data/BigData/files/streaming"
-OUTPUT_FOLDER = 'ressources/data/transformed-data/train'
+OUTPUT_FOLDER = '/resources/data/train'
 TRAIN_DATA_PATH = '/resources/data/train'
 KAFKA_BOOTSTRAP_SERVERS = 'localhost:9092'
 KAFKA_TOPIC = 'other-topic'
