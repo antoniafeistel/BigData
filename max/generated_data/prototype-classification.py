@@ -31,12 +31,6 @@ dataFrame = dataFrame.select("features", "is_fraud")
 rf = RandomForestClassifier(labelCol="is_fraud", featuresCol="features", predictionCol="prediction", numTrees=10)
 model = rf.fit(dataFrame)
 
-# Evaluierung des Modells
-evaluator = MulticlassClassificationEvaluator(
-    labelCol="is_fraud", predictionCol="prediction", metricName="accuracy")
-accuracy = evaluator.evaluate(predictions)
-print("Test Accuracy = %g" % accuracy)
-
 # Zeige das Modell und dessen Einstellungen
 rfModel = model.trees
 print(rfModel)  # summary only
