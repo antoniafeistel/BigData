@@ -3,6 +3,7 @@ import findspark
 findspark.init("/usr/local/spark-3.5.0-bin-hadoop3")
 import pyspark
 
+from config import config
 from pyspark.sql import SparkSession
 from pyspark.ml import Pipeline
 from pyspark.ml.classification import RandomForestClassifier, RandomForestClassificationModel
@@ -11,12 +12,14 @@ from pyspark.ml.evaluation import MulticlassClassificationEvaluator
 
 import kafka_streaming.model_training
 from kafka_streaming.model_prediction import predict
-
 import sys
+
+loaded = False
+model = None
 
 def proceed_prediction(file_path, dataFrame):
     print("Processing file: {file_path}")
-    spark = SparkSession.builder.master("spark://N279WMVDJ2:7077").getOrCreate()
+    spark = SparkSession.builder.master("spark://LFK66VG60V:7077").getOrCreate()
     # Initialisiere die Spark-Sitzung
     #spark = SparkSession.builder.appName("FraudDetection").getOrCreate()
 
@@ -31,15 +34,14 @@ def proceed_prediction(file_path, dataFrame):
 
     model_path = "max/generated_data/model"
 
-    loaded_model = RandomForestClassificationModel.load(model_path)
-
-    predictions = predict(dataFrame)
-
-    predictions.show()
+    global loaded, model
+    if not loaded:
+        model = RandomForestClassificationModel.load(config.MODEL_PATH)
+        loaded = True
+    prediction = model.transform(dataFrame)
+    return prediction
 
     #dataFrame.drop(index=[0, 1])
-
-
 
 if __name__ == "__main__":
     if len(sys.argv) > 1:
