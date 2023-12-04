@@ -190,7 +190,6 @@ media/
 temp/
 files/
 generator/
-test/
 
 ressources/data/raw-data/test/
 ressources/data/raw-data/train/
