@@ -1,21 +1,17 @@
 import findspark
 findspark.init()
 
-import pyspark
 from config import config
 from pyspark.sql import SparkSession
-from pyspark.sql import SQLContext
-from pyspark.ml import Pipeline
 from pyspark.ml.classification import RandomForestClassifier
-from pyspark.ml.feature import VectorAssembler, StringIndexer
-from pyspark.ml.evaluation import MulticlassClassificationEvaluator
+from pyspark.ml.feature import VectorAssembler
 
 
 spark = SparkSession.builder.master(config.SPARK_MASTER).getOrCreate()
 # Initialisiere die Spark-Sitzung
 #spark = SparkSession.builder.appName("FraudDetection").getOrCreate()
 
-csv_file_path = './max/generated_data/data/adults_50up_female_rural_4-5 copy.csv'
+csv_file_path = './max/generated_data/data/adults_50up_female_rural_4-5_example.csv'
 
 # Lade das CSV-Datei in ein DataFrame
 dataFrame = spark.read.csv(csv_file_path, header=True, inferSchema=True, sep='|')
