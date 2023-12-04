@@ -19,11 +19,11 @@ csv_file_path = './max/generated_data/adults_50up_female_urban_6-7.csv'
 
 # Lade das CSV-Datei in ein DataFrame
 dataFrame = spark.read.csv(csv_file_path, header=True, inferSchema=True, sep='|')
-feature_columns = list(dataFrame.columns[:-1])
+featuresCol = list(dataFrame.columns[:-1])
 
 #feature_cols.remove("is_fraud")  # Entferne die Label-Spalte
 
-vector_assembler = VectorAssembler(inputCols=feature_cols, outputCol="features")
+vector_assembler = VectorAssembler(inputCols=featuresCol, outputCol="features")
 df = SQLContext(spark).createDataFrame(dataFrame)
 dataFrame = vector_assembler.transform(dataFrame)
 dataFrame = dataFrame.select("features", "is_fraud")
