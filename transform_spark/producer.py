@@ -2,23 +2,11 @@ import findspark
 findspark.init()
 
 from config import config
-import re
 import hashlib
 from pyspark.sql import SparkSession
 from pyspark.sql.functions import udf
 from pyspark.sql.types import DoubleType, IntegerType, LongType, StringType, StructField, StructType
 
-
-def extract_number_from_string(input_string):
-    # Verwende einen regulären Ausdruck, um die Nummer aus dem String zu extrahieren
-    match = re.search(r'\d+', input_string)
-    
-    # Überprüfe, ob eine Übereinstimmung gefunden wurde
-    if match:
-        return int(match.group())
-    else:
-        return 25
-    
 
 # Funktion zum Hashen von Strings für die Encodierung
 def hash_int(input_string):
@@ -74,7 +62,7 @@ streamingDataFrame = spark. \
             option("header", "true"). \
             option("sep", "|"). \
             schema(schema). \
-            csv(config.INPUT_FOLDER)
+            csv(config.INPUT_FOLDER_TEST)
 
 # encode dataframe
 encodedDataFrame = streamingDataFrame.withColumns({

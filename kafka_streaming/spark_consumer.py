@@ -4,14 +4,11 @@ from pyspark.sql.functions import from_json
 from pyspark.sql.types import DoubleType, IntegerType, LongType, StructField, StructType
 
 from config import config
-from model_prediction import predict
+from model.prediction import proceed_prediction
 
 
 # Create a Spark session
 spark = SparkSession.builder.master(config.SPARK_MASTER).getOrCreate()
-
-# Define the path to the folder where the CSV files will be uploaded
-folderPath = "/Users/i741961/Documents/HKA/Big_Data/BigData/files/streaming"
 
 # Read the CSV files as a streaming DataFrame
 csvStreamDF = (
@@ -39,9 +36,9 @@ schema = StructType([
 
 parsed_df = csvStreamDF.selectExpr("CAST(value AS STRING)").select(from_json("value", schema).alias("features")).select("features.*")
 
-assembler = VectorAssembler(inputCols=["gender", "state", "city_pop", "job", "profile", "trans_date", "unix_time", "category", "amt", "merchant"], outputCol="features")
+assembler = VectorAssembler(inputCols=config.relevant_columns, outputCol="features")
 assembledDF = assembler.transform(parsed_df)
-resultDF = predict(assembledDF)
+resultDF = proceed_prediction(assembledDF)
 
 # Perform any streaming operations on csvStreamDF as needed
 # For example, you can write the streaming data to the console
