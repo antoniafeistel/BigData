@@ -8,13 +8,10 @@ from pyspark.sql.functions import udf
 from pyspark.sql.types import DoubleType, IntegerType, LongType, StringType, StructField, StructType
 
 
-# Funktion zum Hashen von Strings für die Encodierung
 def hash_int(input_string):
-    # Hier wird ein einfacher MD5-Hash verwendet, du kannst auch andere Hash-Algorithmen verwenden
     hash_object = hashlib.md5(input_string.encode())
     hex_hash = hash_object.hexdigest()
 
-    # Extrahiere die unteren 8 Bytes des Hexadezimal-Hash-Werts und interpretiere sie als Integer
     hash_int = int(hex_hash[-5:], 16)
 
     return hash_int
