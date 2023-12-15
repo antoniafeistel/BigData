@@ -184,13 +184,15 @@ Include/
 *.sublime-workspace
 *.cfg
 *.ini
-*.sh
+#*.sh
 media/
 **/selenium_browser.conf
 temp/
 files/
 generator/
 resources/
+
+Sparkov_Data_Generation/
 
 ressources/data/raw-data/test/
 ressources/data/raw-data/train/
