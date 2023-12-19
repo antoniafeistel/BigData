@@ -4,7 +4,7 @@ from pyspark.sql.functions import from_json
 from pyspark.sql.types import DoubleType, IntegerType, LongType, StructField, StructType
 
 from config import config
-from model.prediction import predict
+from rf_clf_model.model import predict
 
 
 # Create a Spark session

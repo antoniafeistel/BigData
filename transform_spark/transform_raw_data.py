@@ -6,7 +6,7 @@ from config.config import schema, relevant_columns, hash_udf
 from pyspark.ml.feature import StringIndexer, VectorIndexer, IndexToString
 from pyspark.ml.feature import VectorAssembler
 from pyspark.sql import SQLContext
-from model.training import train_rf_clf_model, save_model
+from rf_clf_model.model import train_rf_clf_model, save_model
 
 
 spark = SparkSession.builder.master(config.SPARK_MASTER).getOrCreate()
