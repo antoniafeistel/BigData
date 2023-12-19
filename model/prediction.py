@@ -1,17 +1,16 @@
-import findspark
-findspark.init("/usr/local/spark-3.5.0-bin-hadoop3")
+from pyspark.ml.classification import RandomForestClassificationModel
 
 from config import config
-from pyspark.ml.classification import RandomForestClassificationModel
+
 
 loaded = False
 model = None
 
 
-def proceed_prediction(dataFrame):
+def predict(streaming_df):
     global loaded, model
     if not loaded:
         model = RandomForestClassificationModel.load(config.MODEL_PATH)
         loaded = True
-    prediction = model.transform(dataFrame)
+    prediction = model.transform(streaming_df)
     return prediction

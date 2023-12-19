@@ -6,7 +6,7 @@ from config.config import schema, relevant_columns, hash_udf
 from pyspark.ml.feature import StringIndexer, VectorIndexer, IndexToString
 from pyspark.ml.feature import VectorAssembler
 from pyspark.sql import SQLContext
-from model.training import train_model
+from model.training import train_rf_clf_model, save_model
 
 
 spark = SparkSession.builder.master(config.SPARK_MASTER).getOrCreate()
@@ -44,4 +44,5 @@ assembler = VectorAssembler(inputCols=relevant_columns, outputCol="features")
 df2 = assembler.transform(encodedDataFrame)
 df_train = df2.select("features", "is_fraud")
 
-train_model(df_train)
+rf_clf_model = train_rf_clf_model(df_train)
+save_model(rf_clf_model, config.MODEL_PATH)

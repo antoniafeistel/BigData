@@ -4,7 +4,7 @@ from pyspark.sql.functions import from_json
 from pyspark.sql.types import DoubleType, IntegerType, LongType, StructField, StructType
 
 from config import config
-from model.prediction import proceed_prediction
+from model.prediction import predict
 
 
 # Create a Spark session
@@ -38,7 +38,7 @@ parsed_df = csvStreamDF.selectExpr("CAST(value AS STRING)").select(from_json("va
 
 assembler = VectorAssembler(inputCols=config.relevant_columns, outputCol="features")
 assembledDF = assembler.transform(parsed_df)
-resultDF = proceed_prediction(assembledDF)
+resultDF = predict(assembledDF)
 
 # Perform any streaming operations on csvStreamDF as needed
 # For example, you can write the streaming data to the console
