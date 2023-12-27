@@ -1,22 +1,21 @@
 from pyspark.sql import SparkSession
-from pyspark.ml.feature import VectorAssembler
 from pyspark.sql.functions import from_json
 from pyspark.sql.types import DoubleType, IntegerType, LongType, StructField, StructType
+from pyspark.ml.feature import VectorAssembler
 
-from config import config
-from rf_clf_model.model import predict
+from config import path_handling, data_handling
+from model.model_utils import predict
 
 
-# Create a Spark session
-spark = SparkSession.builder.master(config.SPARK_MASTER).getOrCreate()
+spark = SparkSession.builder.master(path_handling.SPARK_MASTER).getOrCreate()
 
-# Read the CSV files as a streaming DataFrame
-csvStreamDF = (
+# read .csv files as a streaming DataFrame
+csv_stream_df = (
     spark
     .readStream
     .format("kafka")
-    .option("kafka.bootstrap.servers", config.KAFKA_BOOTSTRAP_SERVERS)
-    .option("subscribe", config.KAFKA_TOPIC)
+    .option("kafka.bootstrap.servers", path_handling.KAFKA_BOOTSTRAP_SERVERS)
+    .option("subscribe", path_handling.KAFKA_TOPIC)
     .option("startingOffsets", "earliest")
     .load()
 )
@@ -34,21 +33,17 @@ schema = StructType([
     StructField("merchant", IntegerType(), True),
 ])
 
-parsed_df = csvStreamDF.selectExpr("CAST(value AS STRING)").select(from_json("value", schema).alias("features")).select("features.*")
+parsed_df = csv_stream_df.selectExpr("CAST(value AS STRING)").select(from_json("value", schema).alias(data_handling.FEATURES_COL)).select(data_handling.FEATURES_COL + '.*')
+assembler = VectorAssembler(inputCols=data_handling.features, outputCol=data_handling.FEATURES_COL)
+assembled_df = assembler.transform(parsed_df)
+predicted_df = predict(assembled_df)
 
-assembler = VectorAssembler(inputCols=config.relevant_columns, outputCol="features")
-assembledDF = assembler.transform(parsed_df)
-resultDF = predict(assembledDF)
-
-# Perform any streaming operations on csvStreamDF as needed
-# For example, you can write the streaming data to the console
 query = (
-    resultDF
+    predicted_df
     .writeStream
-    .outputMode("append")  # or "complete" or "update"
+    .outputMode("append")  # alternatives: "complete", "update"
     .format("console")
     .start()
 )
 
-# Wait for the termination of the streaming query
 query.awaitTermination()
