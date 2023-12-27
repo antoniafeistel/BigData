@@ -14,6 +14,7 @@ CSV_HEADER = 'true'
 FEATURES_COL = 'features'
 LABEL_COL = 'is_fraud'
 PREDICTION_COL = 'prediction'
+VERSION = '0.0.1'
 
 features = ["gender", "state", "city_pop", "job", "profile", "trans_date", "unix_time", "category", "amt", "merchant"]
 
@@ -48,8 +49,8 @@ schema = StructType([
 ])
 
 
-def hash_str(string):
-    hash_object = md5(string.encode())
+def hash_str(cat_feature_val):
+    hash_object = md5(cat_feature_val.encode())
     hex_hash = hash_object.hexdigest()
 
     # extract the lowest bytes of the hex hash value in string representation as integer
@@ -58,7 +59,7 @@ def hash_str(string):
     return hash_int
 
 
-hash_udf = udf(lambda input_string: hash_str(input_string), IntegerType())
+hash_udf = udf(lambda cat_feature_val: hash_str(cat_feature_val), IntegerType())
 
 
 def encode_df(df):

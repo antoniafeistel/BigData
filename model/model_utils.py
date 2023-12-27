@@ -9,14 +9,15 @@ loaded = False
 model = None
 
 
-def train_model(df_train):
+def train_model(spark):
+    df_train = spark.read.parquet(path_handling.TRAIN_DATA_PATH)
     rf_clf = RandomForestClassifier(labelCol=data_handling.LABEL_COL, featuresCol=data_handling.FEATURES_COL, predictionCol=data_handling.PREDICTION_COL, numTrees=num_trees)
     rf_clf_model = rf_clf.fit(df_train)
     return rf_clf_model
 
 
-def save_model(trained_model, path):
-    trained_model.write().overwrite().save(path)
+def save_model(trained_model):
+    trained_model.write().overwrite().save(path_handling.MODEL_PATH)
 
 
 def predict(streaming_df):
