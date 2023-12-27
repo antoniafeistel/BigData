@@ -14,6 +14,7 @@ CSV_HEADER = 'true'
 FEATURES_COL = 'features'
 LABEL_COL = 'is_fraud'
 PREDICTION_COL = 'prediction'
+WEIGHT_COL = 'weight'
 VERSION = '0.0.1'
 
 features = ["gender", "state", "city_pop", "job", "profile", "trans_date", "unix_time", "category", "amt", "merchant"]
