@@ -1,2 +1,4 @@
 python-dotenv~=1.0.0
 setuptools~=68.2.2
+Faker~=19.13.0
+numpy~=1.26.1
