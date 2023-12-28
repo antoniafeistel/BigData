@@ -8,13 +8,12 @@ INPUT_FOLDER_RAW = 'resources/data/raw'
 RAW_DATA_PATH = os.path.join(INPUT_FOLDER_RAW, data_handling.VERSION)
 INPUT_FOLDER_TRAIN = 'resources/data/train'
 TRAIN_DATA_PATH = os.path.join(INPUT_FOLDER_TRAIN, data_handling.VERSION)
-INPUT_FOLDER_TEST = 'resources/data/test'
+INPUT_FOLDER_TEST = 'resources/data/test/*adults*.csv'
 
 MODELS_FOLDER = 'resources/models'
 MODEL_PATH = os.path.join(MODELS_FOLDER, data_handling.VERSION)
 
-ENV_VARS_PATH = 'scripts/.env'
-load_dotenv(ENV_VARS_PATH)
+load_dotenv(data_handling.ENV_VARS_PATH)
 
 SPARK_MASTER = os.getenv('SPARK_MASTER_URL')
 

@@ -4,8 +4,6 @@ from pyspark.sql.types import DoubleType, IntegerType, LongType, StringType, Str
 from pyspark.sql.functions import udf
 from hashlib import md5
 
-import path_handling
-
 
 # lowest bytes to be extracted to construct the integer hash value
 lowest_bytes = -5
@@ -19,7 +17,9 @@ FEATURES_COL = 'features'
 LABEL_COL = 'is_fraud'
 PREDICTION_COL = 'prediction'
 WEIGHT_COL = 'weight'
-load_dotenv(path_handling.ENV_VARS_PATH)
+# here defined to avoid circular import problems
+ENV_VARS_PATH = 'scripts/.env'
+load_dotenv(ENV_VARS_PATH)
 VERSION = os.getenv('DATA_VERSION')
 
 features = ["gender", "state", "city_pop", "job", "profile", "trans_date", "unix_time", "category", "amt", "merchant"]
