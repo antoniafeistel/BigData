@@ -11,6 +11,7 @@ def start_kafka():
         shell=True,
         check=True
     )
+    print("Connected to Kafka message broker (see sent messages below):")
     subprocess.run(
         f'docker exec kafka1 kafka-console-consumer --topic {os.getenv("KAFKA_TOPIC")} --from-beginning --bootstrap-server {os.getenv("KAFKA_BOOTSTRAP_SERVER")}',
         shell=True,
