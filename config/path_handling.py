@@ -1,4 +1,5 @@
 import os
+from dotenv import load_dotenv
 
 from config import data_handling
 
@@ -12,8 +13,11 @@ INPUT_FOLDER_TEST = 'resources/data/test'
 MODELS_FOLDER = 'resources/models'
 MODEL_PATH = os.path.join(MODELS_FOLDER, data_handling.VERSION)
 
-SPARK_MASTER = "spark://LFK66VG60V:7077"
+ENV_VARS_PATH = 'scripts/.env'
+load_dotenv(ENV_VARS_PATH)
 
-KAFKA_BOOTSTRAP_SERVERS = 'localhost:9092'
-KAFKA_TOPIC = 'regression-test'
+SPARK_MASTER = os.getenv('SPARK_MASTER_URL')
+
+KAFKA_BOOTSTRAP_SERVERS = os.getenv('KAFKA_BOOTSTRAP_SERVER')
+KAFKA_TOPIC = os.getenv('KAFKA_TOPIC')
 KAFKA_CHECKPTS_PATH = 'kafka_checkpoints'

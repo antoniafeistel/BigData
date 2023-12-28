@@ -1,1 +1,0 @@
-/usr/local/spark-3.5.0-bin-hadoop3/bin/spark-submit --packages org.apache.spark:spark-sql-kafka-0-10_2.12:3.5.0 kafka_streaming/spark_consumer.py
