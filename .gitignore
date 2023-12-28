@@ -190,8 +190,6 @@ files/
 generator/
 resources/
 
-Sparkov_Data_Generation/
-
 ressources/data/raw-data/test/
 ressources/data/raw-data/train/
 ressources/data/transformed-data/test/
