@@ -1,3 +1,4 @@
+import sys
 import subprocess
 
 
@@ -7,4 +8,7 @@ def stop_kafka():
 
 
 if __name__ == "__main__":
-    stop_kafka()
+    try:
+        stop_kafka()
+    except KeyboardInterrupt:
+        sys.exit(0)

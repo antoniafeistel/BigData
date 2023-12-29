@@ -13,7 +13,8 @@ def start_spark():
 
     spark_sbin_path = os.path.join(spark_path, "sbin")
     subprocess.run(os.path.join(spark_sbin_path, "start-master.sh"), shell=True, check=True)
-    subprocess.run(os.path.join(spark_sbin_path, f"start-worker.sh {os.getenv("SPARK_MASTER_URL")}"), shell=True, check=True)
+    spark_master_url = os.getenv("SPARK_MASTER_URL")
+    subprocess.run(os.path.join(spark_sbin_path, f"start-worker.sh {spark_master_url}"), shell=True, check=True)
 
 
 if __name__ == "__main__":

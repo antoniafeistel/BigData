@@ -1,4 +1,5 @@
 import os
+import sys
 import subprocess
 from dotenv import load_dotenv
 
@@ -11,4 +12,7 @@ def stop_spark():
 
 
 if __name__ == "__main__":
-    stop_spark()
+    try:
+        stop_spark()
+    except KeyboardInterrupt:
+        sys.exit(0)
