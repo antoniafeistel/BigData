@@ -8,7 +8,7 @@ INPUT_FOLDER_RAW = 'resources/data/raw'
 RAW_DATA_PATH = os.path.join(INPUT_FOLDER_RAW, data_handling.VERSION)
 INPUT_FOLDER_TRAIN = 'resources/data/train'
 TRAIN_DATA_PATH = os.path.join(INPUT_FOLDER_TRAIN, data_handling.VERSION)
-INPUT_FOLDER_TEST = 'resources/data/test/*adults*.csv'
+INPUT_FOLDER_TEST = 'resources/data/test/**/**'
 
 MODELS_FOLDER = 'resources/models'
 MODEL_PATH = os.path.join(MODELS_FOLDER, data_handling.VERSION)
