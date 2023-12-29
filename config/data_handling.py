@@ -11,16 +11,16 @@ lowest_bytes = -5
 base = 16
 
 
-CSV_SEP = '|'
-CSV_HEADER = 'true'
-FEATURES_COL = 'features'
-LABEL_COL = 'is_fraud'
-PREDICTION_COL = 'prediction'
-WEIGHT_COL = 'weight'
+CSV_SEP = "|"
+CSV_HEADER = "true"
+FEATURES_COL = "features"
+LABEL_COL = "is_fraud"
+PREDICTION_COL = "prediction"
+WEIGHT_COL = "weight"
 # here defined to avoid circular import problems
-ENV_VARS_PATH = 'scripts/.env'
+ENV_VARS_PATH = os.path.join("scripts", ".env")
 load_dotenv(ENV_VARS_PATH)
-VERSION = os.getenv('DATA_VERSION')
+VERSION = os.getenv("DATA_VERSION")
 
 features = ["gender", "state", "city_pop", "job", "profile", "trans_date", "unix_time", "category", "amt", "merchant"]
 
