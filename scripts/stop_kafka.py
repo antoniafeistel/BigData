@@ -1,9 +1,9 @@
-import os
+import subprocess
 
 
 def stop_kafka():
-    os.system("docker-compose -f zk-single-kafka-single.yml stop")
-    os.system("docker-compose -f zk-single-kafka-single.yml down")
+    subprocess.run("docker-compose -f zk-single-kafka-single.yml stop", shell=True, check=True)
+    subprocess.run("docker-compose -f zk-single-kafka-single.yml down", shell=True, check=True)
 
 
 if __name__ == "__main__":

@@ -30,17 +30,17 @@ def get_non_empty_transactions(source_folder, destination_folder, num_batch=None
             os.remove(source_path)
 
 
-def generate_transactions(n, o, s, e):
+def generate_transactions(n, o, s, e, repo_dir_path):
     python_exec = sys.executable
-    subprocess.run([python_exec, "datagen.py", "-n", n, "-o", o, s, e], check=True, cwd="../Sparkov_Data_Generation")
+    subprocess.run([python_exec, "datagen.py", "-n", n, "-o", o, s, e], check=True, cwd=os.path.join(repo_dir_path, "Sparkov_Data_Generation"))
 
 
-def generate_transaction_test_data_stream(n, temp_folder, s, e, timestamp):
-    test_folder = "../resources/data/test"
+def generate_transaction_test_data_stream(n, temp_folder, s, e, timestamp, repo_dir_path):
+    test_folder = os.path.join(repo_dir_path, "resources", "data", "test")
     batch = 0
     try:
         while True:
-            generate_transactions(n, temp_folder, s, e)
+            generate_transactions(n, temp_folder, s, e, repo_dir_path)
             test_folder_dir = os.path.join(test_folder, timestamp)
             get_non_empty_transactions(temp_folder, test_folder_dir, batch)
             batch += 1
@@ -49,9 +49,9 @@ def generate_transaction_test_data_stream(n, temp_folder, s, e, timestamp):
         sys.exit(0)
 
 
-def generate_raw_transaction_train_data(n, temp_folder, s, e, timestamp):
-    raw_train_folder = "../resources/data/train/raw"
-    generate_transactions(n, temp_folder, s, e)
+def generate_raw_transaction_train_data(n, temp_folder, s, e, timestamp, repo_dir_path):
+    raw_train_folder = os.path.join(repo_dir_path, "resources", "data", "train", "raw")
+    generate_transactions(n, temp_folder, s, e, repo_dir_path)
     raw_train_folder_dir = os.path.join(raw_train_folder, timestamp)
     get_non_empty_transactions(temp_folder, raw_train_folder_dir)
     shutil.rmtree(temp_folder)
@@ -59,15 +59,17 @@ def generate_raw_transaction_train_data(n, temp_folder, s, e, timestamp):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate transactions with specified parameters.')
-    parser.add_argument('-n', type=str, help='Number of customers to generate', default='1000')
+    parser.add_argument('-n', type=str, help='Number of customers to generate', default='100')
     parser.add_argument('-s', type=str, help='Transactions start date in the format "%m-%d-%Y"', default='01-01-2015')
     parser.add_argument('-e', type=str, help='Transactions end date in the format "%m-%d-%Y"', default='01-01-2020')
     parser.add_argument('-m', type=str, help='Mode of data generation: "stream" (test data stream) or "train" (raw training data)', default='train')
     args = parser.parse_args()
 
-    temp_folder = "../resources/data/temp"
+    scripts_dir_path = os.path.dirname(os.path.abspath(__file__))
+    repo_dir_path = os.path.join(scripts_dir_path, os.pardir)
+    temp_folder = os.path.join(repo_dir_path, "resources", "data", "temp")
     timestamp = datetime.now().strftime("%d_%m_%Y_%H_%M_%S")
     if args.m == "stream":
-        generate_transaction_test_data_stream(args.n, temp_folder, args.s, args.e, timestamp)
+        generate_transaction_test_data_stream(args.n, temp_folder, args.s, args.e, timestamp, repo_dir_path)
     elif args.m == "train":
-        generate_raw_transaction_train_data(args.n, temp_folder, args.s, args.e, timestamp)
+        generate_raw_transaction_train_data(args.n, temp_folder, args.s, args.e, timestamp, repo_dir_path)
