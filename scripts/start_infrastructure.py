@@ -2,7 +2,7 @@ import subprocess
 import sys
 
 
-infrastructure_scripts = ["start_spark.py", "train_model.py", "start_kafka.py"]
+infrastructure_scripts = ["start_spark.py", "start_kafka.py"]
 
 
 def start_infrastructure():

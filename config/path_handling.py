@@ -4,9 +4,9 @@ from dotenv import load_dotenv
 from config import data_handling
 
 
-INPUT_FOLDER_RAW = 'resources/data/raw'
+INPUT_FOLDER_RAW = 'resources/data/train/raw'
 RAW_DATA_PATH = os.path.join(INPUT_FOLDER_RAW, data_handling.VERSION)
-INPUT_FOLDER_TRAIN = 'resources/data/train'
+INPUT_FOLDER_TRAIN = 'resources/data/train/transformed'
 TRAIN_DATA_PATH = os.path.join(INPUT_FOLDER_TRAIN, data_handling.VERSION)
 INPUT_FOLDER_TEST = 'resources/data/test/**/**'
 

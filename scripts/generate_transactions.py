@@ -59,10 +59,10 @@ def generate_raw_transaction_train_data(n, temp_folder, s, e, timestamp):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate transactions with specified parameters.')
-    parser.add_argument('-n', type=str, help='Number of customers to generate', default='10')
+    parser.add_argument('-n', type=str, help='Number of customers to generate', default='1000')
     parser.add_argument('-s', type=str, help='Transactions start date in the format "%m-%d-%Y"', default='01-01-2015')
     parser.add_argument('-e', type=str, help='Transactions end date in the format "%m-%d-%Y"', default='01-01-2020')
-    parser.add_argument('-m', type=str, help='Mode of data generation: "stream" (test data stream) or "train" (raw training data)', default='stream')
+    parser.add_argument('-m', type=str, help='Mode of data generation: "stream" (test data stream) or "train" (raw training data)', default='train')
     args = parser.parse_args()
 
     temp_folder = "../resources/data/temp"
