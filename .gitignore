@@ -188,7 +188,12 @@ media/
 temp/
 files/
 generator/
-resources
+
+!resources/
+resources/*
+!resources/models/
+resources/models/*
+!resources/models/pretrained/
 
 ressources/data/raw-data/test/
 ressources/data/raw-data/train/
