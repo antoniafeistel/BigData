@@ -14,7 +14,4 @@ def start_infrastructure():
 
 
 if __name__ == "__main__":
-    try:
-        start_infrastructure()
-    except KeyboardInterrupt:
-        sys.exit(0)
+    start_infrastructure()

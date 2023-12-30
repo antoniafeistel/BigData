@@ -17,8 +17,11 @@ FEATURES_COL = "features"
 LABEL_COL = "is_fraud"
 PREDICTION_COL = "prediction"
 WEIGHT_COL = "weight"
+
+config_dir_path = os.path.dirname(os.path.abspath(__file__))
+repo_dir_path = os.path.join(config_dir_path, os.pardir)
 # here defined to avoid circular import problems
-ENV_VARS_PATH = os.path.join("scripts", ".env")
+ENV_VARS_PATH = os.path.join(repo_dir_path, "scripts", ".env")
 load_dotenv(ENV_VARS_PATH)
 VERSION = os.getenv("DATA_VERSION")
 

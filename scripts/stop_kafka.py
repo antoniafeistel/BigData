@@ -8,7 +8,4 @@ def stop_kafka():
 
 
 if __name__ == "__main__":
-    try:
-        stop_kafka()
-    except KeyboardInterrupt:
-        sys.exit(0)
+    stop_kafka()

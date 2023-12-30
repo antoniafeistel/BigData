@@ -1,4 +1,5 @@
 import os
+import sys
 import subprocess
 from dotenv import load_dotenv
 
@@ -20,4 +21,7 @@ def start_kafka():
 
 
 if __name__ == "__main__":
-    start_kafka()
+    try:
+        start_kafka()
+    except KeyboardInterrupt:
+        sys.exit(0)

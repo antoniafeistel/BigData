@@ -12,7 +12,4 @@ def stop_spark():
 
 
 if __name__ == "__main__":
-    try:
-        stop_spark()
-    except KeyboardInterrupt:
-        sys.exit(0)
+    stop_spark()
