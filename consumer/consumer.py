@@ -17,6 +17,7 @@ csv_stream_df = (
     .option("kafka.bootstrap.servers", path_handling.KAFKA_BOOTSTRAP_SERVERS)
     .option("subscribe", path_handling.KAFKA_TOPIC)
     .option("startingOffsets", "earliest")
+    .option("maxOffsetsPerTrigger", 300000)
     .load()
 )
 
