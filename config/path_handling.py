@@ -20,6 +20,6 @@ load_dotenv(data_handling.ENV_VARS_PATH)
 
 SPARK_MASTER = os.getenv("SPARK_MASTER_URL")
 
-KAFKA_BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVER")
+KAFKA_BOOTSTRAP_SERVERS = os.getenv("KAFKA_BOOTSTRAP_SERVERS")
 KAFKA_TOPIC = os.getenv("KAFKA_TOPIC")
 KAFKA_CHECKPTS_PATH = os.path.join(repo_dir_path, "kafka_checkpoints")

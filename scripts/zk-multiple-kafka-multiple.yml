@@ -11,47 +11,33 @@ services:
     environment:
       ZOOKEEPER_CLIENT_PORT: 2181
       ZOOKEEPER_SERVER_ID: 1
-      ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888
-
-  zookeeper2:
-    image: confluentinc/cp-zookeeper:7.3.2
-    hostname: zookeeper2
-    container_name: zookeeper2
-    ports:
-      - "2182:2182"
-    environment:
-      ZOOKEEPER_CLIENT_PORT: 2182
-      ZOOKEEPER_SERVER_ID: 2
-      ZOOKEEPER_SERVERS: zookeeper1:2888:3888;zookeeper2:2888:3888
+      ZOOKEEPER_SERVERS: zookeeper1:2888:3888
 
 
   kafka1:
     image: confluentinc/cp-kafka:7.3.2
     container_name: kafka1
     ports:
-      - "8097:8097"
+      - "9092:9092"
     depends_on:
-      - kafka2
       - zookeeper1
-      - zookeeper2
     environment:
       KAFKA_BROKER_ID: 1
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181,zookeeper2:2182
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: EXTERNAL:PLAINTEXT,INTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: EXTERNAL://localhost:8097,INTERNAL://kafka1:9092
+      KAFKA_ADVERTISED_LISTENERS: EXTERNAL://${DOCKER_HOST_IP}:9092,INTERNAL://kafka1:19092
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
 
   kafka2:
     image: confluentinc/cp-kafka:7.3.2
     container_name: kafka2
     ports:
-      - "8098:8098"
+      - "9093:9093"
     depends_on:
       - zookeeper1
-      - zookeeper2
     environment:
       KAFKA_BROKER_ID: 2
-      KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181,zookeeper2:2182
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper1:2181
       KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: EXTERNAL:PLAINTEXT,INTERNAL:PLAINTEXT
-      KAFKA_ADVERTISED_LISTENERS: EXTERNAL://localhost:8098,INTERNAL://kafka2:9092
+      KAFKA_ADVERTISED_LISTENERS: EXTERNAL://${DOCKER_HOST_IP}:9093,INTERNAL://kafka2:19093
       KAFKA_INTER_BROKER_LISTENER_NAME: INTERNAL
