@@ -17,12 +17,12 @@ git clone https://github.com/antoniafeistel/BigData.git
 ```
 2. Create a virtual environment
 ```bash
-python -m venv path/to/new/virtual/environment/my_venv
+python3 -m venv path/to/new/virtual/environment/my_venv
 ```
 
 3. Activate your virtual environment
 ```bash
-my_venv/Scripts/activate
+source my_venv/bin/activate
 ```
 
 4. Install requirements
@@ -30,7 +30,7 @@ my_venv/Scripts/activate
 pip install -r BigData/requirements.txt
 ```
 
-5. Install library
+5. Install provided Python packages
 ```bash
 pip install -e BigData/.
 ```
