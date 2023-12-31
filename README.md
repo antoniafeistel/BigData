@@ -14,8 +14,15 @@ This repository contains our big data project.
 - at least [Python 3.12.0](https://www.python.org/downloads/)
 - [Docker Desktop](https://docs.docker.com/desktop/install/mac-install/) for Mac
 - easiest to navigate with [PyCharm](https://www.jetbrains.com/pycharm/)
+- at least [Apache Spark 3.5.0](https://spark.apache.org/downloads.html) (package type: Pre-built for Apache Hadoop 3.3 and later)
 
-## Path Requirements
+## Environment Variables
+```bash
+SPARK_HOME=path/to/Spark
+PATH=path/to/Spark/bin
+PATH=path/to/python3/version/bin
+PYSPARK_DRIVER_PYTHON=python3
+```
 
 ## Installation
 
