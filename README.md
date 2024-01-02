@@ -1,5 +1,9 @@
-# Big Data Project - Fraud Detection on Credit Card Transactions
-This repository contains our big data project.
+# Online Fraud Detection on Credit Card Transactions
+This repository contains our project for the course "Big Data and Advanced Database System Concepts" at [Hochschule Karlsruhe](https://www.h-ka.de/) in the winter term 23/24.
+
+We use a [Synthetic Credit Card Transaction Generator](https://github.com/namebrandon/Sparkov_Data_Generation/tree/b5eb45c89d36f2aa4ef16044a42945bed8b96d93) to generate synthetic credit card transactions that contain a label indicating fraud.
+Based on these data we build two pipelines.
+One for an offline training of a Random Forest Classifier, the other for an online fraud detection based on the previously trained Random Forest Classifier.
 
 ## Infrastructure Requirements
 - only Mac is supported
