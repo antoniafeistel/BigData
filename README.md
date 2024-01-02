@@ -1,6 +1,4 @@
-# This Readme is not finalized
-
-## Big Data Project - Fraud Detection on Credit Card Transactions
+# Big Data Project - Fraud Detection on Credit Card Transactions
 This repository contains our big data project.
 
 ## Infrastructure Requirements
@@ -52,7 +50,12 @@ git submodule update --init
 ## Architecture
 ![Architecture](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/architecture.png)
 
+## Scalability Model for the Streaming-Pipeline
+For the streaming-pipeline, all components (Producer, Kafka cluster, Consumer) can be independently scaled. Thus, our architecture enables a high degree of parallelization and fault tolerance.
+Moreover, fault tolerance is further improved by the topic partitions and replications used in the Kafka cluster.
+![Kafka Cluster](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/kafka_cluster.svg)
+
 ## Dependency Graph
-![Architecture](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/dependency_graph.svg)
+![Dependency Graph](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/dependency_graph.svg)
 
 ## Configurations
