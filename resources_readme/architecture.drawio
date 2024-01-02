@@ -1,0 +1,181 @@
+<mxfile host="app.diagrams.net" modified="2024-01-02T21:16:03.385Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" etag="UK5G52IICZCqqefUVuoL" version="22.1.15" type="device">
+  <diagram name="Seite-1" id="sJ4lqFv96zK9GPiVLbB9">
+    <mxGraphModel dx="1851" dy="925" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="1169" pageHeight="827" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-2" value="Sparkov Data Generation" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="425" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-3" value="Multiple raw .csv-files in folder" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="217" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-4" value="Multiple transformed&lt;br&gt;.parquet-files in folder" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="217" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-5" value="Trained Random Forest Classifier" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="650" y="217" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-6" value="Stored Random Forest Classifier" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="960" y="217" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-7" value="Producer:&lt;br&gt;Transform raw transactions data for classification" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="656" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-8" value="Multiple incoming raw .csv-files in folder" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="656" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-9" value="Kafka Cluster:&lt;br&gt;Process, partition, replicate, and store incoming transactions data stream" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="650" y="656" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-10" value="Consumer:&lt;br&gt;Prepare transactions data for classification" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="960" y="656" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-11" value="Console" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="960" y="37" width="180" height="90" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-12" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="4bvxCodTv-QIiQcc5sRR-2" target="4bvxCodTv-QIiQcc5sRR-3">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="610" y="400" as="sourcePoint" />
+            <mxPoint x="210" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-32" value="Generate synthetic raw&lt;br&gt;transactions training data" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="4bvxCodTv-QIiQcc5sRR-12">
+          <mxGeometry x="-0.0497" y="2" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-13" value="Generate continuous synthetic&lt;br&gt;raw transactions data stream" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=1;exitDx=0;exitDy=0;entryX=0.5;entryY=0;entryDx=0;entryDy=0;" edge="1" parent="1" source="4bvxCodTv-QIiQcc5sRR-2" target="4bvxCodTv-QIiQcc5sRR-8">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="220" y="300" as="sourcePoint" />
+            <mxPoint x="220" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-14" value="" style="endArrow=classic;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="4bvxCodTv-QIiQcc5sRR-7" target="4bvxCodTv-QIiQcc5sRR-8">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="220" y="360" as="sourcePoint" />
+            <mxPoint x="220" y="430" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-25" value="Listen for incoming&lt;br&gt;transactions" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="4bvxCodTv-QIiQcc5sRR-14">
+          <mxGeometry x="-0.0505" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-15" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="4bvxCodTv-QIiQcc5sRR-7" target="4bvxCodTv-QIiQcc5sRR-9">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="420" y="460" as="sourcePoint" />
+            <mxPoint x="280" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-27" value="Send transactions&lt;br&gt;continuously&amp;nbsp;to&lt;br&gt;Kafka cluster" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="4bvxCodTv-QIiQcc5sRR-15">
+          <mxGeometry x="-0.0268" y="1" relative="1" as="geometry">
+            <mxPoint x="-4" y="1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-16" value="Read transactions&lt;br&gt;continuously from&lt;br&gt;Kafka cluster" style="endArrow=classic;html=1;rounded=0;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="4bvxCodTv-QIiQcc5sRR-10" target="4bvxCodTv-QIiQcc5sRR-9">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="540" y="460" as="sourcePoint" />
+            <mxPoint x="610" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-17" value="" style="endArrow=classic;html=1;rounded=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;" edge="1" parent="1" source="4bvxCodTv-QIiQcc5sRR-10" target="4bvxCodTv-QIiQcc5sRR-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="810" y="454" as="sourcePoint" />
+            <mxPoint x="730" y="460" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-30" value="Load Random Forest Classifier" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="4bvxCodTv-QIiQcc5sRR-17">
+          <mxGeometry x="0.0207" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-18" value="Output classification result" style="endArrow=classic;html=1;rounded=0;entryX=0.5;entryY=1;entryDx=0;entryDy=0;exitX=0.5;exitY=0;exitDx=0;exitDy=0;" edge="1" parent="1" source="4bvxCodTv-QIiQcc5sRR-6" target="4bvxCodTv-QIiQcc5sRR-11">
+          <mxGeometry x="0.0048" width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="950" y="189.57" as="sourcePoint" />
+            <mxPoint x="1020" y="189.57" as="targetPoint" />
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-19" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="4bvxCodTv-QIiQcc5sRR-3" target="4bvxCodTv-QIiQcc5sRR-4">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="220" y="300" as="sourcePoint" />
+            <mxPoint x="220" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-34" value="Select, encode,&lt;br&gt;balance, and&lt;br&gt;transform" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="4bvxCodTv-QIiQcc5sRR-19">
+          <mxGeometry x="0.0193" y="-2" relative="1" as="geometry">
+            <mxPoint x="-5" y="-2" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-20" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="4bvxCodTv-QIiQcc5sRR-4" target="4bvxCodTv-QIiQcc5sRR-5">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="530" y="220" as="sourcePoint" />
+            <mxPoint x="670" y="220" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-35" value="Load data&lt;br&gt;and train model" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="4bvxCodTv-QIiQcc5sRR-20">
+          <mxGeometry x="0.0096" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-21" value="" style="endArrow=classic;html=1;rounded=0;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="4bvxCodTv-QIiQcc5sRR-5" target="4bvxCodTv-QIiQcc5sRR-6">
+          <mxGeometry width="50" height="50" relative="1" as="geometry">
+            <mxPoint x="770" y="189.57" as="sourcePoint" />
+            <mxPoint x="910" y="189.57" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-36" value="Store trained model" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="4bvxCodTv-QIiQcc5sRR-21">
+          <mxGeometry x="-0.017" y="-3" relative="1" as="geometry">
+            <mxPoint y="-3" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-38" value="ETL-pipeline and offline model training" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="314.49" y="135" width="230" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-39" value="Streaming-pipeline and online classification" style="text;html=1;align=center;verticalAlign=middle;resizable=0;points=[];autosize=1;strokeColor=none;fillColor=none;" vertex="1" parent="1">
+          <mxGeometry x="461.37" y="796" width="250" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-40" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cloudnesil.com/wp-content/uploads/2018/12/apachesparklogo.png;clipPath=inset(12.18% 22% 31.41% 26%);" vertex="1" parent="1">
+          <mxGeometry x="449.1" y="630.11" width="70.9" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-41" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;flipH=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;rotation=90;" vertex="1" parent="1">
+          <mxGeometry x="552.18" y="212.31" width="66.38" height="1109.75" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-42" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://static-00.iconduck.com/assets.00/kafka-icon-2048x935-cvu4503l.png;" vertex="1" parent="1">
+          <mxGeometry x="756.79" y="630.68" width="73.21" height="33.43" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-45" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://t3.ftcdn.net/jpg/04/68/58/50/360_F_468585023_oZ9bWqnreAxAuCa9hhnRx3eMcYLnXdPU.jpg;clipPath=inset(20.67% 14% 21.33% 14%);" vertex="1" parent="1">
+          <mxGeometry x="163" y="637.89" width="40" height="32.22" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-46" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cloudnesil.com/wp-content/uploads/2018/12/apachesparklogo.png;clipPath=inset(12.18% 22% 31.41% 26%);" vertex="1" parent="1">
+          <mxGeometry x="1069.1" y="630.11" width="70.9" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-47" value="" style="shape=curlyBracket;whiteSpace=wrap;html=1;rounded=1;flipH=1;labelPosition=right;verticalLabelPosition=middle;align=left;verticalAlign=middle;rotation=-90;" vertex="1" parent="1">
+          <mxGeometry x="397.3" y="-204.12" width="66.38" height="800" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-48" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cloudnesil.com/wp-content/uploads/2018/12/apachesparklogo.png;clipPath=inset(12.18% 22% 31.41% 26%);" vertex="1" parent="1">
+          <mxGeometry x="237.99999999999991" y="205" width="70.9" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-49" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://t3.ftcdn.net/jpg/04/68/58/50/360_F_468585023_oZ9bWqnreAxAuCa9hhnRx3eMcYLnXdPU.jpg;clipPath=inset(20.67% 14% 21.33% 14%);" vertex="1" parent="1">
+          <mxGeometry x="163" y="200" width="40" height="32.22" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-50" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cloudnesil.com/wp-content/uploads/2018/12/apachesparklogo.png;clipPath=inset(12.18% 22% 31.41% 26%);" vertex="1" parent="1">
+          <mxGeometry x="554.55" y="211" width="70.9" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-51" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://t3.ftcdn.net/jpg/04/68/58/50/360_F_468585023_oZ9bWqnreAxAuCa9hhnRx3eMcYLnXdPU.jpg;clipPath=inset(20.67% 14% 21.33% 14%);" vertex="1" parent="1">
+          <mxGeometry x="1090" y="199" width="40" height="32.22" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-53" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://cdn-icons-png.flaticon.com/512/0/656.png;" vertex="1" parent="1">
+          <mxGeometry x="1090" y="14" width="40" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-54" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://upload.wikimedia.org/wikipedia/commons/thumb/c/c3/Python-logo-notext.svg/1869px-Python-logo-notext.svg.png;" vertex="1" parent="1">
+          <mxGeometry x="162.63" y="403.99999999999994" width="40.37" height="44.24" as="geometry" />
+        </mxCell>
+        <mxCell id="4bvxCodTv-QIiQcc5sRR-55" value="" style="shape=image;verticalLabelPosition=bottom;labelBackgroundColor=default;verticalAlign=top;aspect=fixed;imageAspect=0;image=https://t3.ftcdn.net/jpg/04/68/58/50/360_F_468585023_oZ9bWqnreAxAuCa9hhnRx3eMcYLnXdPU.jpg;clipPath=inset(20.67% 14% 21.33% 14%);" vertex="1" parent="1">
+          <mxGeometry x="464.55" y="200" width="40" height="32.22" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
