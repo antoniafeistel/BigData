@@ -49,11 +49,6 @@ pip install -e BigData/.
 git submodule update --init
 ```
 
-7. Use library relative from [BigData](https://github.com/antoniafeistel/BigData), e.g.:
-```bash
-TODO
-```
-
 ## Architecture
 ![Architecture](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/architecture.svg)
 
