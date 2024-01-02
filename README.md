@@ -53,7 +53,7 @@ git submodule update --init
 ## Scalability Model for the Streaming-Pipeline
 For the streaming-pipeline, all components (Producer, Kafka cluster, Consumer) can be independently scaled. Thus, our architecture enables a high degree of parallelization and fault tolerance.
 Moreover, fault tolerance is further improved by the topic partitions and replications used in the Kafka cluster.
-![Kafka Cluster](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/kafka_cluster.svg)
+![Kafka Cluster](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/kafka_cluster.png)
 
 ## Dependency Graph
 ![Dependency Graph](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/dependency_graph.svg)
