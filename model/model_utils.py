@@ -4,7 +4,7 @@ from config import data_handling, path_handling
 
 
 # number of trees for random forest classifier
-num_trees = 10
+num_trees = 128
 loaded = False
 model = None
 

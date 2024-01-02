@@ -194,6 +194,7 @@ resources/*
 !resources/models/
 resources/models/*
 !resources/models/pretrained/
+resources/models/pretrained/*/*/*.crc
 
 ressources/data/raw-data/test/
 ressources/data/raw-data/train/
