@@ -62,4 +62,15 @@ Moreover, fault tolerance is further improved by the topic partitions and replic
 ## Dependency Graph
 ![Dependency Graph](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/dependency_graph.svg)
 
-## Configurations
+## Functionality
+
+## Pre-trained Random Forest Classifier
+We offer a [pre-trained Random Forest Classifier](https://github.com/antoniafeistel/BigData/tree/main/resources/models/pretrained/02_01_2024_18_33_00) to be used in the streaming-pipeline for online fraud detection.
+
+To use it, set DATA_VERSION = "02_01_2024_18_33_00" in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).
+
+Training details:
+- Random Forest Classifier based on 128 decision trees
+- Spark configuration for training: 2 Workers with each 5 CPUs and 8 GB memory
+- 43,253,806 synthetic credit card transactions from 10,000 different customers used for training
+- 14.07 GB raw .csv-data with a training time (including data transformation) of 18 minutes or 1.12 GB transformed .parquet-data with a training time of 15 minutes
