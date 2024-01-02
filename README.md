@@ -62,7 +62,31 @@ Moreover, fault tolerance is further improved by the topic partitions and replic
 ## Dependency Graph
 ![Dependency Graph](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/dependency_graph.svg)
 
-## Functionality
+## Workflow
+The workflow is implicitly given and controlled by the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).
+
+#### 1. Step: Start Spark
+Run the [start_spark.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/start_spark.py) script to start Spark.
+
+#### 2. Step: Generate synthetic credit card transaction data for model training
+You can skip step 2 and 3 if you want to use the pre-trained Random Forest Classifier (see next paragraph: Pre-trained Random Forest Classifier).
+
+Customize the data generation within the "# Transactions generation" section of the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).
+
+However, set GEN_MODE = "train" in any case.
+
+#### 3. Step: Train the Random Forest Classifier
+Set DATA_VERSION in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env) to the folder name that contains the synthetic credit card transaction data generated in step 2.
+
+Run the [train_model.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/train_model.py) script to train the Random Forest Classifier.
+
+#### 4. Step: Start Kafka
+Set DOCKER_HOST_IP to your IP address in the "# Kafka" section of the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).
+
+Moreover, you can change KAFKA_TOPIC to customize the name of the topic that will be created in the Kafka cluster.
+
+#### 5. Step: Start the Consumer
+
 
 ## Pre-trained Random Forest Classifier
 We offer a [pre-trained Random Forest Classifier](https://github.com/antoniafeistel/BigData/tree/main/resources/models/pretrained/02_01_2024_18_33_00) to be used in the streaming-pipeline for online fraud detection.
