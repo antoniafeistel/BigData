@@ -1,14 +1,6 @@
-import os
-from dotenv import load_dotenv
 from pyspark.sql.types import DoubleType, IntegerType, LongType, StringType, StructField, StructType
 from pyspark.sql.functions import udf
 from hashlib import md5
-
-
-# lowest bytes to be extracted to construct the integer hash value
-lowest_bytes = -5
-# base of the hashed number
-base = 16
 
 
 CSV_SEP = "|"
@@ -18,16 +10,11 @@ LABEL_COL = "is_fraud"
 PREDICTION_COL = "prediction"
 WEIGHT_COL = "weight"
 
-config_dir_path = os.path.dirname(os.path.abspath(__file__))
-repo_dir_path = os.path.join(config_dir_path, os.pardir)
-# here defined to avoid circular import problems
-ENV_VARS_PATH = os.path.join(repo_dir_path, "scripts", ".env")
-load_dotenv(ENV_VARS_PATH)
-VERSION = os.getenv("DATA_VERSION")
-
 features = ["gender", "state", "city_pop", "job", "profile", "trans_date", "unix_time", "category", "amt", "merchant"]
-
-
+# lowest bytes to be extracted to construct the integer hash value
+lowest_bytes = -5
+# base of the hashed number
+base = 16
 schema = StructType([
     StructField("ssn", StringType(), True),
     StructField("cc_num", StringType(), True),

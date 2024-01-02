@@ -1,9 +1,12 @@
 import subprocess
+import os
+from dotenv import load_dotenv
 
 
 def stop_kafka():
-    subprocess.run("docker-compose -f zk-multiple-kafka-multiple.yml stop", shell=True, check=True)
-    subprocess.run("docker-compose -f zk-multiple-kafka-multiple.yml down", shell=True, check=True)
+    load_dotenv()
+    subprocess.run(f"docker-compose -f {os.getenv("KAFKA_DOCKER_COMPOSE")} stop", shell=True, check=True)
+    subprocess.run(f"docker-compose -f {os.getenv("KAFKA_DOCKER_COMPOSE")} down", shell=True, check=True)
 
 
 if __name__ == "__main__":

@@ -5,6 +5,7 @@ import os
 import shutil
 import csv
 from datetime import datetime
+from dotenv import load_dotenv
 
 
 def is_csv_header_only(file_path):
@@ -58,11 +59,12 @@ def generate_raw_transaction_train_data(n, temp_folder, s, e, timestamp, repo_di
 
 
 if __name__ == "__main__":
+    load_dotenv()
     parser = argparse.ArgumentParser(description='Generate transactions with specified parameters.')
-    parser.add_argument('-n', type=str, help='Number of customers to generate', default='100')
-    parser.add_argument('-s', type=str, help='Transactions start date in the format "%m-%d-%Y"', default='01-01-2015')
-    parser.add_argument('-e', type=str, help='Transactions end date in the format "%m-%d-%Y"', default='01-01-2020')
-    parser.add_argument('-m', type=str, help='Mode of data generation: "stream" (test data stream) or "train" (raw training data)', default='train')
+    parser.add_argument('-n', type=str, help='Number of customers to generate', default=os.getenv("NUM_CUSTOMERS"))
+    parser.add_argument('-s', type=str, help='Transactions start date in the format "%m-%d-%Y"', default=os.getenv("TRANSACTIONS_START_DATE"))
+    parser.add_argument('-e', type=str, help='Transactions end date in the format "%m-%d-%Y"', default=os.getenv("TRANSACTIONS_END_DATE"))
+    parser.add_argument('-m', type=str, help='Mode of data generation: "stream" (test data stream) or "train" (raw training data)', default=os.getenv("GEN_MODE"))
     args = parser.parse_args()
 
     scripts_dir_path = os.path.dirname(os.path.abspath(__file__))
