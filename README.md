@@ -78,7 +78,7 @@ Run the [generate_transactions.py](https://github.com/antoniafeistel/BigData/blo
 The generated data will be saved in the "BigData/resouces/data/train/raw/dd_mm_yyyy_hh_mm_ss" folder.
 
 #### 3. Step: Train the Random Forest Classifier
-Set DATA_VERSION in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env) to the folder name that contains the synthetic credit card transaction data generated in step 2.
+Set DATA_VERSION = "dd_mm_yyyy_hh_mm_ss" in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env) to use the synthetic credit card transaction data generated in step 2 for training the Random Forest Classifier.
 
 You can customize the number of decision trees used for training the Random Forest Classifier by setting "num_trees" in [model_utils.py](https://github.com/antoniafeistel/BigData/blob/main/model/model_utils.py).\
 Otherwise, the Random Forest Classifier will be trained based on 128 decision trees.
@@ -114,7 +114,7 @@ The generated data will be saved in the "BigData/resouces/data/test/dd_mm_yyyy_h
 
 ## Pre-trained Random Forest Classifier
 We offer a [pre-trained Random Forest Classifier](https://github.com/antoniafeistel/BigData/tree/main/resources/models/pretrained/02_01_2024_18_33_00) to be used in the streaming-pipeline for online fraud detection.\
-To use it, set DATA_VERSION = "02_01_2024_18_33_00" in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).
+To use it, set DATA_VERSION = "pre_trained/02_01_2024_18_33_00" in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).
 
 Training details:
 - Random Forest Classifier based on 128 decision trees
