@@ -62,11 +62,11 @@ Moreover, fault tolerance is further improved by the topic partitions and replic
 ## Dependency Graph
 ![Dependency Graph](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/dependency_graph.svg)
 
-## Workflow
-The workflow is implicitly given and controlled by the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).
+## Application Workflow
 
 #### 1. Step: Start the Spark Cluster
-Run the [start_spark.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/start_spark.py) script to start the Spark cluster.
+Run the [start_spark.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/start_spark.py) script to start the Spark cluster.\
+Web UIs will be available under: "localhost:8080" and "localhost:4040".
 
 #### 2. Step: Generate synthetic credit card transaction data for model training
 You can skip step 2 and 3 if you want to use the pre-trained Random Forest Classifier (see next paragraph: Pre-trained Random Forest Classifier).
