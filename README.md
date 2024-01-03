@@ -75,10 +75,10 @@ Customize the data generation within the "# Transactions generation" section of 
 However, set GEN_MODE = "train" in any case.
 
 Run the [generate_transactions.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/generate_transactions.py) script to generate synthetic credit card transaction data.\
-The generated data will be saved in the "BigData/resouces/data/train/raw/dd_mm_yyyy_hh_mm_ss" folder.
+The generated data will be saved in the respective "BigData/resouces/data/train/raw/dd_mm_yyyy_hh_mm_ss" folder.
 
 #### 3. Step: Train the Random Forest Classifier
-Set DATA_VERSION = "dd_mm_yyyy_hh_mm_ss" in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env) to use the synthetic credit card transaction data generated in step 2 for training the Random Forest Classifier.
+Set DATA_VERSION = "dd_mm_yyyy_hh_mm_ss" in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env) to use the respective synthetic credit card transaction data generated in step 2 for training the Random Forest Classifier.
 
 You can customize the number of decision trees used for training the Random Forest Classifier by setting "num_trees" in [model_utils.py](https://github.com/antoniafeistel/BigData/blob/main/model/model_utils.py).\
 Otherwise, the Random Forest Classifier will be trained based on 128 decision trees.
