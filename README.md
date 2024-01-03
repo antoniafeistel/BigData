@@ -121,3 +121,6 @@ Training details:
 - Spark configuration for training: 2 Workers with each 5 CPUs and 8 GB memory
 - 43,253,806 synthetic credit card transactions from 10,000 different customers used for training
 - 14.07 GB raw .csv-data with a training time (including data transformation) of 18 minutes or 1.12 GB transformed .parquet-data with a training time of 15 minutes
+
+## Examples
+TODO
