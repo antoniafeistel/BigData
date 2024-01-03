@@ -65,32 +65,55 @@ Moreover, fault tolerance is further improved by the topic partitions and replic
 ## Workflow
 The workflow is implicitly given and controlled by the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).
 
-#### 1. Step: Start Spark
-Run the [start_spark.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/start_spark.py) script to start Spark.
+#### 1. Step: Start the Spark Cluster
+Run the [start_spark.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/start_spark.py) script to start the Spark cluster.
 
 #### 2. Step: Generate synthetic credit card transaction data for model training
 You can skip step 2 and 3 if you want to use the pre-trained Random Forest Classifier (see next paragraph: Pre-trained Random Forest Classifier).
 
-Customize the data generation within the "# Transactions generation" section of the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).
-
+Customize the data generation within the "# Transactions generation" section of the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).\
 However, set GEN_MODE = "train" in any case.
+
+Run the [generate_transactions.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/generate_transactions.py) script to generate synthetic credit card transaction data.\
+The generated data will be saved in the "BigData/resouces/data/train" folder.
 
 #### 3. Step: Train the Random Forest Classifier
 Set DATA_VERSION in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env) to the folder name that contains the synthetic credit card transaction data generated in step 2.
 
-Run the [train_model.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/train_model.py) script to train the Random Forest Classifier.
+You can customize the number of decision trees used for training the Random Forest Classifier by setting "num_trees" in [model_utils.py](https://github.com/antoniafeistel/BigData/blob/main/model/model_utils.py).\
+Otherwise, the Random Forest Classifier will be trained based on 128 decision trees.
 
-#### 4. Step: Start Kafka
-Set DOCKER_HOST_IP to your IP address in the "# Kafka" section of the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).
+Run the [train_model.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/train_model.py) script to train the Random Forest Classifier.\
+The trained Random Forest Classifier will be saved in the "BigData/resources/models" folder.
 
+#### 4. Step: Start the Kafka Cluster
+Set DOCKER_HOST_IP to your IP address in the "# Kafka" section of the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).\
 Moreover, you can change KAFKA_TOPIC to customize the name of the topic that will be created in the Kafka cluster.
 
-#### 5. Step: Start the Consumer
+Run the [start_kafka.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/start_kafka.py) script to start the Kafka cluster.
 
+#### 5. Step: Start the Consumer
+Customize the consumer that will be run on the Spark cluster within the "# Consumer" section of the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).
+
+Run the [start_consumer.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/start_consumer.py) script to run the consumer on the Spark cluster started in step 1.
+
+#### 6. Step: Start the Producer
+Customize the producer that will be run on the Spark cluster within the "# Producer" section of the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).
+
+Run the [start_producer.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/start_producer.py) script to run the producer on the Spark cluster started in step 1.
+
+#### 7. Step: Generate synthetic credit card transaction data stream for online fraud detection
+Customize the data generation within the "# Transactions generation" section of the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).\
+However, set GEN_MODE = "stream" in any case.
+
+You can customize the number of CPUs used for data generation by setting "num_cpu" in [datagen.py](https://github.com/namebrandon/Sparkov_Data_Generation/blob/b5eb45c89d36f2aa4ef16044a42945bed8b96d93/datagen.py).\
+Otherwise, all CPUs of your machine will be used for data generation.
+
+Run the [generate_transactions.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/generate_transactions.py) script to generate a synthetic credit card transaction data stream.\
+The generated data will be saved in the "BigData/resouces/data/test" folder.
 
 ## Pre-trained Random Forest Classifier
-We offer a [pre-trained Random Forest Classifier](https://github.com/antoniafeistel/BigData/tree/main/resources/models/pretrained/02_01_2024_18_33_00) to be used in the streaming-pipeline for online fraud detection.
-
+We offer a [pre-trained Random Forest Classifier](https://github.com/antoniafeistel/BigData/tree/main/resources/models/pretrained/02_01_2024_18_33_00) to be used in the streaming-pipeline for online fraud detection.\
 To use it, set DATA_VERSION = "02_01_2024_18_33_00" in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).
 
 Training details:
