@@ -75,7 +75,7 @@ Customize the data generation within the "# Transactions generation" section of 
 However, set GEN_MODE = "train" in any case.
 
 Run the [generate_transactions.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/generate_transactions.py) script to generate synthetic credit card transaction data.\
-The generated data will be saved in the "BigData/resouces/data/train" folder.
+The generated data will be saved in the "BigData/resouces/data/train/raw/dd_mm_yyyy_hh_mm_ss" folder.
 
 #### 3. Step: Train the Random Forest Classifier
 Set DATA_VERSION in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env) to the folder name that contains the synthetic credit card transaction data generated in step 2.
@@ -84,7 +84,7 @@ You can customize the number of decision trees used for training the Random Fore
 Otherwise, the Random Forest Classifier will be trained based on 128 decision trees.
 
 Run the [train_model.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/train_model.py) script to train the Random Forest Classifier.\
-The trained Random Forest Classifier will be saved in the "BigData/resources/models" folder.
+The trained Random Forest Classifier will be saved in the "BigData/resources/models/dd_mm_yyyy_hh_mm_ss" folder.
 
 #### 4. Step: Start the Kafka Cluster
 Set DOCKER_HOST_IP to your IP address in the "# Kafka" section of the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).\
@@ -110,7 +110,7 @@ You can customize the number of CPUs used for data generation by setting "num_cp
 Otherwise, all CPUs of your machine will be used for data generation.
 
 Run the [generate_transactions.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/generate_transactions.py) script to generate a synthetic credit card transaction data stream.\
-The generated data will be saved in the "BigData/resouces/data/test" folder.
+The generated data will be saved in the "BigData/resouces/data/test/dd_mm_yyyy_hh_mm_ss" folder.
 
 ## Pre-trained Random Forest Classifier
 We offer a [pre-trained Random Forest Classifier](https://github.com/antoniafeistel/BigData/tree/main/resources/models/pretrained/02_01_2024_18_33_00) to be used in the streaming-pipeline for online fraud detection.\
