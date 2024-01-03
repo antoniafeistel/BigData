@@ -193,8 +193,8 @@ generator/
 resources/*
 !resources/models/
 resources/models/*
-!resources/models/pretrained/
-resources/models/pretrained/*/*/*.crc
+!resources/models/pre_trained/
+resources/models/pre_trained/*/*/*.crc
 
 ressources/data/raw-data/test/
 ressources/data/raw-data/train/
