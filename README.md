@@ -123,4 +123,36 @@ Training details:
 - 14.07 GB raw .csv-data with a training time (including data transformation) of 18 minutes or 1.12 GB transformed .parquet-data with a training time of 15 minutes
 
 ## Examples
-TODO
+
+Hier funktionierendes Streaming Beispiel mit Consumer Output auf Konsole -- Können wir auch Workflow nennen und dann erst darauf eingehen wo Daten hingeladen werden durch die generation... dann was der Producer macht... was Kafka macht ... und dann was der Consumer macht ...
+mit Code Beispielen
+
+### Scalability Analysis
+
+The scenarios are based on the fraud creation of the the Sparkov_Data_Generation/datagen.py script. In case of streaming the script creates multiple batches within an endless loop. 
+
+Baisc Details about the amount of data that is created:
+- 100 Customers
+- XX Rows per Batch
+- Generation of Batch needs XX Seconds
+
+Ressource Details:
+- Worker Nodes: 2
+- Worker Memory: 4GB / Node
+
+#### Consumer Analysis:
+
+Szenarien    | Executer | Cores / Executor | Memory / Executor
+------------ | ---------| ---------------- | ----------------
+Szenario 1   |        1 |                1 |             1 GB
+Szenario 2   |        2 |                2 |             2 GB
+
+
+The following pictures shows numbers how the stream processing is working and how much data is processed within this pipeline. 
+
+![Consumer Metrics Szenatrio 1](resources_readme/100-cust-1Core-1GB.png)
+
+![Consumer Metrics Szenario 2](resources_readme/100-prod-1Core-1GB.png)
+
+
+
