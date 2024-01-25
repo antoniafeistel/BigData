@@ -127,7 +127,7 @@ Training details:
 Hier funktionierendes Streaming Beispiel mit Consumer Output auf Konsole -- Können wir auch Workflow nennen und dann erst darauf eingehen wo Daten hingeladen werden durch die generation... dann was der Producer macht... was Kafka macht ... und dann was der Consumer macht ...
 mit Code Beispielen
 
-### Scalability Analysis
+## Scalability Analysis
 
 The scenarios are based on the fraud creation of the the Sparkov_Data_Generation/datagen.py script. In case of streaming the script creates multiple batches within an endless loop. 
 
@@ -140,7 +140,7 @@ Ressource Details:
 - Worker Nodes: 2
 - Worker Memory: 4GB / Node
 
-#### Consumer Analysis:
+### Consumer Analysis:
 
 Szenarien    | Executer | Cores / Executor | Memory / Executor
 ------------ | ---------| ---------------- | ----------------
@@ -150,9 +150,9 @@ Szenario 2   |        2 |                2 |             2 GB
 
 The following pictures shows numbers how the stream processing is working and how much data is processed within this pipeline. 
 
-![Consumer Metrics Szenatrio 1](resources_readme/100-cust-1Core-1GB.png)
+![Consumer Metrics Szenatrio 1](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/100-cust-1Core-1GB.png)
 
-![Consumer Metrics Szenario 2](resources_readme/100-prod-1Core-1GB.png)
+![Consumer Metrics Szenario 2](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/100-prod-1Core-1GB.png)
 
 
 
