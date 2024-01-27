@@ -153,9 +153,9 @@ The following pictures shows numbers how the stream processing is working and ho
 
 The numbers show that the consumer client can proccess more records by second if more ressources are assigned to the application. In Scenario one the consumer is able to process XX records per seconds. With more assigned hardware the consumer can process more data. The performance increases per XX procent on input rows and XX percent on proceed rows per second.
 
-![Consumer Metrics Szenatrio 1](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/100-cust-1Core-1GB.png)
+![Consumer Metrics Szenatrio 1](resources_readme/100-cust-1Core-1GB.png)
 
-![Consumer Metrics Szenario 2](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/100-cust-4Core-4GB.png)
+![Consumer Metrics Szenario 2](resources_readme/100-cust-4Core-4GB.png)
 
 ### Producer Analysis
 
@@ -166,7 +166,7 @@ Szenario 4   |        2 |                2 |             2 GB
 
 As described in the section before. The consumer ressources remain the same wheras the prooducer client gets more assigned ressources within this analysis and the following performance graphs.
 
-![Producer Metrics Szenatrio 1](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/100-prod-1Core-1GB.png)
+![Producer Metrics Szenatrio 1](resources_readme/100-prod-1Core-1GB.png)
 
 The graphs show that the producer clients does not scale with more Ressources. There is no performance increase in the processed data evolution.
 
