@@ -133,8 +133,7 @@ The scenarios are based on the fraud creation of the the Sparkov_Data_Generation
 
 Baisc Details about the amount of data that is created:
 - 100 Customers
-- XX Rows per Batch
-- Generation of Batch needs XX Seconds
+- Batch Size: ~132 MiB
 
 Ressource Details:
 - Worker Nodes: 2
@@ -143,43 +142,75 @@ Ressource Details:
 
 ### Consumer Analysis
 
+There are the sveral consumer scenarios initiated with the folowwing resources assigned:
+
+**Ressource Details**
 Szenarien    | Executer | Cores / Executor | Memory / Executor
------------- | ---------| ---------------- | ----------------
+------------ | --------:| ---------------: | ----------------:
 Szenario 1   |        1 |                1 |             1 GB
 Szenario 2   |        2 |                2 |             2 GB
 
-
 The following pictures shows numbers how the stream processing is working and how much data is processed within this pipeline. Within this szenarios the producer ressources remain the same.
 
-The numbers show that the consumer client can proccess more records by second if more ressources are assigned to the application. In Scenario one the consumer is able to process XX records per seconds. With more assigned hardware the consumer can process more data. The performance increases per XX procent on input rows and XX percent on proceed rows per second.
+The numbers show that the consumer client can proccess more records by second if more ressources are assigned to the application. In Scenario one, the consumer is able to process XX records per seconds. With more assigned hardware the consumer can process more data. The performance increases per XX procent on input rows and XX percent on proceed rows per second.
+
+ **Consumer Performance Metrics -- Streaming**
+Szenarien    | Avg Input/ sec | Avg Process / sec 
+------------ | -------------: | ----------------:  
+Szenario 1   |              1 |                 1 
+Szenario 2   |      31,846.18 |         31,409.33          
 
 ![Consumer Metrics Szenatrio 1](resources_readme/100-cust-1Core-1GB.png)
 
-![Consumer Metrics Szenario 2](resources_readme/100-cust-4Core-4GB.png)
+![Consumer Metrics Szenario 2](resources_readme/100-cust-4Core-4GB-01.png)
+
+To test the scalability of the consumer client as an isolated component, initial data samples were added into the KAFKA cluster. With that starting point there are another to test runs simulated with the same consumer ressources as described above.
+
+ **Consumer Performance Metrics -- consumer "isolated"**
+Szenarien    | Avg Input/ sec | Avg Process / sec 
+------------ | -------------: | ----------------:  
+Szenario 1   |      27,104.07 |         27,148.09 
+Szenario 2   |      43,796.14 |         43,906.74  
+
+It can be recognized that the consumer process more records with more assigend ressources. The consumer client with 4 Cores and in total 4GB Memory is almost 2x times faster than the consumer client with just 1 Core and 1 GB Memory.
 
 ### Producer Analysis
 
+On producer side there are the same scenarios initiated:
+
 Szenarien    | Executer | Cores / Executor | Memory / Executor
------------- | ---------| ---------------- | ----------------
+------------ | --------:| ---------------: | ---------------:
 Szenario 3   |        1 |                1 |             1 GB
 Szenario 4   |        2 |                2 |             2 GB
 
 As described in the section before. The consumer ressources remain the same wheras the prooducer client gets more assigned ressources within this analysis and the following performance graphs.
 
-![Producer Metrics Szenatrio 1](resources_readme/100-prod-1Core-1GB.png)
+In Streaming environment, the following metrics can be measured:
 
-The graphs show that the producer clients does not scale with more Ressources. There is no performance increase in the processed data evolution.
+Szenarien    | Avg Input/ sec | Avg Process / sec 
+------------ | -------------: | ----------------:  
+Szenario 1   |   3,780,339.24 |         63,422.65 
+Szenario 2   |      43,796.14 |         43,906.74 
 
+The graphs show that the producer clients does not really scale with more assigned ressources. There is no performance increase in the processed data evolution. In our default streaming behaviour, there are constantly generating new transactions. The producer ist able to proceed these tranactions permanantely to the kafka instances. Within this use case there is a bottleneck creatig by the generation of the transaction. For a real ("isolated") scalability analysis it is necessary to remove the bottleneck and generate the transactions **before** the producer starts to proceed the rows.
+
+The following performance metrics are messaured in case the data is already stored on the system:
+
+!["Isolated" Producer Metrics Szenatrio 1 (1 Cores / 1GB Memory)](resources_readme/producer-1Core-1GB-dataWasInSystem-job.png)
+
+!["Isolated" Producer Metrics Szenatrio 2 (4 Cores / 4GB Memory)](resources_readme/producer-4Cores-4GB-dataWasInSystem-job.png)
+
+With more assigned ressources the producer is able to reduce the duration time for the specific job by 50% percent. The same behviour can be achieved by the consumer client, if the components are executed sepreated form the whole streaming environment. 
 
 ### Reliability Analysis
 
 Kafka as a message broker is basically a single point of failure. To avoid this single point of failure there are two kafka instances running with an replication factor of 2. In case one of these KAFKA instances fails the second one can cover the breakdown and the whole pipeline system is still working. The use two instances is of course increasing the performance of the whole system as you can see on the consumer performance metrics but if you kill one of the two instances also the throuhput that can delivered to the consumer becomes lower.
 
 **Ressource Details**
-Szenarien    | Kafka Instances | Producer Cores |  Producer Memory | Consumer Cores |  Consumer Memory 
------------- | --------------- | -------------- | ---------------- | -------------- | ----------------
-Szenario 5   |               1 |              1 |             1 GB |              4 |             4GB
-Szenario 6   |               2 |              1 |             1 GB |              4 |             4GB
+Szenarien    | Kafka Instances | Prod. Cores |  Prod. Memory | Cons. Cores |  Cons. Memory 
+------------ | --------------- | ----------: | ------------: | -----------:| -------------:
+Szenario 5   |               1 |           1 |          1 GB |           4 |            4GB
+Szenario 6   |               2 |           1 |          1 GB |           4 |            4GB
 
 **Performance Metrics**
 Performance  | Consumer | Cores / Executor | Memory / Executor
@@ -187,8 +218,9 @@ Performance  | Consumer | Cores / Executor | Memory / Executor
 Szenario 5   |        1 |                1 |             1 GB
 Szenario 6   |        2 |                2 |             2 GB
 
-
 The fact that kafka is used can on the other hand be fault tolreant as well. This is becoming relevant when espacially the consumer appliation fails. After that the data which is send to kafka will not lost and stored until the consumer client recovered himself. To increase the tolerance of consumer failures it is also possible to increase the numbe of conusmer applications. Therefore Kafka hast to make sure that the data is send to different consumer instances. In case one of these consumers fail. Kafka can send these records to other consumers and the whole processing system is still working.
+
+Even if all consumer clients would fail in a productive environment. The data that is send to kafka will not be lost. Kakfa stores the batches until the consumer clients are back to receive the stored records. Of course there is an increased daley between the fraud detected data on consumer side and the data which has been send by the producer components.
 
 
 
