@@ -131,7 +131,7 @@ mit Code Beispielen
 
 The scenarios are based on the fraud creation of the the Sparkov_Data_Generation/datagen.py script. In case of streaming the script creates multiple batches within an endless loop. 
 
-Baisc Details about the amount of data that is created:
+Basic Details about the amount of data that is created:
 - 100 Customers
 - Batch Size: ~132 MiB
 
@@ -150,15 +150,15 @@ Szenarien    | Executer | Cores / Executor | Memory / Executor
 Szenario 1   |        1 |                1 |             1 GB
 Szenario 2   |        2 |                2 |             2 GB
 
-The following pictures shows numbers how the stream processing is working and how much data is processed within this pipeline. Within this szenarios the producer ressources remain the same.
+The following numbers demobnstarte how the stream processing is working and how much data is processed within this pipeline. Within this szenarios the producer ressources remain the same.
 
-The numbers show that the consumer client can proccess more records by second if more ressources are assigned to the application. In Scenario one, the consumer is able to process XX records per seconds. With more assigned hardware the consumer can process more data. The performance increases per XX procent on input rows and XX percent on proceed rows per second.
-
- **Consumer Performance Metrics -- Streaming**
+**Consumer Performance Metrics -- Streaming**
 Szenarien    | Avg Input/ sec | Avg Process / sec 
 ------------ | -------------: | ----------------:  
-Szenario 1   |              1 |                 1 
-Szenario 2   |      31,846.18 |         31,409.33          
+Szenario 1   |      20,442.16 |         19,603.06
+Szenario 2   |      31,846.18 |         31,409.33   
+ 
+The numbers show that the consumer client can proccess more records by second if more ressources are assigned to the application. In Scenario one, the consumer is able to process 19,500 records per seconds. With more assigned hardware the consumer can process more data. The performance increases per 155 percent on input rows and 160 percent on proceed rows per second.
 
 ![Consumer Metrics Szenatrio 1](resources_readme/100-cust-1Core-1GB.png)
 
@@ -187,12 +187,13 @@ As described in the section before. The consumer ressources remain the same wher
 
 In Streaming environment, the following metrics can be measured:
 
+**Producer Performance Metrics -- Streaming**
 Szenarien    | Avg Input/ sec | Avg Process / sec 
 ------------ | -------------: | ----------------:  
-Szenario 1   |   3,780,339.24 |         63,422.65 
-Szenario 2   |      43,796.14 |         43,906.74 
+Szenario 1   |   1,382,213.64 |         60,675.81 
+Szenario 2   |   1,034,532.70 |         76,187.35 
 
-The graphs show that the producer clients does not really scale with more assigned ressources. There is no performance increase in the processed data evolution. In our default streaming behaviour, there are constantly generating new transactions. The producer ist able to proceed these tranactions permanantely to the kafka instances. Within this use case there is a bottleneck creatig by the generation of the transaction. For a real ("isolated") scalability analysis it is necessary to remove the bottleneck and generate the transactions **before** the producer starts to proceed the rows.
+The numbers show that the producer clients does not really scale with more assigned ressources. There is no really effective performance increase in the processed data evolution. Within the default streaming behaviour, there are constantly generating new transactions. The producer ist able to proceed these tranactions permanantely to the kafka instances. Within this use case there is a bottleneck creatig by the generation of the transaction. For a real ("isolated") scalability analysis it is necessary to remove the bottleneck and generate the transactions **before** the producer starts to proceed the rows.
 
 The following performance metrics are messaured in case the data is already stored on the system:
 
@@ -208,15 +209,15 @@ Kafka as a message broker is basically a single point of failure. To avoid this 
 
 **Ressource Details**
 Szenarien    | Kafka Instances | Prod. Cores |  Prod. Memory | Cons. Cores |  Cons. Memory 
------------- | --------------- | ----------: | ------------: | -----------:| -------------:
+------------ | --------------: | ----------: | ------------: | -----------:| -------------:
 Szenario 5   |               1 |           1 |          1 GB |           4 |            4GB
 Szenario 6   |               2 |           1 |          1 GB |           4 |            4GB
 
 **Performance Metrics**
-Performance  | Consumer | Cores / Executor | Memory / Executor
------------- | ---------| ---------------- | ----------------
-Szenario 5   |        1 |                1 |             1 GB
-Szenario 6   |        2 |                2 |             2 GB
+Performance  | Prod. Input Rows / s | Prod. Process Records / s | Cons. Input Rows / s | Cons. Process Records / s
+------------ | --------------------:| ------------------------: | -------------------: | ------------------------:
+Szenario 5   |                    1 |                         1 |                 1 GB |
+Szenario 6   |                    2 |                         2 |                 2 GB |
 
 The fact that kafka is used can on the other hand be fault tolreant as well. This is becoming relevant when espacially the consumer appliation fails. After that the data which is send to kafka will not lost and stored until the consumer client recovered himself. To increase the tolerance of consumer failures it is also possible to increase the numbe of conusmer applications. Therefore Kafka hast to make sure that the data is send to different consumer instances. In case one of these consumers fail. Kafka can send these records to other consumers and the whole processing system is still working.
 
