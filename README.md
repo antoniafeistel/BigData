@@ -129,7 +129,7 @@ mit Code Beispielen
 
 ## Scalability Analysis
 
-The scenarios are based on the fraud creation of the the Sparkov_Data_Generation/datagen.py script. In case of streaming the script creates multiple batches within an endless loop. 
+The scenarios are based on the fraud creation of the the Sparkov_Data_Generation/datagen.py script. In streaming scenario, the script creates multiple batches within an endless loop. 
 
 Basic Details about the amount of data that is created:
 - 100 Customers
