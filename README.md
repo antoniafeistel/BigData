@@ -178,7 +178,7 @@ Folgende Grafische Darstellung
 **Consumer Client 1 Core 1 GB Memory**
 ![Consumer Client 1 Core 1 GB Memory](resources_readme/cons-1Core-1GB.png)
 **Consumer Client 6 Core 1 GB Memory**
-![Consumer Client 6 Core 1 GB Memory](resources_readme/consumer-16ore-1GB.png)
+![Consumer Client 6 Core 1 GB Memory](resources_readme/consumer-6Core-1GB.png)
 
 
 
