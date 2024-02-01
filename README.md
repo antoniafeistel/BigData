@@ -144,13 +144,12 @@ Ressource Details:
 To test the scalability of the consumer client as an isolated component, initial data samples were added into the KAFKA cluster. With that starting point there are another three test runs simulated with consumer ressources as described below.
 
 **Ressource Details**
-Szenarien    | Executer |            Cores |            Memory
+Szenarien    | Executor |            Cores |            Memory
 ------------ | --------:| ---------------: | ----------------:
 Scenario 1   |        1 |                1 |             1 GB
 Scenario 2   |        1 |                2 |             1 GB
 Scenario 3   |        1 |                3 |             1 GB
 Scenario 4   |        1 |                3 |             2 GB
-
 
  **Consumer Performance Metrics -- consumer "isolated"**
 Szenarien    | Avg Input/ sec | Avg Process / sec 
@@ -161,6 +160,20 @@ Scenario 3   |      38,362.88 |         39,534,59
 
 
 Szenario 3   |      43,796.14 |         43,906.74
+
+
+
+Szenarien    | Executor | Cores / Executor |  Memory /Executor
+------------ | --------:| ---------------: | ----------------:
+Scenario 1   |        2 |                1 |             1 GB    
+
+
+Szenarien    | Avg Input/ sec | Avg Process / sec 
+------------ | -------------: | ----------------:  
+Scenario 1   |      36,070.44 |         38,283.85
+
+
+
 
 
 It can be recognized that the consumer process more records with more assigend ressources. The consumer client with 4 Cores and in total 4GB Memory is almost 1.6 x times faster than the consumer client with just 1 Core and 1 GB Memory.
