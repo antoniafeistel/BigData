@@ -209,7 +209,7 @@ Kafka as a message broker is basically a single point of failure. To avoid this 
 
 **Ressource Details**
 
-- Producer: 1 Core 1 GB Memory
+- Producer: 1 Core  1GB Memory
 - Consumer: 4 Cores 4GB Memory
 
 Szenarien    | Kafka Instances   | Number of Partitions |  Replication Factor 
