@@ -347,21 +347,39 @@ IO-Bound: Encoding of Data (Read Data from csv files, encode them and store them
 
 - Which paths are easy/more difficult to scale? How is scaling, how are data/requests/queries
 partitioned? What happens when data or queries skew and bias
-see scalability model for the streaming pipeline. Componentes are independent --> can be scaled independly. More explicit consumer-client applications or producer-client applications. 
+See scalability model for the streaming pipeline. Componentes are independent --> can be scaled independly. More explicit consumer-client applications could be more difficult to scale as a single consumer-client that is distrubtetd across the spark cluster.
+Multiple Kafka Brokers and Partitions.
+BIAS of lables: fraud detection (0,1) -> more 0 than 1
+Fraud Detection depends on model training
+Data are balanced for Model-Training
 
 - Is your system real-time capable? Are there any setup/bootstrapping etc. costs?
- YES
-- 
+YES, KAFKA Setup 
+  
 - How would you dimension a real system or setup given realistic data or query sets?
+  PayPal as example (use KAFKA): 1500 Brokers, 20.000 Topics, 1,3 trillion messages a day, Anzahl Consumer: 1 Consumer (4 CPU), 1 topic -> 1 partition --> 20.000 Partitionen --> 20.000 CPus --> 5000 Consumer 
 
 ### Fault tolerance
 - How does the system behave under Node/CPU/Memory/Hardware/... errors and failures?
+  In case of one KAFAK-instance: KAFKA is a single point of failure.
+  --> run multiple KAFKA Instances with replication factor can cover instance failure
+  --> run multiple consumer clients can cover client failure
+  --> Spark Fault tolerance for spark model training
+  
 - What happens during network interruptions and partitioning?
+data can be lost but system
+run multiple KAFKA Instances with replication factor can cover instance failure
+run multiple consumer clients can cover client failure
+  
 - How do error handling mechanisms affect efficiency/scale/latency/throughput/... etc.? Are there any
 worst/best case considerations?
+- IO-traffic caused by replication factor in KAFKA
+Possible error mechanism for wrong detection and loss of data:
+- Run multiple consumers that are receiving the same data and detect them with different models --> replication of inout data and being more specific on fraud detection --> Bottleneck if multiple consumers receive data from same partition --> more network traffic
 
 ### Implementation
 - Which system/software/Spark/HDFS components contribute to the execution and how?
+  
 - How and with which components (executors, workers, HDFS-nodes/storage-nodes), etc., are the data
 analyses/queries/queries mapped to the hardware resources (CPU/memory/disk/network)?
 
