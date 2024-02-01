@@ -212,23 +212,22 @@ Kafka as a message broker is basically a single point of failure. To avoid this 
 - Producer: 1 Core  1GB Memory
 - Consumer: 4 Cores 4GB Memory
 
-Szenarien    | Kafka Instances   | Number of Partitions |  Replication Factor 
------------- | ----------------: | -------------------: | ------------------:  
-Szenario 5   |                 1 |                    1 |                  1 
-Szenario 6   |                 2 |                    2 |                  2  
-Szenario 7   |  first: 2 then: 1 |                    2 |                  2 
+Szenarien    | Kafka Instances          | Number of Partitions |  Replication Factor 
+------------ | -----------------------: | -------------------: | ------------------:  
+Szenario 5   |                        1 |                    1 |                  1 
+Szenario 6   |                        2 |                    2 |                  2  
+Szenario 7   |  first: 2 then killed: 1 |                    2 |                  2 
 
 **Performance Metrics - Failure while testing**
 Performance  | Prod. Process Records / s | Cons. Input Rows / s | Cons. Process Records / s
 ------------ | ------------------------: | -------------------: | ------------------------:
 Szenario 5   |                 56,162.10 |            18,355.10 |                 17,190.19
-Szenario 6   |                 45,683.55 |            23,898.21 |                 24,688.39 
+Szenario 6   |                 46,005.46 |            23,898.21 |                 24,688.39 
 Szenario 7   |                         2 |                 2 GB |
 
 The fact that kafka is used can on the other hand be fault tolreant as well. This is becoming relevant when espacially the consumer appliation fails. After that the data which is send to kafka will not lost and stored until the consumer client recovered himself. To increase the tolerance of consumer failures it is also possible to increase the numbe of conusmer applications. Therefore Kafka hast to make sure that the data is send to different consumer instances. In case one of these consumers fail. Kafka can send these records to other consumers and the whole processing system is still working.
 
 Even if all consumer clients would fail in a productive environment. The data that is send to kafka will not be lost. Kakfa stores the batches until the consumer clients are back to receive the stored records. Of course there is an increased daley between the fraud detected data on consumer side and the data which has been send by the producer components.
-
 
 ## Step-by-step Example including Screenshots
 #### 1. Starting Spark Cluster:
