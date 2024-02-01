@@ -147,8 +147,8 @@ There are the sveral consumer scenarios initiated with the folowwing resources a
 **Ressource Details**
 Szenarien    | Executer | Cores / Executor | Memory / Executor
 ------------ | --------:| ---------------: | ----------------:
-Szenario 1   |        1 |                1 |             1 GB
-Szenario 2   |        2 |                2 |             2 GB
+Scenario 1   |        1 |                1 |             1 GB
+Scenario 2   |        2 |                2 |             2 GB
 
 The following numbers demobnstarte how the stream processing is working and how much data is processed within this pipeline. Within this szenarios the producer ressources remain the same.
 
@@ -156,7 +156,7 @@ The following numbers demobnstarte how the stream processing is working and how 
 Szenarien    | Avg Input/ sec | Avg Process / sec 
 ------------ | -------------: | ----------------:  
 Szenario 1   |      20,442.16 |         19,603.06
-Szenario 3   |      31,846.18 |         31,409.33   
+Szenario 2   |      31,846.18 |         31,409.33   
  
 The numbers show that the consumer client can proccess more records by second if more ressources are assigned to the application. In Scenario one, the consumer is able to process 19,500 records per seconds. With more assigned hardware the consumer can process more data. The performance increases per 155 percent on input rows and 160 percent on proceed rows per second.
 
@@ -164,7 +164,7 @@ The numbers show that the consumer client can proccess more records by second if
 
 ![Consumer Metrics Szenario 2](resources_readme/100-cust-4Core-4GB-01.png)
 
-To test the scalability of the consumer client as an isolated component, initial data samples were added into the KAFKA cluster. With that starting point there are another to test runs simulated with the same consumer ressources as described above.
+To test the scalability of the consumer client as an isolated component, initial data samples were added into the KAFKA cluster. With that starting point there are another three test runs simulated with consumer ressources as described below.
 
 **Ressource Details**
 Szenarien    | Executer | Cores / Executor | Memory / Executor
