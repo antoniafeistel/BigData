@@ -170,15 +170,17 @@ To test the scalability of the consumer client as an isolated component, initial
 Szenarien    | Executer | Cores / Executor | Memory / Executor
 ------------ | --------:| ---------------: | ----------------:
 Szenario 1   |        1 |                1 |             1 GB
-Szenario 2   |        2 |                2 |             2 GB
-Szenario 3   |        2 |                1 |             1 GB
+Szenario 2   |        2 |                1 |             1 GB
+Szenario 3   |        2 |                2 |             2 GB
+
 
  **Consumer Performance Metrics -- consumer "isolated"**
 Szenarien    | Avg Input/ sec | Avg Process / sec 
 ------------ | -------------: | ----------------:  
-Szenario 1   |      27,104.07 |         27,148.09 
-Szenario 2   |      43,796.14 |         43,906.74
-Szenario 3   |      x |         x
+Szenario 1   |      27,104.07 |         27,148.09
+Szenario 2   |      37,509.15 |         38,499.65
+Szenario 3   |      43,796.14 |         43,906.74
+
 
 It can be recognized that the consumer process more records with more assigend ressources. The consumer client with 4 Cores and in total 4GB Memory is almost 1.6 x times faster than the consumer client with just 1 Core and 1 GB Memory.
 
