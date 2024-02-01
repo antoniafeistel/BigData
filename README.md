@@ -208,16 +208,22 @@ With more assigned ressources the producer is able to reduce the duration time f
 Kafka as a message broker is basically a single point of failure. To avoid this single point of failure there are two kafka instances running with an replication factor of 2. In case one of these KAFKA instances fails the second one can cover the breakdown and the whole pipeline system is still working. The use two instances is of course increasing the performance of the whole system as you can see on the consumer performance metrics but if you kill one of the two instances also the throuhput that can delivered to the consumer becomes lower.
 
 **Ressource Details**
-Szenarien    | Kafka Instances | Prod. Cores |  Prod. Memory | Cons. Cores |  Cons. Memory 
------------- | --------------: | ----------: | ------------: | -----------:| -------------:
-Szenario 5   |               1 |           1 |          1 GB |           4 |            4GB
-Szenario 6   |               2 |           1 |          1 GB |           4 |            4GB
 
-**Performance Metrics**
-Performance  | Prod. Input Rows / s | Prod. Process Records / s | Cons. Input Rows / s | Cons. Process Records / s
------------- | --------------------:| ------------------------: | -------------------: | ------------------------:
-Szenario 5   |                    1 |                         1 |                 1 GB |
-Szenario 6   |                    2 |                         2 |                 2 GB |
+- Producer: 1 Core 1 GB Memory
+- Consumer: 4 Cores 4GB Memory
+
+Szenarien    | Kafka Instances   | Number of Partitions |  Replication Factor 
+------------ | ----------------: | -------------------: | ------------------:  
+Szenario 5   |                 1 |                    1 |                  1 
+Szenario 6   |                 2 |                    2 |                  2  
+Szenario 7   |  first: 2 then: 1 |                    2 |                  2 
+
+**Performance Metrics - Failure while testing**
+Performance  | Prod. Process Records / s | Cons. Input Rows / s | Cons. Process Records / s
+------------ | ------------------------: | -------------------: | ------------------------:
+Szenario 5   |                 56,162.10 |            18,355.10 |                 17,190.19
+Szenario 6   |                         2 |                 2 GB |                  
+Szenario 7   |                         2 |                 2 GB |
 
 The fact that kafka is used can on the other hand be fault tolreant as well. This is becoming relevant when espacially the consumer appliation fails. After that the data which is send to kafka will not lost and stored until the consumer client recovered himself. To increase the tolerance of consumer failures it is also possible to increase the numbe of conusmer applications. Therefore Kafka hast to make sure that the data is send to different consumer instances. In case one of these consumers fail. Kafka can send these records to other consumers and the whole processing system is still working.
 
