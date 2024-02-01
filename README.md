@@ -175,26 +175,10 @@ Scenario 4   |      53,100.87 |         53,704.87
 sub-lineare Skalierung: 
 
 Folgende Grafische Darstellung
-
-
-
-
-
-
-
-
-
-Szenarien    | Executor | Cores / Executor |  Memory / Executor
------------- | --------:| ---------------: | ----------------:
-Scenario 1   |        2 |                1 |             1 GB
-Scenario 2   |        2 |                2 |             1 GB  
-Scenario 2   |        2 |                3 |             1 GB  
-
-
-Szenarien    | Avg Input/ sec | Avg Process / sec 
------------- | -------------: | ----------------:  
-Scenario 1   |      36,070.44 |         38,283.85
-Scenario 2   |      37,329.24 |         38,896.90
+**Consumer Client 1 Core 1 GB Memory**
+![Consumer Client 1 Core 1 GB Memory](resources_readme/cons-1Core-1GB.png)
+**Consumer Client 6 Core 1 GB Memory**
+![Consumer Client 6 Core 1 GB Memory](resources_readme/consumer-16ore-1GB.png)
 
 
 
