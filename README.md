@@ -136,8 +136,8 @@ Basic Details about the amount of data that is created:
 - Batch Size: ~132 MiB
 
 Ressource Details:
-- Worker Nodes: 2
-- Worker Memory: 4GB / Node
+- Worker Nodes: 1
+- Worker Memory: 4GB
 - Kafka Instances: 2
 
 ### Consumer Analysis
@@ -149,6 +149,7 @@ Szenarien    | Executor |            Cores |            Memory | Duration
 Scenario 1   |        1 |                1 |             1 GB  |   10 min
 Scenario 2   |        1 |                2 |             1 GB  |   10 min
 Scenario 3   |        1 |                3 |             1 GB  |   10 min
+Scenario 4   |        1 |                6 |             1 GB  |   10 min
 
 
  **Consumer Performance Metrics -- consumer "isolated"**
@@ -163,13 +164,17 @@ Ab 2 Cores skaliert das nicht mehr
 KAFKA hatten wir 2 Partitionen
 
 Wir erhöhten die Azahl der KAFKA Partitionen auf 6 und folgende Entwicklung ist zu erkennen:
-
 Wenn wir Partitionen erhöhnen und das ganze nochmal durchführen:
 Szenarien    | Avg Input/ sec | Avg Process / sec 
 ------------ | -------------: | ----------------:  
 Scenario 1   |      25,062.81 |         25,926.11
 Scenario 2   |      40,164.43 |         41,393.25
-Scenario 3   |      37,040.16 |         47,868,56
+Scenario 3   |      47,040.16 |         47,868.56
+Scenario 4   |      53,100.87 |         53,704.87
+
+sub-lineare Skalierung: 
+
+Folgende Grafische Darstellung
 
 
 
