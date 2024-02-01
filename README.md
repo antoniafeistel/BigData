@@ -172,7 +172,7 @@ Szenarien    | Avg Input/ sec | Avg Process / sec
 Szenario 1   |      27,104.07 |         27,148.09 
 Szenario 2   |      43,796.14 |         43,906.74  
 
-It can be recognized that the consumer process more records with more assigend ressources. The consumer client with 4 Cores and in total 4GB Memory is almost 2x times faster than the consumer client with just 1 Core and 1 GB Memory.
+It can be recognized that the consumer process more records with more assigend ressources. The consumer client with 4 Cores and in total 4GB Memory is almost 1.6 x times faster than the consumer client with just 1 Core and 1 GB Memory.
 
 ### Producer Analysis
 
