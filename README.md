@@ -163,14 +163,17 @@ Szenario 3   |      43,796.14 |         43,906.74
 
 
 
-Szenarien    | Executor | Cores / Executor |  Memory /Executor
+Szenarien    | Executor | Cores / Executor |  Memory / Executor
 ------------ | --------:| ---------------: | ----------------:
-Scenario 1   |        2 |                1 |             1 GB    
+Scenario 1   |        2 |                1 |             1 GB
+Scenario 2   |        2 |                2 |             1 GB  
+Scenario 2   |        2 |                2 |             2 GB  
 
 
 Szenarien    | Avg Input/ sec | Avg Process / sec 
 ------------ | -------------: | ----------------:  
 Scenario 1   |      36,070.44 |         38,283.85
+Scenario 2   |      37,329.24 |         38,896.90
 
 
 
