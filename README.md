@@ -178,7 +178,7 @@ Szenarien    | Avg Input/ sec | Avg Process / sec
 ------------ | -------------: | ----------------:  
 Szenario 1   |      27,104.07 |         27,148.09 
 Szenario 2   |      43,796.14 |         43,906.74
-Szenario 2   |      x |         x
+Szenario 3   |      x |         x
 
 It can be recognized that the consumer process more records with more assigend ressources. The consumer client with 4 Cores and in total 4GB Memory is almost 1.6 x times faster than the consumer client with just 1 Core and 1 GB Memory.
 
@@ -188,8 +188,8 @@ On producer side there are the same scenarios initiated:
 
 Szenarien    | Executer | Cores / Executor | Memory / Executor
 ------------ | --------:| ---------------: | ---------------:
-Szenario 3   |        1 |                1 |             1 GB
-Szenario 4   |        2 |                2 |             2 GB
+Szenario 4   |        1 |                1 |             1 GB
+Szenario 5   |        2 |                2 |             2 GB
 
 As described in the section before. The consumer ressources remain the same wheras the prooducer client gets more assigned ressources within this analysis and the following performance graphs.
 
@@ -198,8 +198,8 @@ In Streaming environment, the following metrics can be measured:
 **Producer Performance Metrics -- Streaming**
 Szenarien    | Avg Input/ sec | Avg Process / sec 
 ------------ | -------------: | ----------------:  
-Szenario 1   |   1,382,213.64 |         60,675.81 
-Szenario 2   |   1,034,532.70 |         76,187.35 
+Szenario 4   |   1,382,213.64 |         60,675.81 
+Szenario 5   |   1,034,532.70 |         76,187.35 
 
 The numbers show that the producer clients does not really scale with more assigned ressources. There is no really effective performance increase in the processed data evolution. Within the default streaming behaviour, there are constantly generating new transactions. The producer ist able to proceed these tranactions permanantely to the kafka instances. Within this use case there is a bottleneck creatig by the generation of the transaction. For a real ("isolated") scalability analysis it is necessary to remove the bottleneck and generate the transactions **before** the producer starts to proceed the rows.
 
@@ -222,16 +222,16 @@ Kafka as a message broker is basically a single point of failure. To avoid this 
 
 Szenarien    | Kafka Instances           | Number of Partitions |  Replication Factor 
 ------------ | ------------------------: | -------------------: | ------------------:  
-Szenario 5   |                         1 |                    1 |                  1 
-Szenario 6   |                         2 |                    2 |                  2  
-Szenario 7   |  first: 2, then killed: 1 |                    2 |                  2 
+Szenario 6   |                         1 |                    1 |                  1 
+Szenario 7   |                         2 |                    2 |                  2  
+Szenario 8   |  first: 2, then killed: 1 |                    2 |                  2 
 
 **Performance Metrics - Failure while testing**
 Performance  | Prod. Process Records / s | Cons. Input Rows / s | Cons. Process Records / s
 ------------ | ------------------------: | -------------------: | ------------------------:
-Szenario 5   |                 56,162.10 |            18,355.10 |                 17,190.19
-Szenario 6   |                 46,005.46 |            23,898.21 |                 24,688.39 
-Szenario 7   |                 46,801.92 |            24,398.25 |                 24,711.19
+Szenario 6   |                 56,162.10 |            18,355.10 |                 17,190.19
+Szenario 7   |                 46,005.46 |            23,898.21 |                 24,688.39 
+Szenario 8   |                 46,801.92 |            24,398.25 |                 24,711.19
 
 The fact that kafka is used can on the other hand be fault tolreant as well. This is becoming relevant when espacially the consumer appliation fails. After that the data which is send to kafka will not lost and stored until the consumer client recovered himself. To increase the tolerance of consumer failures it is also possible to increase the numbe of conusmer applications. Therefore Kafka hast to make sure that the data is send to different consumer instances. In case one of these consumers fail. Kafka can send these records to other consumers and the whole processing system is still working.
 
