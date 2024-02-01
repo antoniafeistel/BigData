@@ -379,9 +379,13 @@ Possible error mechanism for wrong detection and loss of data:
 
 ### Implementation
 - Which system/software/Spark/HDFS components contribute to the execution and how?
+See Architecture: Spark Structured Streaming, KAFKA, SparMLib, Parquet, DataGenerationRepository, Docker (for KAFKA)
   
 - How and with which components (executors, workers, HDFS-nodes/storage-nodes), etc., are the data
 analyses/queries/queries mapped to the hardware resources (CPU/memory/disk/network)?
+
+Consumer, Producer and Model-Training run on multiple workers with the corresponding executors and assigned CPUs and Memory. KAFKA runs in his own cluster.
+
 
 
 
