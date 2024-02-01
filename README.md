@@ -144,12 +144,12 @@ Ressource Details:
 To test the scalability of the consumer client as an isolated component, initial data samples were added into the KAFKA cluster. With that starting point there are another three test runs simulated with consumer ressources as described below.
 
 **Ressource Details**
-Szenarien    | Executor |            Cores |            Memory
------------- | --------:| ---------------: | ----------------:
-Scenario 1   |        1 |                1 |             1 GB
-Scenario 2   |        1 |                2 |             1 GB
-Scenario 3   |        1 |                3 |             1 GB
-Scenario 4   |        1 |                3 |             2 GB
+Szenarien    | Executor |            Cores |            Memory | Duration
+------------ | --------:| ---------------: | ----------------: | -------:
+Scenario 1   |        1 |                1 |             1 GB  |   10 min
+Scenario 2   |        1 |                2 |             1 GB  |   10 min
+Scenario 3   |        1 |                3 |             1 GB  |   10 min
+
 
  **Consumer Performance Metrics -- consumer "isolated"**
 Szenarien    | Avg Input/ sec | Avg Process / sec 
@@ -158,8 +158,24 @@ Scenario 1   |      27,104.07 |         27,148.09
 Scenario 2   |      37,509.15 |         38,499.65
 Scenario 3   |      38,362.88 |         39,534,59
 
+Ab 2 Cores skaliert das nicht mehr
 
-Szenario 3   |      43,796.14 |         43,906.74
+KAFKA hatten wir 2 Partitionen
+
+Wir erhöhten die Azahl der KAFKA Partitionen auf 6 und folgende Entwicklung ist zu erkennen:
+
+Wenn wir Partitionen erhöhnen und das ganze nochmal durchführen:
+Szenarien    | Avg Input/ sec | Avg Process / sec 
+------------ | -------------: | ----------------:  
+Scenario 1   |      25,062.81 |         25,926.11
+Scenario 2   |      40,164.43 |         41,393.25
+Scenario 3   |      37,040.16 |         47,868,56
+
+
+
+
+
+
 
 
 
@@ -167,7 +183,7 @@ Szenarien    | Executor | Cores / Executor |  Memory / Executor
 ------------ | --------:| ---------------: | ----------------:
 Scenario 1   |        2 |                1 |             1 GB
 Scenario 2   |        2 |                2 |             1 GB  
-Scenario 2   |        2 |                2 |             2 GB  
+Scenario 2   |        2 |                3 |             1 GB  
 
 
 Szenarien    | Avg Input/ sec | Avg Process / sec 
