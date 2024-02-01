@@ -148,6 +148,7 @@ There are the sveral consumer scenarios initiated with the folowwing resources a
 Szenarien    | Executer | Cores / Executor | Memory / Executor
 ------------ | --------:| ---------------: | ----------------:
 Szenario 1   |        1 |                1 |             1 GB
+Szenario 1   |        2 |                1 |             1 GB
 Szenario 2   |        2 |                2 |             2 GB
 
 The following numbers demobnstarte how the stream processing is working and how much data is processed within this pipeline. Within this szenarios the producer ressources remain the same.
