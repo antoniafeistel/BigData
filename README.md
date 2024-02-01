@@ -180,10 +180,6 @@ Folgende Grafische Darstellung
 **Consumer Client 6 Core 1 GB Memory**
 ![Consumer Client 6 Core 1 GB Memory](resources_readme/consumer-6Core-1GB.png)
 
-
-
-
-
 It can be recognized that the consumer process more records with more assigend ressources. The consumer client with 4 Cores and in total 4GB Memory is almost 1.6 x times faster than the consumer client with just 1 Core and 1 GB Memory.
 
 ### Producer Analysis
@@ -313,6 +309,56 @@ Das Skript [start_consumer.py](https://github.com/antoniafeistel/BigData/blob/3e
 #### 7. Generate synthetic credit card transaction data stream for online fraud detection
 
 Im env wird nun die Variable GEN_MODE = "stream" gesetzt. Schließlich wird wieder [generate_transactions.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/generate_transactions.py) ausgeführt und die Kreditkartentransaktionen können ausgewertet werden.
+
+
+## Questions & Answers
+
+### Data / Use Case
+
+- Why is your problem a "big data problem"?
+Volume: yes, Menge der Daten (Many transaction data all over the world created every second) Velocity: Realtime Processing required Varierty: Receive data from different sources --> different data formats and data quality
+
+- Why can’t you solve it traditional storage/analytics/database technologies?
+traditional databasemanagemnt systems are not designed for streaming data evaluation --> no real time detection
+batch processing is too slow 
+  
+- Where does your prototype take shortcuts, what would have to be considered in real scenarios?
+Encoding of data (hash function) -> possible collision between different values
+ML-Model: is just trained once + no hyperparameter optimization
+Prototype is supporting just one schema of data generation
+producer-component is just a simulation of a real world event-source-component
+
+### Scaling
+- What happens when the amount of data increases in the orders of magnitude (1x/10x/100x... or
+2x/4x/8x/16x/...)?
+Performance will decrease --> Delay between generation of single row and fraud detection of the corresponding transaction
+To ensure "real-time-processing", it is necessary to increase hardware ressource ( kafka instances, consumer clients)
+
+- What happens if request or query intake increases ore latency conditions decrease in magnitude?
+Same problem as described above. Processing will create delay between creation and detection --> Problem of not being real time. Fraud detection may be too late.
+
+- How does the "data" run through the system? Which paths are IO-bound/Memory-bound/CPU-
+bound?
+See Architecture for data flow.
+IO Bound: Reading of incoming transactions by procducer component, Receiving data from Kafka
+
+
+
+- Which paths are easy/more difficult to scale? How is scaling, how are data/requests/queries
+partitioned? What happens when data or queries skew and bias
+- Is your system real-time capable? Are there any setup/bootstrapping etc. costs?
+- How would you dimension a real system or setup given realistic data or query sets?
+
+### Fault tolerance
+- How does the system behave under Node/CPU/Memory/Hardware/... errors and failures?
+- What happens during network interruptions and partitioning?
+- How do error handling mechanisms affect efficiency/scale/latency/throughput/... etc.? Are there any
+worst/best case considerations?
+
+### Implementation
+- Which system/software/Spark/HDFS components contribute to the execution and how?
+- How and with which components (executors, workers, HDFS-nodes/storage-nodes), etc., are the data
+analyses/queries/queries mapped to the hardware resources (CPU/memory/disk/network)?
 
 
 
