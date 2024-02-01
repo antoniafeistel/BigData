@@ -223,7 +223,7 @@ Performance  | Prod. Process Records / s | Cons. Input Rows / s | Cons. Process 
 ------------ | ------------------------: | -------------------: | ------------------------:
 Szenario 5   |                 56,162.10 |            18,355.10 |                 17,190.19
 Szenario 6   |                 46,005.46 |            23,898.21 |                 24,688.39 
-Szenario 7   |                         2 |            24,398.25 |                 24,711.19
+Szenario 7   |                 46,801.92 |            24,398.25 |                 24,711.19
 
 The fact that kafka is used can on the other hand be fault tolreant as well. This is becoming relevant when espacially the consumer appliation fails. After that the data which is send to kafka will not lost and stored until the consumer client recovered himself. To increase the tolerance of consumer failures it is also possible to increase the numbe of conusmer applications. Therefore Kafka hast to make sure that the data is send to different consumer instances. In case one of these consumers fail. Kafka can send these records to other consumers and the whole processing system is still working.
 
