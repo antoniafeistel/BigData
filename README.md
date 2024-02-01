@@ -340,13 +340,18 @@ Same problem as described above. Processing will create delay between creation a
 - How does the "data" run through the system? Which paths are IO-bound/Memory-bound/CPU-
 bound?
 See Architecture for data flow.
+
 IO Bound: Reading of incoming transactions by procducer component, Receiving data from Kafka
-
-
+CPU Bound: ML-Model Training, Detect single Rows
+IO-Bound: Encoding of Data (Read Data from csv files, encode them and store them as parquet files)
 
 - Which paths are easy/more difficult to scale? How is scaling, how are data/requests/queries
 partitioned? What happens when data or queries skew and bias
+see scalability model for the streaming pipeline. Componentes are independent --> can be scaled independly. More explicit consumer-client applications or producer-client applications. 
+
 - Is your system real-time capable? Are there any setup/bootstrapping etc. costs?
+ YES
+- 
 - How would you dimension a real system or setup given realistic data or query sets?
 
 ### Fault tolerance
