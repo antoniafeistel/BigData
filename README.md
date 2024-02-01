@@ -148,7 +148,6 @@ There are the sveral consumer scenarios initiated with the folowwing resources a
 Szenarien    | Executer | Cores / Executor | Memory / Executor
 ------------ | --------:| ---------------: | ----------------:
 Szenario 1   |        1 |                1 |             1 GB
-Szenario 1   |        2 |                1 |             1 GB
 Szenario 2   |        2 |                2 |             2 GB
 
 The following numbers demobnstarte how the stream processing is working and how much data is processed within this pipeline. Within this szenarios the producer ressources remain the same.
@@ -157,7 +156,7 @@ The following numbers demobnstarte how the stream processing is working and how 
 Szenarien    | Avg Input/ sec | Avg Process / sec 
 ------------ | -------------: | ----------------:  
 Szenario 1   |      20,442.16 |         19,603.06
-Szenario 2   |      31,846.18 |         31,409.33   
+Szenario 3   |      31,846.18 |         31,409.33   
  
 The numbers show that the consumer client can proccess more records by second if more ressources are assigned to the application. In Scenario one, the consumer is able to process 19,500 records per seconds. With more assigned hardware the consumer can process more data. The performance increases per 155 percent on input rows and 160 percent on proceed rows per second.
 
@@ -167,11 +166,19 @@ The numbers show that the consumer client can proccess more records by second if
 
 To test the scalability of the consumer client as an isolated component, initial data samples were added into the KAFKA cluster. With that starting point there are another to test runs simulated with the same consumer ressources as described above.
 
+**Ressource Details**
+Szenarien    | Executer | Cores / Executor | Memory / Executor
+------------ | --------:| ---------------: | ----------------:
+Szenario 1   |        1 |                1 |             1 GB
+Szenario 2   |        2 |                2 |             2 GB
+Szenario 3   |        2 |                1 |             1 GB
+
  **Consumer Performance Metrics -- consumer "isolated"**
 Szenarien    | Avg Input/ sec | Avg Process / sec 
 ------------ | -------------: | ----------------:  
 Szenario 1   |      27,104.07 |         27,148.09 
-Szenario 2   |      43,796.14 |         43,906.74  
+Szenario 2   |      43,796.14 |         43,906.74
+Szenario 2   |      x |         x
 
 It can be recognized that the consumer process more records with more assigend ressources. The consumer client with 4 Cores and in total 4GB Memory is almost 1.6 x times faster than the consumer client with just 1 Core and 1 GB Memory.
 
