@@ -215,7 +215,7 @@ query_kafka = (
 )
 ```
 
-In first step there is a streaming dataframe initiated. The producder is listening to any changes of the provided input folder and loads the data into the cluster. In a second step the data has to be transformed and the freature collumnns has to be selected that the transformed rows are compatible with the trained ML-Model in step three. The created kafka query provides the connection to the kafka cluster and takes over the conitunious transfer of the streaming data.
+In first step there is a streaming dataframe initiated. The producder is listening to any changes of the provided input folder and loads the data into the cluster. In a second step, the data has to be transformed and the feature columns have to be selected that the transformed rows are compatible with the trained ML-Model. The created kafka query provides the connection to the kafka cluster and takes over the continious transfer of the streaming data.
 
 #### 6. Start the Consumer
 The script Skript [start_consumer.py](https://github.com/antoniafeistel/BigData/blob/3ea8cb3e06094c8432154fa83dff96149da5cf19/scripts/start_consumer.py) starts a consumer in the Spark environment that interacts with Apache Kafka.
