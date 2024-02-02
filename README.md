@@ -254,7 +254,7 @@ The sample data in [resources/data/train/transformed/sample](https://github.com/
 
 The sample data in [resources/data/test/sample](https://github.com/antoniafeistel/BigData/tree/main/resources/data/test/sample) can be used to run the whole application. For that, set DATA_VERSION = "sample" in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env) and follow the described application workflow above. Step 7 of the application workflow can be excluded as the sample data will substitute the synthetic credit card transaction data stream.
 
-**Directory Tree and Data Usage**
+**Resources Directory Tree and Data Usage**
 ![Directory Hierarchy and Data Flow](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/data_analysis.png)
 
 **Data Generation Details with different amount of customers**
