@@ -128,8 +128,7 @@ Hier funktionierendes Streaming Beispiel mit Consumer Output auf Konsole -- Kön
 mit Code Beispielen
 
 ## Scalability Analysis
-
-The scenarios are based on the fraud creation of the the Sparkov_Data_Generation/datagen.py script. In streaming scenario, the script creates multiple batches within an endless loop. 
+The scenarios are based on the fraud creation of the the [Sparkov_Data_Generation/datagen.py](https://github.com/antoniafeistel/BigData/blob/main/Sparkov_Data_Generation/datagen.py) script. In streaming scenario, the script creates multiple batches within an endless loop with one core assigned. 
 
 Basic Details about the amount of data that is created:
 - 100 Customers
@@ -137,7 +136,8 @@ Basic Details about the amount of data that is created:
 
 Ressource Details:
 - Worker Nodes: 1
-- Worker Memory: 4GB
+- Max. Worker Memory: 4GB
+- Max. Worker Cores: 6
 - Kafka Instances: 2
 
 ### Consumer Analysis
@@ -151,7 +151,7 @@ Scenario 2   |        1 |                2 |             1 GB  |   10 min
 Scenario 3   |        1 |                3 |             1 GB  |   10 min
 Scenario 4   |        1 |                6 |             1 GB  |   10 min
 
-
+With two data partitions on KAFKA the following performance metrics can be measured:
  **Consumer Performance Metrics -- consumer "isolated"**
 Szenarien    | Avg Input/ sec | Avg Process / sec 
 ------------ | -------------: | ----------------:  
@@ -159,12 +159,10 @@ Scenario 1   |      27,104.07 |         27,148.09
 Scenario 2   |      37,509.15 |         38,499.65
 Scenario 3   |      38,362.88 |         39,534,59
 
-Ab 2 Cores skaliert das nicht mehr
+On the one hand, the system is able increase the consumer performance from Scenario one to scenario two by 140%. On the other hand, the is nealry zero performance improvement recognizable by the increase of cores from scenario two to scenario three. This behaviour belongs to the number of partitions within the KAFKA cluster. There is a 
 
-KAFKA hatten wir 2 Partitionen
-
-Wir erhöhten die Azahl der KAFKA Partitionen auf 6 und folgende Entwicklung ist zu erkennen:
-Wenn wir Partitionen erhöhnen und das ganze nochmal durchführen:
+**Increasing the number of partitions to 6**
+The following change can be seen below:
 Szenarien    | Avg Input/ sec | Avg Process / sec 
 ------------ | -------------: | ----------------:  
 Scenario 1   |      25,062.81 |         25,926.11
@@ -180,28 +178,53 @@ Folgende Grafische Darstellung
 **Consumer Client 6 Core 1 GB Memory**
 ![Consumer Client 6 Core 1 GB Memory](resources_readme/consumer-6Core-1GB.png)
 
-It can be recognized that the consumer process more records with more assigend ressources. The consumer client with 4 Cores and in total 4GB Memory is almost 1.6 x times faster than the consumer client with just 1 Core and 1 GB Memory.
+These grpahs show that the performance really increases by adding more cores to the consumer component. From one to six cores there is a performance improvement by
 
 ### Producer Analysis
 
-On producer side there are the same scenarios initiated:
+To analyse the performance of the producer component, the same scenarios has been initiated:
 
-Szenarien    | Executer | Cores / Executor | Memory / Executor
------------- | --------:| ---------------: | ---------------:
-Szenario 4   |        1 |                1 |             1 GB
-Szenario 5   |        2 |                2 |             2 GB
+**Ressource Details**
+Szenarien    | Executor |            Cores |            Memory | Duration
+------------ | --------:| ---------------: | ----------------: | -------:
+Scenario 5   |        1 |                1 |             1 GB  |   10 min
+Scenario 6   |        1 |                2 |             1 GB  |   10 min
+Scenario 7   |        1 |                3 |             1 GB  |   10 min
+Scenario 8   |        1 |                6 |             1 GB  |   10 min
 
-As described in the section before. The consumer ressources remain the same wheras the prooducer client gets more assigned ressources within this analysis and the following performance graphs.
-
-In Streaming environment, the following metrics can be measured:
 
 **Producer Performance Metrics -- Streaming**
+In Streaming environment (creating transactions in endloss loop) the following performance metrics can be measured:
+
+-- muss  man nochmal neu machen --
 Szenarien    | Avg Input/ sec | Avg Process / sec 
 ------------ | -------------: | ----------------:  
 Szenario 4   |   1,382,213.64 |         60,675.81 
 Szenario 5   |   1,034,532.70 |         76,187.35 
 
 The numbers show that the producer clients does not really scale with more assigned ressources. There is no really effective performance increase in the processed data evolution. Within the default streaming behaviour, there are constantly generating new transactions. The producer ist able to proceed these tranactions permanantely to the kafka instances. Within this use case there is a bottleneck creatig by the generation of the transaction. For a real ("isolated") scalability analysis it is necessary to remove the bottleneck and generate the transactions **before** the producer starts to proceed the rows.
+
+The following performance metrics are messaured in case the data is already stored on the system:
+!["Isolated" Producer Metrics Szenatrio 1 (1 Cores / 1GB Memory)](resources_readme/producer-1Core-1GB-dataWasInSystem-job.png)
+
+It can be seen that the producer is collecting the whole data from the file system and try to process the data within one single batch. To avoid this behaviour the **MaxFilesPerTrigger** variable has to set by the developer:
+```python
+streaming_df = (spark.
+                readStream.
+                option("header", data_handling.CSV_HEADER).
+                option("sep", data_handling.CSV_SEP).
+                option("maxFilesPerTrigger", 5).
+                schema(data_handling.schema).
+                csv(path_handling.INPUT_FOLDER_TEST)
+                )
+```
+With that added configuration for performance analytics the follwoing metrics can be achieved for the scenarios described above:
+ **Producer Performance Metrics -- Streaming**
+Szenarien    | Avg Input/ sec | Avg Process / sec 
+------------ | -------------: | ----------------:  
+Szenario 5   |      72,265.76 |         66,784.64
+
+
 
 The following performance metrics are messaured in case the data is already stored on the system:
 
