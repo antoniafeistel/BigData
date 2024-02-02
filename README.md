@@ -247,10 +247,12 @@ The variable GEN_MODE = "stream" is now set in the [.env-file](https://github.co
 **Consumer Prediction Output**
 ![Step 7 - Fraud Detection](resources_readme/Step7_FraudDetection.png)
 
-## Data Analysis
+## Data Description
 We have uploaded sample data for easier usage of our application.
+
 The sample data in [resources/data/train/transformed/sample](https://github.com/antoniafeistel/BigData/tree/main/resources/data/train/transformed/sample) can be used to train the model with the [train_model.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/train_model.py) script. For that, set DATA_VERSION = "sample" in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env) before running the script.
-The sample data in [resources/data/test/sample](https://github.com/antoniafeistel/BigData/tree/main/resources/data/test/sample) can be used to run the whole application. For that, set DATA_VERSION = "sample" in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env) and follow the described application workflow above. Step 7 of the application workflow can be excluded as the used sample data 
+
+The sample data in [resources/data/test/sample](https://github.com/antoniafeistel/BigData/tree/main/resources/data/test/sample) can be used to run the whole application. For that, set DATA_VERSION = "sample" in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env) and follow the described application workflow above. Step 7 of the application workflow can be excluded as the sample data will substitute the synthetic credit card transaction data stream.
 
 **Directory Tree and Data Usage**
 ![Directory Hierarchy and Data Flow](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/data_analysis.png)
