@@ -178,13 +178,11 @@ Folgende Grafische Darstellung
 **Consumer Client 6 Core 1 GB Memory**
 ![Consumer Client 6 Core 1 GB Memory](resources_readme/consumer-6Core-1GB.png)
 
-These grpahs show that the performance really increases by adding more cores to the consumer component. From one to six cores there is a performance improvement by
+These grpahs show that the performance really increases by adding more cores to the consumer component. It can be noticed that the batch duration decreases by almost 50% whereas the process rate is increasing by more than 100%. There is at least a performance improvment by adding more ressources but the perofrmance is not increasing proportional to the amount of added ressources (sub-linear).
 
 ### Producer Analysis
-
-To analyse the performance of the producer component, the same scenarios has been initiated:
-
 **Ressource Details**
+To analyse the performance of the producer component, the following scenarios has been initiated. The fact that streaming the incoming data to kafka is faster than receiving and detecting the transactions via the ML-Model, we initiated just three scenarios with the following ressources:
 Szenarien    | Executor |            Cores |            Memory | Duration
 ------------ | --------:| ---------------: | ----------------: | -------:
 Scenario 5   |        1 |                1 |             1 GB  |   10 min
@@ -220,19 +218,17 @@ streaming_df = (spark.
 ```
 With that added configuration for performance analytics the follwoing metrics can be achieved for the scenarios described above:
  **Producer Performance Metrics -- Streaming**
-Szenarien    | Avg Input/ sec | Avg Process / sec 
------------- | -------------: | ----------------:  
+Szenarien    | Avg Input/ sec | Avg Process / sec  
+------------ | -------------: | ----------------: 
 Szenario 5   |      72,265.76 |         66,784.64
+Szenario 6   |      99,024.35 |         92,833.61
+Szenario 7   |     109,684.37 |        102,148.29
+Szenario 8   |     109,684.37 |        102,148.29
 
+With more assigned ressources the producer is able to reduce the duration time for the specific job by 50% percent. 
 
-
-The following performance metrics are messaured in case the data is already stored on the system:
-
-!["Isolated" Producer Metrics Szenatrio 1 (1 Cores / 1GB Memory)](resources_readme/producer-1Core-1GB-dataWasInSystem-job.png)
-
-!["Isolated" Producer Metrics Szenatrio 2 (4 Cores / 4GB Memory)](resources_readme/producer-4Cores-4GB-dataWasInSystem-job.png)
-
-With more assigned ressources the producer is able to reduce the duration time for the specific job by 50% percent. The same behviour can be achieved by the consumer client, if the components are executed sepreated form the whole streaming environment. 
+**What happens if just the data increases?**
+The fact, that we are in a real time processing environment is kind of special. With more genertaed data the specific streaming components (producer, kafka, consumer) will not process slower beacause the system is still continously processing data and not loading all the data into the cluster and then analyze it. With more generated data the limits of one major component will be reached at some point. With then generating more data the system will not be able to process more in the same period of time. From that point the delay between the generation of a transaction and the corresponding fraud detection will increase and the system runs in danger of no longer being real time.
 
 ### Reliability Analysis
 
