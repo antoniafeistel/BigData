@@ -141,7 +141,7 @@ Ressource Details:
 - Kafka Instances: 2
 
 ### Consumer Analysis
-To test the scalability of the consumer client as an isolated component, initial data samples were added into the KAFKA cluster. With that starting point there are another three test runs simulated with consumer ressources as described below.
+To test the scalability of the consumer client as an isolated component, initial data samples were added into the KAFKA cluster. With that starting point there the following test runs simulated with consumer ressources described below.
 
 **Ressource Details**
 Szenarien    | Executor |            Cores |            Memory | Duration
