@@ -143,7 +143,6 @@ GEN_MODE = "train"                                                 # to be set b
 The function ```generate_transactions()``` generates transactions by executing the Python script datagen.py with given arguments.
 
 The functions ```generate_transaction_test_data_stream()``` and ```generate_raw_transaction_train_data()``` call ```generate_transactions()``` and save the generated transactions accordingly either as a test data stream or raw training data depending on how it is defined in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).
-![image](https://github.com/antoniafeistel/BigData/assets/77838841/dcd43866-6bc3-4f47-8a25-5c7a339e1d22)
  
 #### 3. Train the Random Forest Classifier
 Now the DATA_VERSION in [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).\ is adapted to the version shown in step 2 in order to train the random forest classifier.
