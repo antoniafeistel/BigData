@@ -257,8 +257,8 @@ The sample data in [resources/data/test/sample](https://github.com/antoniafeiste
 **Resources Directory Tree and Data Usage**
 ![Directory Hierarchy and Data Flow](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/data_analysis.png)
 
-**Data Generation Details with different amount of customers**
-Customer    | Cores    |         Duration |             Size 
+**Data Generation Analysis with different amount of customers**
+#Customers  | #Cores   |         Duration |              Size 
 ------------| --------:| ---------------: | ----------------: 
 100         |        1 |        11.1079 s |          139.8 MB  
 1000        |        1 |        35.9175 s |        1,450.0 MB  
