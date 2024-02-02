@@ -292,7 +292,6 @@ Szenarien    | Avg Input/ sec | Avg Process / sec
 Szenario 5   |      72,265.76 |         66,784.64
 Szenario 6   |      99,024.35 |         92,833.61
 Szenario 7   |     109,684.37 |        102,148.29
-Szenario 8   |     109,684.37 |        102,148.29
 
 With more assigned ressources the producer is able to reduce the duration time to process the data by increasing the Avg Process / sec and the AVG Input / sec. Similiar to the consumer client, there is a sub-linear performance increase by adding more ressources to the component. 
 
@@ -309,18 +308,18 @@ Kafka as a message broker is basically a single point of failure. To avoid this 
 - Producer: 1 Core  1GB Memory
 - Consumer: 4 Cores 4GB Memory
 
-Szenarien    | Kafka Instances           | Number of Partitions |  Replication Factor 
------------- | ------------------------: | -------------------: | ------------------:  
-Szenario 6   |                         1 |                    1 |                  1 
-Szenario 7   |                         2 |                    2 |                  2  
-Szenario 8   |  first: 2, then killed: 1 |                    2 |                  2 
+Szenarien     | Kafka Instances           | Number of Partitions |  Replication Factor 
+------------- | ------------------------: | -------------------: | ------------------:  
+Szenario 8    |                         1 |                    1 |                  1 
+Szenario 9    |                         2 |                    2 |                  2  
+Szenario 10   |  first: 2, then killed: 1 |                    2 |                  2 
 
 **Performance Metrics**
-Performance  | Prod. Process Records / s | Cons. Input Rows / s | Cons. Process Records / s
------------- | ------------------------: | -------------------: | ------------------------:
-Szenario 6   |                 56,162.10 |            18,355.10 |                 17,190.19
-Szenario 7   |                 46,005.46 |            23,898.21 |                 24,688.39 
-Szenario 8   |                 46,801.92 |            24,398.25 |                 24,711.19
+Performance   | Prod. Process Records / s | Cons. Input Rows / s | Cons. Process Records / s
+------------- | ------------------------: | -------------------: | ------------------------:
+Szenario 8    |                 56,162.10 |            18,355.10 |                 17,190.19
+Szenario 9    |                 46,005.46 |            23,898.21 |                 24,688.39 
+Szenario 10   |                 46,801.92 |            24,398.25 |                 24,711.19
 
 The metrics show that the system is still working, when one of the kafka instances fails. The consumer client can still receive the all the produced data from both partitions beacause of the replication of data.
 
