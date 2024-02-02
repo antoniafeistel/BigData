@@ -124,12 +124,14 @@ Training details:
 
 ## Step-by-step Example including Screenshots
 #### 1. Starting Spark Cluster:
-Das Python Skript [start_spark.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/start_spark.py) wird verwendet, um eine Apache Spark Instanz lokal zu starten.
+The Python script [start_spark.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/start_spark.py) is used to start an Apache Spark instance locally.
+
 ![Step 1 - Starting Spark Cluster](resources_readme/Step1_Start_Cluster.png)
 
-Es lädt Umgebungsvariablen und liest den Pfad zum Spark-Ordner ein. Anschließend werden Skript Befehle ```start-master.sh``` und ```start-worker.sh``` ausgeführt, um den Spark-Master und den Worker-Node zu starten, indem es bestimmte Shell-Skripte innerhalb des Spark-Ordners ausführt.
+It loads environment variables and reads the path to the Spark folder. It then executes ```start-master.sh``` and ```start-worker.sh```  script commands to start the Spark master and worker node by executing specific shell scripts within the Spark folder.
+
 #### 2. Generate synthetic credit card transaction data for model training
-Zuerst wird data generation im [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).\ angepasst hinsichtlich Anzahl von Kunden, Start- und Enddatum und der Generation Mode.
+First, data generation in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env) is adjusted with regard to the number of customers, start and end date and the generation mode.
 ```
 # Transactions generation
 NUM_CUSTOMERS = "120"                                              # can be changed by the user
@@ -137,55 +139,59 @@ TRANSACTIONS_START_DATE = "06-30-2022"                             # can be chan
 TRANSACTIONS_END_DATE = "12-31-2023"                               # can be changed by the user (format: "mm-dd-yyyy")
 GEN_MODE = "train"                                                 # to be set by the user ("train" or "stream")
 ```
-Die [generate_transactions.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/generate_transactions.py) generiert Transaktionsdaten. Die Daten können entweder in einem Testdatenstrom oder als rohe Trainingsdaten zu gespeichert werden.
-```generate_transactions()``` Generiert Transaktionen durch das Ausführen des Python-Skripts datagen.py mit gegebenen Argumenten.
+[generate_transactions.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/generate_transactions.py) generates transaction data. The data can either be saved in a test data stream or as raw training data.
+The function ```generate_transactions()``` generates transactions by executing the Python script datagen.py with given arguments.
 
-Die Funktionen ```generate_transaction_test_data_stream()```
- und ```generate_raw_transaction_train_data()``` rufen generate_transactions() auf und speichern die generierten Transaktionen entsprechend entweder als Testdatenstrom oder rohe Trainingsdaten je nach dem wie es im [.env-file] festgelegt ist.
+The functions ```generate_transaction_test_data_stream()``` and ```generate_raw_transaction_train_data()``` call ```generate_transactions()``` and save the generated transactions accordingly either as a test data stream or raw training data depending on how it is defined in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).
+![image](https://github.com/antoniafeistel/BigData/assets/77838841/dcd43866-6bc3-4f47-8a25-5c7a339e1d22)
+ 
 #### 3. Train the Random Forest Classifier
-Nun wird die DATA_VERSION im [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).\ angepasst an die im Schritt 2 gezeigte Version um den Random Forest Classifier zu trainieren.
-Die Anzahl der decision trees, um den Random Forest Classifier zu trainieren wird auf 32 festgelegt.
-Nun wird das Skript [train_model.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/train_model.py) script ausgeführt, um das Model zu trainieren. 
+Now the DATA_VERSION in [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).\ is adapted to the version shown in step 2 in order to train the random forest classifier.
+The number of decision trees to train the random forest classifier is set to 32.
+Now the script [train_model.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/train_model.py) is executed to train the model.
 
 ![Step 3 - Training tree](resources_readme/Step3_Training.png)
 
-Dieses Python-Skript steuert das Training eines Modells mithilfe von Apache Spark. Das Skript identifiziert den Pfad zum Python-Skript [prepare_model.py](https://github.com/antoniafeistel/BigData/blob/139183096c72821e35853bc8f660f3a581f64cda/model/prepare_model.py), das das Modelltraining übernimmt.
-Schließlich wird durch ```subprocess.run()``` der Spark Submit-Befehl in der Shell ausgeführt und damit das [prepare_model.py](https://github.com/antoniafeistel/BigData/blob/139183096c72821e35853bc8f660f3a581f64cda/model/prepare_model.py) Skript zu gestartet. Hierbei wird das Modelltraining durchgeführt.
-Für einen Random Forest mit 32 decision tree dauert dies ca. 15 Sekunden.
+This Python script controls the training of a model using Apache Spark. The script identifies the path to the Python script [prepare_model.py](https://github.com/antoniafeistel/BigData/blob/139183096c72821e35853bc8f660f3a581f64cda/model/prepare_model.py), which takes over the model training. 
+Finally, ```subprocess.run()``` executes the Spark submit command in the shell and thus starts the [prepare_model.py](https://github.com/antoniafeistel/BigData/blob/139183096c72821e35853bc8f660f3a581f64cda/model/prepare_model.py) script.
+This performs the model training. 
+For a random forest with 32 decision trees, this takes approx. 15 seconds.
 
 ![Step 3 - Training tree](resources_readme/Step3_Trainingtime.png)
 
-Hierbei handelt es sich um ein  Machine Learning Skript, welches innerhalb einer Spark-Session stattfindet. Dieses Code folgt dem üblichen ETL (Extrahieren, Transformieren, Laden) Prozess.
-1. Es verwendet die `pyspark.sql.SparkSession` Klasse, um eine Spark-Session zu erstellen. Dabei initialisiert ```spark = SparkSession.builder.master(path_handling.SPARK_MASTER).getOrCreate()``` die PySpark-Session.
-2. Es prüft, ob bereits verarbeitete Trainingsdaten vorhanden sind. Wenn nicht, liest es Rohdaten ein, kodiert diese, transformiert sie in ein Format, das für das Training geeignet ist und berechnet dann die Gewichte für jede Klasse, um ein ausgewogenes Training zu ermöglichen.
+This is a machine learning script that takes place within a Spark session. This code follows the usual ETL (extract, transform, load) process.
 
-```csv_read_df = spark.read.csv(...)```: Liest die CSV-Datei.
+1. It uses the `pyspark.sql.SparkSession` class to create a Spark session. In doing so, ```spark = SparkSession.builder.master(path_handling.SPARK_MASTER).getOrCreate()``` initializes the PySpark session.
+2. It checks whether processed training data is already available. If not, it reads in raw data, encodes it, transforms it into a format suitable for training and then calculates the weights for each class to enable balanced training.
 
-```encoded_df = data_handling.encode_df(csv_read_df)```: Kodiert das DataFrame.
+   ```csv_read_df = spark.read.csv(...)```: Reads the CSV file.
 
-```assembled_df = assembler.transform(encoded_df)```: Transformiert die kodierten Daten.
-3. Die transformierten Daten werden im Parquet-Format gespeichert, das kompakt ist und die Schema-Informationen beibehält:
-```train_df.write.mode("overwrite").parquet(path_handling.TRAIN_DATA_PATH)```: 
+   ```encoded_df = data_handling.encode_df(csv_read_df)```: Encodes the DataFrame.
 
-4. Das Modell wird trainiert: 
-```rf_clf_model = train_model(spark)```
-5. Schließlich wird das trainierte Modell für die spätere Nutzung gespeichert: ```save_model(rf_clf_model)```
+   ```assembled_df = assembler.transform(encoded_df)```: Transforms the encoded data.
+
+3. The transformed data is stored in parquet format, which is compact and retains the schema information: 
+   ```train_df.write.mode("overwrite").parquet(path_handling.TRAIN_DATA_PATH)```
+
+4. The model is trained: ```rf_clf_model = train_model(spark)```
+5. Finally, the trained model is saved for later use: ```save_model(rf_clf_model)```
 
 #### 4. Start the Kafka Cluster
-Das Skript [start_kafka.py](https://github.com/antoniafeistel/BigData/blob/3ea8cb3e06094c8432154fa83dff96149da5cf19/scripts/start_kafka.py) startet Apache Kafka 
+The script [start_kafka.py](https://github.com/antoniafeistel/BigData/blob/3ea8cb3e06094c8432154fa83dff96149da5cf19/scripts/start_kafka.py) starts Apache Kafka.
 ```
 subprocess.run(f"docker-compose -f {...", shell=True, check=True): 
 ```
-Dieser Befehl startet den Docker-Service, der Kafka hostet. Das -d Flag teilt Docker mit, im Hintergrund zu laufen.
+This command starts the Docker service that hosts Kafka. The -d flag tells Docker to run in the background.
 ```
 subprocess.run( f'docker exec kafka1...', shell=True, check=True): 
 ```
-Dieser Befehl erstellt ein Kafka-Topic. Hierbei wird der Docker-Container, der durch den ersten docker-compose Befehl aktiviert wurde, genutzt. Die Variable KAFKA1 stellt den Namen des Kafka Dienstes dar, --topic ist der Name des Topics, welcher von der Umgebungsvariable KAFKA_TOPIC abgeleitet wird. Auch
-die Anzahl der Partitions und der Replikationsfaktor werden aus den Umgebungsvariablen NUM_PARTITIONS und REPLICATION_FACTOR geholt. 
+This command creates a Kafka topic. It uses the Docker container that was activated by the first docker-compose command. The variable KAFKA1 represents the name of the Kafka service, --topic is the name of the topic, which is derived from the environment variable KAFKA_TOPIC. 
+Also the number of partitions and the replication factor are also taken from the environment variables NUM_PARTITIONS and REPLICATION_FACTOR.
 
 #### 5. Start the Producer
 
-Das Skript [start_producer.py](https://github.com/antoniafeistel/BigData/blob/3ea8cb3e06094c8432154fa83dff96149da5cf19/scripts/start_producer.py) startet einen Producer in der Spark Umgebung der mit Apache Kafka interagiert. 
+The script [start_producer.py](https://github.com/antoniafeistel/BigData/blob/3ea8cb3e06094c8432154fa83dff96149da5cf19/scripts/start_producer.py) starts a producer in the Spark environment that interacts with Apache Kafka.
+
 ```python
 streaming_df = (spark.
                 readStream.
@@ -209,11 +215,12 @@ query_kafka = (
     .start()
 )
 ```
+
 In first step there is a streaming dataframe initiated. The producder is listening to any changes of the provided input folder and loads the data into the cluster. In a second step the data has to be transformed and the freature collumnns has to be selected that the transformed rows are compatible with the trained ML-Model in step three. The created kafka query provides the connection to the kafka cluster and takes over the conitunious transfer of the streaming data.
 
 #### 6. Start the Consumer
+The script Skript [start_consumer.py](https://github.com/antoniafeistel/BigData/blob/3ea8cb3e06094c8432154fa83dff96149da5cf19/scripts/start_consumer.py) starts a consumer in the Spark environment that interacts with Apache Kafka.
 
-Das Skript [start_consumer.py](https://github.com/antoniafeistel/BigData/blob/3ea8cb3e06094c8432154fa83dff96149da5cf19/scripts/start_consumer.py) startet einen Consumer in der Spark Umgebung der mit Apache Kafka interagiert.
 ```python
 csv_stream_df = (
     spark
@@ -231,11 +238,12 @@ assembler = VectorAssembler(inputCols=data_handling.features, outputCol=data_han
 assembled_df = assembler.transform(parsed_df)
 predicted_df = predict(assembled_df)
 ```
+
 The consumer client also creates a streaming dataframe that is listening for new records in the kafka cluster within the specified topic. The received data is then afterwards predicting the card-transactions via the trained model within a spark cluster. The consumer is then printing the results on the console as shown after step 7.
 
 #### 7. Generate synthetic credit card transaction data stream for online fraud detection
 
-Im env wird nun die Variable GEN_MODE = "stream" gesetzt. Schließlich wird wieder [generate_transactions.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/generate_transactions.py) ausgeführt und die Kreditkartentransaktionen können ausgewertet werden.
+The variable GEN_MODE = "stream" is now set in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env). Finally, [generate_transactions.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/generate_transactions.py) is executed again and the credit card transactions can be evaluated.
 
 ## Scalability Analysis
 The scenarios are based on the fraud creation of the the [Sparkov_Data_Generation/datagen.py](https://github.com/antoniafeistel/BigData/blob/main/Sparkov_Data_Generation/datagen.py) script. In streaming scenario, the script creates multiple batches within an endless loop with one core assigned. 
