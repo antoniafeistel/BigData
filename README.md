@@ -248,7 +248,7 @@ The variable GEN_MODE = "stream" is now set in the [.env-file](https://github.co
 ![Step 7 - Fraud Detection](resources_readme/Step7_FraudDetection.png)
 
 ## Data Generation Analysis
-**Ressource Details**
+**Data Generation Details with different amount of customers**
 Customer    | Cores    |         Duration |             Size 
 ------------| --------:| ---------------: | ----------------: 
 100         |        1 |        11.1079 s |          139.8 MB  
