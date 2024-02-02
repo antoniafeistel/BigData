@@ -151,7 +151,7 @@ Scenario 2   |        1 |                2 |             1 GB  |   10 min
 Scenario 3   |        1 |                3 |             1 GB  |   10 min
 Scenario 4   |        1 |                6 |             1 GB  |   10 min
 
- **Consumer Performance Metrics -- consumer "isolated"**
+ **Consumer Performance Metrics**
  
 With two data partitions on KAFKA the following performance metrics can be measured:
 Szenarien    | Avg Input/ sec | Avg Process / sec 
