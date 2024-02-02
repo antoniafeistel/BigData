@@ -321,9 +321,9 @@ Szenario 8    |                 56,162.10 |            18,355.10 |              
 Szenario 9    |                 46,005.46 |            23,898.21 |                 24,688.39 
 Szenario 10   |                 46,801.92 |            24,398.25 |                 24,711.19
 
-The metrics show that the system is still working, when one of the kafka instances fails. The consumer client can still receive the all the produced data from both partitions beacause of the replication of data.
+The metrics show that the system is still working, when one of the kafka instances fails. The consumer client can still receive all the produced data from both partitions beacause of the replication.
 
-The fact that kafka is used can on the other hand be fault tolreant as well. This is becoming relevant when espacially the consumer appliation fails. After that the data which is send to kafka will not lost and stored until the consumer client recovered himself. To increase the tolerance of consumer failures it is also possible to increase the numbe of conusmer applications. Therefore Kafka hast to make sure that the data is send to different consumer instances. In case one of these consumers fail. Kafka can send these records to other consumers and the whole processing system is still working.
+The fact that kafka is used can on the other hand be fault tolreant as well. This is becoming relevant when espacially the consumer appliation fails. After that the data which is send to kafka will not lost and stored until the consumer client recovered himself. To increase the tolerance of consumer failures it is also possible to increase the number of conusmer applications. Therefore KAFKA has to make sure that the data is send to different consumer instances. In case one of these consumers fail. Kafka can send these records to other consumers and the whole processing system is still working.
 
 Even if all consumer clients would fail in a productive environment. The data that is send to kafka will not be lost. Kakfa stores the batches until the consumer clients are back to receive the stored records. Of course there is an increased daley between the fraud detected data on consumer side and the data which has been send by the producer components.
 
