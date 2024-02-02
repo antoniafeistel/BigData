@@ -122,10 +122,78 @@ Training details:
 - 43,253,806 synthetic credit card transactions from 10,000 different customers used for training
 - 14.07 GB raw .csv-data with a training time (including data transformation) of 18 minutes or 1.12 GB transformed .parquet-data with a training time of 15 minutes
 
-## Examples
+## Step-by-step Example including Screenshots
+#### 1. Starting Spark Cluster:
+Das Python Skript [start_spark.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/start_spark.py) wird verwendet, um eine Apache Spark Instanz lokal zu starten.
+![Step 1 - Starting Spark Cluster](resources_readme/Step1_Start_Cluster.png)
 
-Hier funktionierendes Streaming Beispiel mit Consumer Output auf Konsole -- Können wir auch Workflow nennen und dann erst darauf eingehen wo Daten hingeladen werden durch die generation... dann was der Producer macht... was Kafka macht ... und dann was der Consumer macht ...
-mit Code Beispielen
+Es lädt Umgebungsvariablen und liest den Pfad zum Spark-Ordner ein. Anschließend werden Skript Befehle ```start-master.sh``` und ```start-worker.sh``` ausgeführt, um den Spark-Master und den Worker-Node zu starten, indem es bestimmte Shell-Skripte innerhalb des Spark-Ordners ausführt.
+#### 2. Generate synthetic credit card transaction data for model training
+Zuerst wird data generation im [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).\ angepasst hinsichtlich Anzahl von Kunden, Start- und Enddatum und der Generation Mode.
+```
+# Transactions generation
+NUM_CUSTOMERS = "120"                                              # can be changed by the user
+TRANSACTIONS_START_DATE = "06-30-2022"                             # can be changed by the user (format: "mm-dd-yyyy")
+TRANSACTIONS_END_DATE = "12-31-2023"                               # can be changed by the user (format: "mm-dd-yyyy")
+GEN_MODE = "train"                                                 # to be set by the user ("train" or "stream")
+```
+Die [generate_transactions.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/generate_transactions.py) generiert Transaktionsdaten. Die Daten können entweder in einem Testdatenstrom oder als rohe Trainingsdaten zu gespeichert werden.
+```generate_transactions()``` Generiert Transaktionen durch das Ausführen des Python-Skripts datagen.py mit gegebenen Argumenten.
+
+Die Funktionen ```generate_transaction_test_data_stream()```
+ und ```generate_raw_transaction_train_data()``` rufen generate_transactions() auf und speichern die generierten Transaktionen entsprechend entweder als Testdatenstrom oder rohe Trainingsdaten je nach dem wie es im [.env-file] festgelegt ist.
+#### 3. Train the Random Forest Classifier
+Nun wird die DATA_VERSION im [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).\ angepasst an die im Schritt 2 gezeigte Version um den Random Forest Classifier zu trainieren.
+Die Anzahl der decision trees, um den Random Forest Classifier zu trainieren wird auf 32 festgelegt.
+Nun wird das Skript [train_model.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/train_model.py) script ausgeführt, um das Model zu trainieren. 
+
+![Step 3 - Training tree](resources_readme/Step3_Training.png)
+
+Dieses Python-Skript steuert das Training eines Modells mithilfe von Apache Spark. Das Skript identifiziert den Pfad zum Python-Skript [prepare_model.py](https://github.com/antoniafeistel/BigData/blob/139183096c72821e35853bc8f660f3a581f64cda/model/prepare_model.py), das das Modelltraining übernimmt.
+Schließlich wird durch ```subprocess.run()``` der Spark Submit-Befehl in der Shell ausgeführt und damit das [prepare_model.py](https://github.com/antoniafeistel/BigData/blob/139183096c72821e35853bc8f660f3a581f64cda/model/prepare_model.py) Skript zu gestartet. Hierbei wird das Modelltraining durchgeführt.
+Für einen Random Forest mit 32 decision tree dauert dies ca. 15 Sekunden.
+
+![Step 3 - Training tree](resources_readme/Step3_Trainingtime.png)
+
+Hierbei handelt es sich um ein  Machine Learning Skript, welches innerhalb einer Spark-Session stattfindet. Dieses Code folgt dem üblichen ETL (Extrahieren, Transformieren, Laden) Prozess.
+1. Es verwendet die `pyspark.sql.SparkSession` Klasse, um eine Spark-Session zu erstellen. Dabei initialisiert ```spark = SparkSession.builder.master(path_handling.SPARK_MASTER).getOrCreate()``` die PySpark-Session.
+2. Es prüft, ob bereits verarbeitete Trainingsdaten vorhanden sind. Wenn nicht, liest es Rohdaten ein, kodiert diese, transformiert sie in ein Format, das für das Training geeignet ist und berechnet dann die Gewichte für jede Klasse, um ein ausgewogenes Training zu ermöglichen.
+
+```csv_read_df = spark.read.csv(...)```: Liest die CSV-Datei.
+
+```encoded_df = data_handling.encode_df(csv_read_df)```: Kodiert das DataFrame.
+
+```assembled_df = assembler.transform(encoded_df)```: Transformiert die kodierten Daten.
+3. Die transformierten Daten werden im Parquet-Format gespeichert, das kompakt ist und die Schema-Informationen beibehält:
+```train_df.write.mode("overwrite").parquet(path_handling.TRAIN_DATA_PATH)```: 
+
+4. Das Modell wird trainiert: 
+```rf_clf_model = train_model(spark)```
+5. Schließlich wird das trainierte Modell für die spätere Nutzung gespeichert: ```save_model(rf_clf_model)```
+
+#### 4. Start the Kafka Cluster
+Das Skript [start_kafka.py](https://github.com/antoniafeistel/BigData/blob/3ea8cb3e06094c8432154fa83dff96149da5cf19/scripts/start_kafka.py) startet Apache Kafka 
+```
+subprocess.run(f"docker-compose -f {...", shell=True, check=True): 
+```
+Dieser Befehl startet den Docker-Service, der Kafka hostet. Das -d Flag teilt Docker mit, im Hintergrund zu laufen.
+```
+subprocess.run( f'docker exec kafka1...', shell=True, check=True): 
+```
+Dieser Befehl erstellt ein Kafka-Topic. Hierbei wird der Docker-Container, der durch den ersten docker-compose Befehl aktiviert wurde, genutzt. Die Variable KAFKA1 stellt den Namen des Kafka Dienstes dar, --topic ist der Name des Topics, welcher von der Umgebungsvariable KAFKA_TOPIC abgeleitet wird. Auch
+die Anzahl der Partitions und der Replikationsfaktor werden aus den Umgebungsvariablen NUM_PARTITIONS und REPLICATION_FACTOR geholt. 
+
+#### 5. Start the Producer
+
+Das Skript [start_producer.py](https://github.com/antoniafeistel/BigData/blob/3ea8cb3e06094c8432154fa83dff96149da5cf19/scripts/start_producer.py) startet einen Producer in der Spark Umgebung der mit Apache Kafka interagiert. 
+
+#### 6. Start the Consumer
+
+Das Skript [start_consumer.py](https://github.com/antoniafeistel/BigData/blob/3ea8cb3e06094c8432154fa83dff96149da5cf19/scripts/start_consumer.py) startet einen Consumer in der Spark Umgebung der mit Apache Kafka interagiert.
+
+#### 7. Generate synthetic credit card transaction data stream for online fraud detection
+
+Im env wird nun die Variable GEN_MODE = "stream" gesetzt. Schließlich wird wieder [generate_transactions.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/generate_transactions.py) ausgeführt und die Kreditkartentransaktionen können ausgewertet werden.
 
 ## Scalability Analysis
 The scenarios are based on the fraud creation of the the [Sparkov_Data_Generation/datagen.py](https://github.com/antoniafeistel/BigData/blob/main/Sparkov_Data_Generation/datagen.py) script. In streaming scenario, the script creates multiple batches within an endless loop with one core assigned. 
@@ -259,80 +327,6 @@ The metrics show that the system is still working, when one of the kafka instanc
 The fact that kafka is used can on the other hand be fault tolreant as well. This is becoming relevant when espacially the consumer appliation fails. After that the data which is send to kafka will not lost and stored until the consumer client recovered himself. To increase the tolerance of consumer failures it is also possible to increase the numbe of conusmer applications. Therefore Kafka hast to make sure that the data is send to different consumer instances. In case one of these consumers fail. Kafka can send these records to other consumers and the whole processing system is still working.
 
 Even if all consumer clients would fail in a productive environment. The data that is send to kafka will not be lost. Kakfa stores the batches until the consumer clients are back to receive the stored records. Of course there is an increased daley between the fraud detected data on consumer side and the data which has been send by the producer components.
-
-## Step-by-step Example including Screenshots
-#### 1. Starting Spark Cluster:
-Das Python Skript [start_spark.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/start_spark.py) wird verwendet, um eine Apache Spark Instanz lokal zu starten.
-![Step 1 - Starting Spark Cluster](resources_readme/Step1_Start_Cluster.png)
-
-Es lädt Umgebungsvariablen und liest den Pfad zum Spark-Ordner ein. Anschließend werden Skript Befehle ```start-master.sh``` und ```start-worker.sh``` ausgeführt, um den Spark-Master und den Worker-Node zu starten, indem es bestimmte Shell-Skripte innerhalb des Spark-Ordners ausführt.
-#### 2. Generate synthetic credit card transaction data for model training
-Zuerst wird data generation im [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).\ angepasst hinsichtlich Anzahl von Kunden, Start- und Enddatum und der Generation Mode.
-```
-# Transactions generation
-NUM_CUSTOMERS = "120"                                              # can be changed by the user
-TRANSACTIONS_START_DATE = "06-30-2022"                             # can be changed by the user (format: "mm-dd-yyyy")
-TRANSACTIONS_END_DATE = "12-31-2023"                               # can be changed by the user (format: "mm-dd-yyyy")
-GEN_MODE = "train"                                                 # to be set by the user ("train" or "stream")
-```
-Die [generate_transactions.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/generate_transactions.py) generiert Transaktionsdaten. Die Daten können entweder in einem Testdatenstrom oder als rohe Trainingsdaten zu gespeichert werden.
-```generate_transactions()``` Generiert Transaktionen durch das Ausführen des Python-Skripts datagen.py mit gegebenen Argumenten.
-
-Die Funktionen ```generate_transaction_test_data_stream()```
- und ```generate_raw_transaction_train_data()``` rufen generate_transactions() auf und speichern die generierten Transaktionen entsprechend entweder als Testdatenstrom oder rohe Trainingsdaten je nach dem wie es im [.env-file] festgelegt ist.
-#### 3. Train the Random Forest Classifier
-Nun wird die DATA_VERSION im [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).\ angepasst an die im Schritt 2 gezeigte Version um den Random Forest Classifier zu trainieren.
-Die Anzahl der decision trees, um den Random Forest Classifier zu trainieren wird auf 32 festgelegt.
-Nun wird das Skript [train_model.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/train_model.py) script ausgeführt, um das Model zu trainieren. 
-
-![Step 3 - Training tree](resources_readme/Step3_Training.png)
-
-Dieses Python-Skript steuert das Training eines Modells mithilfe von Apache Spark. Das Skript identifiziert den Pfad zum Python-Skript [prepare_model.py](https://github.com/antoniafeistel/BigData/blob/139183096c72821e35853bc8f660f3a581f64cda/model/prepare_model.py), das das Modelltraining übernimmt.
-Schließlich wird durch ```subprocess.run()``` der Spark Submit-Befehl in der Shell ausgeführt und damit das [prepare_model.py](https://github.com/antoniafeistel/BigData/blob/139183096c72821e35853bc8f660f3a581f64cda/model/prepare_model.py) Skript zu gestartet. Hierbei wird das Modelltraining durchgeführt.
-Für einen Random Forest mit 32 decision tree dauert dies ca. 15 Sekunden.
-
-![Step 3 - Training tree](resources_readme/Step3_Trainingtime.png)
-
-Hierbei handelt es sich um ein  Machine Learning Skript, welches innerhalb einer Spark-Session stattfindet. Dieses Code folgt dem üblichen ETL (Extrahieren, Transformieren, Laden) Prozess.
-1. Es verwendet die `pyspark.sql.SparkSession` Klasse, um eine Spark-Session zu erstellen. Dabei initialisiert ```spark = SparkSession.builder.master(path_handling.SPARK_MASTER).getOrCreate()``` die PySpark-Session.
-2. Es prüft, ob bereits verarbeitete Trainingsdaten vorhanden sind. Wenn nicht, liest es Rohdaten ein, kodiert diese, transformiert sie in ein Format, das für das Training geeignet ist und berechnet dann die Gewichte für jede Klasse, um ein ausgewogenes Training zu ermöglichen.
-
-```csv_read_df = spark.read.csv(...)```: Liest die CSV-Datei.
-
-```encoded_df = data_handling.encode_df(csv_read_df)```: Kodiert das DataFrame.
-
-```assembled_df = assembler.transform(encoded_df)```: Transformiert die kodierten Daten.
-3. Die transformierten Daten werden im Parquet-Format gespeichert, das kompakt ist und die Schema-Informationen beibehält:
-```train_df.write.mode("overwrite").parquet(path_handling.TRAIN_DATA_PATH)```: 
-
-4. Das Modell wird trainiert: 
-```rf_clf_model = train_model(spark)```
-5. Schließlich wird das trainierte Modell für die spätere Nutzung gespeichert: ```save_model(rf_clf_model)```
-
-#### 4. Start the Kafka Cluster
-Das Skript [start_kafka.py](https://github.com/antoniafeistel/BigData/blob/3ea8cb3e06094c8432154fa83dff96149da5cf19/scripts/start_kafka.py) startet Apache Kafka 
-```
-subprocess.run(f"docker-compose -f {...", shell=True, check=True): 
-```
-Dieser Befehl startet den Docker-Service, der Kafka hostet. Das -d Flag teilt Docker mit, im Hintergrund zu laufen.
-```
-subprocess.run( f'docker exec kafka1...', shell=True, check=True): 
-```
-Dieser Befehl erstellt ein Kafka-Topic. Hierbei wird der Docker-Container, der durch den ersten docker-compose Befehl aktiviert wurde, genutzt. Die Variable KAFKA1 stellt den Namen des Kafka Dienstes dar, --topic ist der Name des Topics, welcher von der Umgebungsvariable KAFKA_TOPIC abgeleitet wird. Auch
-die Anzahl der Partitions und der Replikationsfaktor werden aus den Umgebungsvariablen NUM_PARTITIONS und REPLICATION_FACTOR geholt. 
-
-#### 5. Start the Producer
-
-Das Skript [start_producer.py](https://github.com/antoniafeistel/BigData/blob/3ea8cb3e06094c8432154fa83dff96149da5cf19/scripts/start_producer.py) startet einen Producer in der Spark Umgebung der mit Apache Kafka interagiert. 
-
-#### 6. Start the Consumer
-
-Das Skript [start_consumer.py](https://github.com/antoniafeistel/BigData/blob/3ea8cb3e06094c8432154fa83dff96149da5cf19/scripts/start_consumer.py) startet einen Consumer in der Spark Umgebung der mit Apache Kafka interagiert.
-
-#### 7. Generate synthetic credit card transaction data stream for online fraud detection
-
-Im env wird nun die Variable GEN_MODE = "stream" gesetzt. Schließlich wird wieder [generate_transactions.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/generate_transactions.py) ausgeführt und die Kreditkartentransaktionen können ausgewertet werden.
-
 
 ## Questions & Answers
 
