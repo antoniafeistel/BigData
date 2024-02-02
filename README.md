@@ -247,7 +247,12 @@ The variable GEN_MODE = "stream" is now set in the [.env-file](https://github.co
 **Consumer Prediction Output**
 ![Step 7 - Fraud Detection](resources_readme/Step7_FraudDetection.png)
 
-## Data Generation Analysis
+## Data Analysis
+
+TODO: Folder Hierarchy, wo landen welche Daten
+TODO: Beschreibung der Sample-Daten und wie man die nutzen kann
+
+
 **Data Generation Details with different amount of customers**
 Customer    | Cores    |         Duration |             Size 
 ------------| --------:| ---------------: | ----------------: 
