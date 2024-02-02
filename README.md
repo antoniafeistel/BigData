@@ -244,6 +244,9 @@ The consumer client also creates a streaming dataframe that is listening for new
 
 The variable GEN_MODE = "stream" is now set in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env). Finally, [generate_transactions.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/generate_transactions.py) is executed again and the credit card transactions can be evaluated.
 
+![Step 7 - Fraud Detection](resources_readme/Step7_FraudDetection.png)
+
+
 ## Scalability Analysis
 The scenarios are based on the fraud creation of the the [Sparkov_Data_Generation/datagen.py](https://github.com/antoniafeistel/BigData/blob/main/Sparkov_Data_Generation/datagen.py) script. In streaming scenario, the script creates multiple batches within an endless loop with one core assigned. 
 
