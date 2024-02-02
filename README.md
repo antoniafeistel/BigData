@@ -186,10 +186,52 @@ die Anzahl der Partitions und der Replikationsfaktor werden aus den Umgebungsvar
 #### 5. Start the Producer
 
 Das Skript [start_producer.py](https://github.com/antoniafeistel/BigData/blob/3ea8cb3e06094c8432154fa83dff96149da5cf19/scripts/start_producer.py) startet einen Producer in der Spark Umgebung der mit Apache Kafka interagiert. 
+```python
+streaming_df = (spark.
+                readStream.
+                option("header", data_handling.CSV_HEADER).
+                option("sep", data_handling.CSV_SEP).
+                schema(data_handling.schema).
+                csv(path_handling.INPUT_FOLDER_TEST)
+                )
+
+encoded_df = data_handling.encode_df(streaming_df)
+selected_df = encoded_df.select(data_handling.features)
+
+query_kafka = (
+    selected_df.selectExpr("to_json(struct(*)) AS value")
+    .writeStream
+    .format("kafka")
+    .outputMode("append")
+    .option("kafka.bootstrap.servers", path_handling.KAFKA_BOOTSTRAP_SERVERS)
+    .option("topic", path_handling.KAFKA_TOPIC)
+    .option("checkpointLocation", path_handling.KAFKA_CHECKPTS_PATH)
+    .start()
+)
+```
+In first step there is a streaming dataframe initiated. The producder is listening to any changes of the provided input folder and loads the data into the cluster. In a second step the data has to be transformed and the freature collumnns has to be selected that the transformed rows are compatible with the trained ML-Model in step three. The created kafka query provides the connection to the kafka cluster and takes over the conitunious transfer of the streaming data.
 
 #### 6. Start the Consumer
 
 Das Skript [start_consumer.py](https://github.com/antoniafeistel/BigData/blob/3ea8cb3e06094c8432154fa83dff96149da5cf19/scripts/start_consumer.py) startet einen Consumer in der Spark Umgebung der mit Apache Kafka interagiert.
+```python
+csv_stream_df = (
+    spark
+    .readStream
+    .format("kafka")
+    .option("kafka.bootstrap.servers", path_handling.KAFKA_BOOTSTRAP_SERVERS)
+    .option("subscribe", path_handling.KAFKA_TOPIC)
+    .option("startingOffsets", "earliest")
+    .option("maxOffsetsPerTrigger", 300000)
+    .load()
+)
+...
+parsed_df = csv_stream_df.selectExpr("CAST(value AS STRING)").select(from_json("value", schema).alias(data_handling.FEATURES_COL)).select(data_handling.FEATURES_COL + '.*')
+assembler = VectorAssembler(inputCols=data_handling.features, outputCol=data_handling.FEATURES_COL)
+assembled_df = assembler.transform(parsed_df)
+predicted_df = predict(assembled_df)
+```
+The consumer client also creates a streaming dataframe that is listening for new records in the kafka cluster within the specified topic. The received data is then afterwards predicting the card-transactions via the trained model within a spark cluster. The consumer is then printing the results on the console as shown after step 7.
 
 #### 7. Generate synthetic credit card transaction data stream for online fraud detection
 
