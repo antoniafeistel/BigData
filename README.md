@@ -259,16 +259,7 @@ Scenario 5   |        1 |                1 |             1 GB  |   10 min
 Scenario 6   |        1 |                2 |             1 GB  |   10 min
 Scenario 7   |        1 |                3 |             1 GB  |   10 min
 
-**Producer Performance Metrics -- Streaming**
-In Streaming environment (creating transactions in endloss loop) the following performance metrics can be measured:
-
--- muss  man nochmal neu machen --
-Szenarien    | Avg Input/ sec | Avg Process / sec 
------------- | -------------: | ----------------:  
-Szenario 5   |   1,382,213.64 |         60,675.81 
-Szenario 6   |   1,034,532.70 |         76,187.35 
-
-The numbers show that the producer clients does not really scale with more assigned ressources. There is no really effective performance increase in the processed data evolution. Within the default streaming behaviour, there are constantly generating new transactions. The producer ist able to proceed these tranactions permanantely to the kafka instances. Within this use case there is a bottleneck creatig by the generation of the transaction. For a real ("isolated") scalability analysis it is necessary to remove the bottleneck and generate the transactions **before** the producer starts to proceed the rows.
+Within the default streaming behaviour, there are constantly generating new transactions. The producer ist able to proceed these tranactions permanantely to the kafka instances. Within this use case there is a bottleneck creatig by the generation of the transaction. For a real ("isolated") scalability analysis it is necessary to remove the bottleneck and generate the transactions **before** the producer starts to proceed the rows.
 
 The following performance metrics are messaured in case the data is already stored on the system:
 !["Isolated" Producer Metrics Szenatrio 1 (1 Cores / 1GB Memory)](resources_readme/producer-1Core-1GB-dataWasInSystem-job.png)
