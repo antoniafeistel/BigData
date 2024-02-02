@@ -244,7 +244,16 @@ The consumer client also creates a streaming dataframe that is listening for new
 
 The variable GEN_MODE = "stream" is now set in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env). Finally, [generate_transactions.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/generate_transactions.py) is executed again and the credit card transactions can be evaluated.
 
+**Consumer Prediction Output**
 ![Step 7 - Fraud Detection](resources_readme/Step7_FraudDetection.png)
+
+## Data Generation Analysis
+**Ressource Details**
+Customer    | Cores    |         Duration |             Size 
+------------| --------:| ---------------: | ----------------: 
+100         |        1 |        11.1079 s |          139.8 MB  
+1000        |        1 |        35.9175 s |        1,450.0 MB  
+10000       |        1 |         4.46 min |       13,580.0 MB  
 
 
 ## Scalability Analysis
@@ -252,7 +261,8 @@ The scenarios are based on the fraud creation of the the [Sparkov_Data_Generatio
 
 Basic Details about the amount of data that is created:
 - 100 Customers
-- Batch Size: ~132 MiB
+- Batch Size: ~140 MB
+- Batch Creation Time: 11.1079 s
 
 Ressource Details:
 - Worker Nodes: 1
