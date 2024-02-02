@@ -257,7 +257,7 @@ The sample data in [resources/data/test/sample](https://github.com/antoniafeiste
 **Resources Directory Tree and Data Usage**
 ![Directory Hierarchy and Data Flow](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/data_analysis.png)
 
-**Data Generation Analysis with different amount of customers**
+**Raw Training Data Generation Analysis with different amount of customers**
 #Customers  | #Cores   |         Duration |              Size 
 ------------| --------:| ---------------: | ----------------: 
 100         |        1 |        11.1079 s |          139.8 MB  
@@ -280,7 +280,7 @@ Ressource Details:
 - Kafka Instances: 2
 
 ### Consumer Analysis
-To test the scalability of the consumer client as an isolated component, initial data samples were added into the KAFKA cluster. With that starting point there the following test runs simulated with consumer ressources described below.
+To test the scalability of the consumer client as an isolated component, initial data samples were added into the KAFKA cluster. With that starting point, the following test runs were simulated with the consumer ressources described below.
 
 **Ressource Details**
 Szenarien    | Executor |            Cores |            Memory | Duration
@@ -299,7 +299,7 @@ Scenario 1   |      27,104.07 |         27,148.09
 Scenario 2   |      37,509.15 |         38,499.65
 Scenario 3   |      38,362.88 |         39,534,59
 
-On the one hand, the system is able increase the consumer performance from Scenario one to scenario two by almost 40%. On the other hand, the is nealry zero performance improvement recognizable by the increase of cores from scenario two to scenario three. This behaviour belongs to the number of partitions within the KAFKA cluster. Just one consumer core can receive the data from a corresponding kafka partition. Adding more consumer cores than kafka partitions will therefore not improve the performance.
+On the one hand, the system is able to increase the consumer performance from scenario one to scenario two by almost 40%. On the other hand, the is nearly zero performance improvement recognizable by the increase of cores from scenario two to scenario three. This behaviour belongs to the number of partitions within the KAFKA cluster. One consumer core can only receive the data from one corresponding kafka partition. Adding more consumer cores than kafka partitions will not improve the performance.
 
 **Increasing the number of partitions to 6**
 
@@ -311,31 +311,31 @@ Scenario 2   |      40,164.43 |         41,393.25
 Scenario 3   |      47,040.16 |         47,868.56
 Scenario 4   |      53,100.87 |         53,704.87
 
-Folgende Grafische Darstellung:
+**Performance Graphs**
 
 **Consumer Client 1 Core 1 GB Memory**
 ![Consumer Client 1 Core 1 GB Memory](resources_readme/cons-1Core-1GB.png)
 **Consumer Client 6 Core 1 GB Memory**
 ![Consumer Client 6 Core 1 GB Memory](resources_readme/consumer-6Core-1GB.png)
 
-These grpahs and the metrics demonstrate that the performance really increases by adding more cores to the consumer component. If you compare Scenario 1 to Scenatrio 4, it can be noticed that the batch duration decreases by almost 50% whereas the process rate is increasing by more than 100%. There is at least a performance improvment by adding more ressources but the performance is not increasing proportional to the amount of added ressources (sub-linear).
+These grpahs and metrics demonstrate that the performance increases by adding more cores to the consumer component. If you compare scenario 1 to scenatrio 4, it can be noticed that the batch duration decreases by almost 50% whereas the process rate is increasing by more than 100%. There is at least a performance improvement by adding more resources, but the performance does not increase proportionally to the amount of resources added (sublinear).
 
 ### Producer Analysis
 **Ressource Details**
 
-To analyse the performance of the producer component, the following scenarios has been initiated. The fact that streaming the incoming data to kafka is faster than receiving and detecting the transactions via the ML-Model, we initiated just three scenarios with the following ressources:
+To analyse the performance of the producer component, the following scenarios has been initiated:
 Szenarien    | Executor |            Cores |            Memory | Duration
 ------------ | --------:| ---------------: | ----------------: | -------:
 Scenario 5   |        1 |                1 |             1 GB  |   10 min
 Scenario 6   |        1 |                2 |             1 GB  |   10 min
 Scenario 7   |        1 |                3 |             1 GB  |   10 min
 
-Within the default streaming behaviour, there are constantly generating new transactions. The producer ist able to proceed these tranactions permanantely to the kafka instances. Within this use case there is a bottleneck creatig by the generation of the transaction. For a real ("isolated") scalability analysis it is necessary to remove the bottleneck and generate the transactions **before** the producer starts to proceed the rows.
+Within the default streaming behaviour, there are constantly generating new transactions. The producer ist able to proceed these tranactions permanantely to the kafka instances. Within this use case, there is a bottleneck created by the generation of the transactions. For a ("isolated") scalability analysis, it is necessary to remove the bottleneck and generate the transactions **before** the producer starts to proceed the rows.
 
-The following performance metrics are messaured in case the data is already stored on the system:
+The following performance metrics are messaured, when the data is already stored in the system:
 !["Isolated" Producer Metrics Szenatrio 1 (1 Cores / 1GB Memory)](resources_readme/producer-1Core-1GB-dataWasInSystem-job.png)
 
-It can be seen that the producer is collecting the whole data from the file system and try to process the data within one single batch. To avoid this behaviour the **MaxFilesPerTrigger** variable has to set by the developer:
+It can be seen, that the producer is collecting the whole data from the file system and try to process the data within one single batch. To avoid this behaviour the **MaxFilesPerTrigger** variable has be to set by the developer:
 ```python
 streaming_df = (spark.
                 readStream.
@@ -346,7 +346,7 @@ streaming_df = (spark.
                 csv(path_handling.INPUT_FOLDER_TEST)
                 )
 ```
-With that added configuration for performance analytics the follwoing metrics can be achieved for the scenarios described above:
+With that added configuration for performance analytics, the follwoing metrics can be achieved for the scenarios described above:
 
  **Producer Performance Metrics (isolated)**
 Szenarien    | Avg Input/ sec | Avg Process / sec  
@@ -359,11 +359,11 @@ With more assigned ressources the producer is able to reduce the duration time t
 
 **What happens if just the data increases?**
 
-The fact, that we are in a real time processing environment is kind of special. With more generated data the specific streaming components (producer, kafka, consumer) will not process slower beacause the system is still continously processing data and not loading all the data into the cluster and then analyze it. With more generated data the limits of one major component will be reached at some point. With then generating more data, the system will not be able to process more tramsactions in the same period of time. From that point the delay between the generation of a transaction and the corresponding fraud detection will increase and the system runs in danger of increasing processing duration of one single transaction.
+The fact, that we are in a real time processing environment is kind of special. With more generated data, the specific streaming components (producer, kafka, consumer) will deteriorate in performance beacause the system is still continously processing data and not loading all the data into the cluster and then analyze it. With more generated data, the limits of one major component will be reached at some point. Therefore, the system will not be able to process more tramsactions in the same period of time. From that point the delay between the generation of a transaction and the corresponding fraud detection will increase and the system runs in danger of increasing processing duration.
 
 ### Reliability Analysis
 
-Kafka as a message broker is basically a single point of failure. To avoid this single point of failure there are two kafka instances running with an replication factor of 2. In case one of these KAFKA instances fails, the second one can cover the breakdown and the whole pipeline system is still working.
+Kafka as a message broker is basically a single point of failure. To avoid this single point of failure there are two kafka instances running with an replication factor of two by default. In case one of these KAFKA instances fails, the second one can cover the breakdown and the whole system is still working.
 
 **Ressource Details**
 
@@ -383,11 +383,11 @@ Szenario 8    |                 56,162.10 |            18,355.10 |              
 Szenario 9    |                 46,005.46 |            23,898.21 |                 24,688.39 
 Szenario 10   |                 46,801.92 |            24,398.25 |                 24,711.19
 
-The metrics show that the system is still working, when one of the kafka instances fails. The consumer client can still receive all the produced data from both partitions beacause of the replication.
+The metrics show that the system is still working, if one of the kafka instances fails. The consumer client can still receive all the produced data from both partitions beacause of the data replication.
 
-The fact that kafka is used can on the other hand be fault tolreant as well. This is becoming relevant when espacially the consumer appliation fails. After that the data which is send to kafka will not lost and stored until the consumer client recovered himself. To increase the tolerance of consumer failures it is also possible to increase the number of conusmer applications. Therefore KAFKA has to make sure that the data is send to different consumer instances. In case one of these consumers fail. Kafka can send these records to other consumers and the whole processing system is still working.
+The fact that kafka is used can on the other hand can be fault tolreant as well. This is becoming relevant when espacially the consumer application fails. After that, the data which is send to kafka will not be lost and stored until the consumer client recovered himself. To increase the tolerance of consumer failures, it is also possible to increase the number of conusmer clients. Different consumers can receive data from the kafka cliuster and the whole processing system is still working.
 
-Even if all consumer clients would fail in a productive environment. The data that is send to kafka will not be lost. Kakfa stores the batches until the consumer clients are back to receive the stored records. Of course there is an increased daley between the fraud detected data on consumer side and the data which has been send by the producer components.
+Even if all consumer clients would fail in a productive environment. The data that are sent to kafka will not be lost. Kakfa stores the batches until the consumer clients are back to receive the stored records. Of course there is an increased delay between the fraud detected data on consumer side and the data which has been send by the producer components.
 
 ## Questions & Answers
 
