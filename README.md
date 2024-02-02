@@ -297,7 +297,7 @@ With more assigned ressources the producer is able to reduce the duration time t
 
 **What happens if just the data increases?**
 
-The fact, that we are in a real time processing environment is kind of special. With more generated data the specific streaming components (producer, kafka, consumer) will not process slower beacause the system is still continously processing data and not loading all the data into the cluster and then analyze it. With more generated data the limits of one major component will be reached at some point. With then generating more data, the system will not be able to process more in the same period of time. From that point the delay between the generation of a transaction and the corresponding fraud detection will increase and the system runs in danger of no longer being real time.
+The fact, that we are in a real time processing environment is kind of special. With more generated data the specific streaming components (producer, kafka, consumer) will not process slower beacause the system is still continously processing data and not loading all the data into the cluster and then analyze it. With more generated data the limits of one major component will be reached at some point. With then generating more data, the system will not be able to process more tramsactions in the same period of time. From that point the delay between the generation of a transaction and the corresponding fraud detection will increase and the system runs in danger of increasing processing duration of one single transaction.
 
 ### Reliability Analysis
 
