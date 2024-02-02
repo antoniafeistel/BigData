@@ -248,10 +248,11 @@ The variable GEN_MODE = "stream" is now set in the [.env-file](https://github.co
 ![Step 7 - Fraud Detection](resources_readme/Step7_FraudDetection.png)
 
 ## Data Analysis
+We have uploaded sample data for easier usage of our application.
+The sample data in [resources/data/train/transformed/sample](https://github.com/antoniafeistel/BigData/tree/main/resources/data/train/transformed/sample) can be used to train the model with the [train_model.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/train_model.py) script. For that, set DATA_VERSION = "sample" in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env) before running the script.
+
 **Directory Tree and Data Usage**
 ![Directory Hierarchy and Data Flow](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/data_analysis.png)
-TODO: Beschreibung der Sample-Daten und wie man die nutzen kann
-
 
 **Data Generation Details with different amount of customers**
 Customer    | Cores    |         Duration |             Size 
