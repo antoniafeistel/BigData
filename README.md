@@ -248,6 +248,7 @@ The variable GEN_MODE = "stream" is now set in the [.env-file](https://github.co
 ![Step 7 - Fraud Detection](resources_readme/Step7_FraudDetection.png)
 
 ## Data Analysis
+![Directory Hierarchy and Data Flow](https://github.com/antoniafeistel/BigData/blob/main/resources_readme/data_analysis.png)
 TODO: Beschreibung der Sample-Daten und wie man die nutzen kann
 
 
