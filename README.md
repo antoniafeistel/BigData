@@ -145,7 +145,7 @@ The function ```generate_transactions()``` generates transactions by executing t
 The functions ```generate_transaction_test_data_stream()``` and ```generate_raw_transaction_train_data()``` call ```generate_transactions()``` and save the generated transactions accordingly either as a test data stream or raw training data depending on how it is defined in the [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env).
  
 #### 3. Train the Random Forest Classifier
-Now the DATA_VERSION in [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env). is adapted to the version shown in step 2 in order to train the random forest classifier.
+Now the DATA_VERSION in [.env-file](https://github.com/antoniafeistel/BigData/blob/main/scripts/.env) is adapted to the version shown in step 2 in order to train the random forest classifier.
 The number of decision trees to train the random forest classifier is set to 32.
 Now the script [train_model.py](https://github.com/antoniafeistel/BigData/blob/main/scripts/train_model.py) is executed to train the model.
 
