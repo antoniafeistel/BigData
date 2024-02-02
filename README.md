@@ -151,8 +151,9 @@ Scenario 2   |        1 |                2 |             1 GB  |   10 min
 Scenario 3   |        1 |                3 |             1 GB  |   10 min
 Scenario 4   |        1 |                6 |             1 GB  |   10 min
 
-With two data partitions on KAFKA the following performance metrics can be measured:
  **Consumer Performance Metrics -- consumer "isolated"**
+ 
+With two data partitions on KAFKA the following performance metrics can be measured:
 Szenarien    | Avg Input/ sec | Avg Process / sec 
 ------------ | -------------: | ----------------:  
 Scenario 1   |      27,104.07 |         27,148.09
@@ -162,6 +163,7 @@ Scenario 3   |      38,362.88 |         39,534,59
 On the one hand, the system is able increase the consumer performance from Scenario one to scenario two by 140%. On the other hand, the is nealry zero performance improvement recognizable by the increase of cores from scenario two to scenario three. This behaviour belongs to the number of partitions within the KAFKA cluster. There is a 
 
 **Increasing the number of partitions to 6**
+
 The following change can be seen below:
 Szenarien    | Avg Input/ sec | Avg Process / sec 
 ------------ | -------------: | ----------------:  
@@ -170,18 +172,18 @@ Scenario 2   |      40,164.43 |         41,393.25
 Scenario 3   |      47,040.16 |         47,868.56
 Scenario 4   |      53,100.87 |         53,704.87
 
-sub-lineare Skalierung: 
-
 Folgende Grafische Darstellung
+
 **Consumer Client 1 Core 1 GB Memory**
 ![Consumer Client 1 Core 1 GB Memory](resources_readme/cons-1Core-1GB.png)
 **Consumer Client 6 Core 1 GB Memory**
 ![Consumer Client 6 Core 1 GB Memory](resources_readme/consumer-6Core-1GB.png)
 
-These grpahs show that the performance really increases by adding more cores to the consumer component. It can be noticed that the batch duration decreases by almost 50% whereas the process rate is increasing by more than 100%. There is at least a performance improvment by adding more ressources but the perofrmance is not increasing proportional to the amount of added ressources (sub-linear).
+These grpahs show that the performance really increases by adding more cores to the consumer component. It can be noticed that the batch duration decreases by almost 50% whereas the process rate is increasing by more than 100%. There is at least a performance improvment by adding more ressources but the performance is not increasing proportional to the amount of added ressources (sub-linear).
 
 ### Producer Analysis
 **Ressource Details**
+
 To analyse the performance of the producer component, the following scenarios has been initiated. The fact that streaming the incoming data to kafka is faster than receiving and detecting the transactions via the ML-Model, we initiated just three scenarios with the following ressources:
 Szenarien    | Executor |            Cores |            Memory | Duration
 ------------ | --------:| ---------------: | ----------------: | -------:
@@ -217,7 +219,8 @@ streaming_df = (spark.
                 )
 ```
 With that added configuration for performance analytics the follwoing metrics can be achieved for the scenarios described above:
- **Producer Performance Metrics -- Streaming**
+
+ **Producer Performance Metrics (isolated)**
 Szenarien    | Avg Input/ sec | Avg Process / sec  
 ------------ | -------------: | ----------------: 
 Szenario 5   |      72,265.76 |         66,784.64
@@ -228,11 +231,12 @@ Szenario 8   |     109,684.37 |        102,148.29
 With more assigned ressources the producer is able to reduce the duration time for the specific job by 50% percent. 
 
 **What happens if just the data increases?**
-The fact, that we are in a real time processing environment is kind of special. With more genertaed data the specific streaming components (producer, kafka, consumer) will not process slower beacause the system is still continously processing data and not loading all the data into the cluster and then analyze it. With more generated data the limits of one major component will be reached at some point. With then generating more data the system will not be able to process more in the same period of time. From that point the delay between the generation of a transaction and the corresponding fraud detection will increase and the system runs in danger of no longer being real time.
+
+The fact, that we are in a real time processing environment is kind of special. With more generated data the specific streaming components (producer, kafka, consumer) will not process slower beacause the system is still continously processing data and not loading all the data into the cluster and then analyze it. With more generated data the limits of one major component will be reached at some point. With then generating more data, the system will not be able to process more in the same period of time. From that point the delay between the generation of a transaction and the corresponding fraud detection will increase and the system runs in danger of no longer being real time.
 
 ### Reliability Analysis
 
-Kafka as a message broker is basically a single point of failure. To avoid this single point of failure there are two kafka instances running with an replication factor of 2. In case one of these KAFKA instances fails the second one can cover the breakdown and the whole pipeline system is still working. The use two instances is of course increasing the performance of the whole system as you can see on the consumer performance metrics but if you kill one of the two instances also the throuhput that can delivered to the consumer becomes lower.
+Kafka as a message broker is basically a single point of failure. To avoid this single point of failure there are two kafka instances running with an replication factor of 2. In case one of these KAFKA instances fails, the second one can cover the breakdown and the whole pipeline system is still working.
 
 **Ressource Details**
 
@@ -245,12 +249,14 @@ Szenario 6   |                         1 |                    1 |               
 Szenario 7   |                         2 |                    2 |                  2  
 Szenario 8   |  first: 2, then killed: 1 |                    2 |                  2 
 
-**Performance Metrics - Failure while testing**
+**Performance Metrics**
 Performance  | Prod. Process Records / s | Cons. Input Rows / s | Cons. Process Records / s
 ------------ | ------------------------: | -------------------: | ------------------------:
 Szenario 6   |                 56,162.10 |            18,355.10 |                 17,190.19
 Szenario 7   |                 46,005.46 |            23,898.21 |                 24,688.39 
 Szenario 8   |                 46,801.92 |            24,398.25 |                 24,711.19
+
+The metrics show that the system is still working, when one of the kafka instances fails. The consumer client can still receive the all the produced data from both partitions beacause of the replication of data.
 
 The fact that kafka is used can on the other hand be fault tolreant as well. This is becoming relevant when espacially the consumer appliation fails. After that the data which is send to kafka will not lost and stored until the consumer client recovered himself. To increase the tolerance of consumer failures it is also possible to increase the numbe of conusmer applications. Therefore Kafka hast to make sure that the data is send to different consumer instances. In case one of these consumers fail. Kafka can send these records to other consumers and the whole processing system is still working.
 
