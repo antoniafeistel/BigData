@@ -189,12 +189,9 @@ temp/
 files/
 generator/
 
-!resources/
-resources/*
-!resources/models/
-resources/models/*
-!resources/models/pre_trained/
+resources/data/train/transformed/sample/*.crc
 resources/models/pre_trained/*/*/*.crc
+resources/models/sample/*/*.crc
 
 ressources/data/raw-data/test/
 ressources/data/raw-data/train/
