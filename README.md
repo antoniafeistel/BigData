@@ -160,11 +160,11 @@ Scenario 1   |      27,104.07 |         27,148.09
 Scenario 2   |      37,509.15 |         38,499.65
 Scenario 3   |      38,362.88 |         39,534,59
 
-On the one hand, the system is able increase the consumer performance from Scenario one to scenario two by 140%. On the other hand, the is nealry zero performance improvement recognizable by the increase of cores from scenario two to scenario three. This behaviour belongs to the number of partitions within the KAFKA cluster. There is a 
+On the one hand, the system is able increase the consumer performance from Scenario one to scenario two by almost 40%. On the other hand, the is nealry zero performance improvement recognizable by the increase of cores from scenario two to scenario three. This behaviour belongs to the number of partitions within the KAFKA cluster. Just one consumer core can receive the data from a corresponding kafka partition. Adding more consumer cores than kafka partitions will therefore not improve the performance.
 
 **Increasing the number of partitions to 6**
 
-The following change can be seen below:
+The following improvement can be seen below:
 Szenarien    | Avg Input/ sec | Avg Process / sec 
 ------------ | -------------: | ----------------:  
 Scenario 1   |      25,062.81 |         25,926.11
@@ -172,14 +172,14 @@ Scenario 2   |      40,164.43 |         41,393.25
 Scenario 3   |      47,040.16 |         47,868.56
 Scenario 4   |      53,100.87 |         53,704.87
 
-Folgende Grafische Darstellung
+Folgende Grafische Darstellung:
 
 **Consumer Client 1 Core 1 GB Memory**
 ![Consumer Client 1 Core 1 GB Memory](resources_readme/cons-1Core-1GB.png)
 **Consumer Client 6 Core 1 GB Memory**
 ![Consumer Client 6 Core 1 GB Memory](resources_readme/consumer-6Core-1GB.png)
 
-These grpahs show that the performance really increases by adding more cores to the consumer component. It can be noticed that the batch duration decreases by almost 50% whereas the process rate is increasing by more than 100%. There is at least a performance improvment by adding more ressources but the performance is not increasing proportional to the amount of added ressources (sub-linear).
+These grpahs and the metrics demonstrate that the performance really increases by adding more cores to the consumer component. If you compare Scenario 1 to Scenatrio 4, it can be noticed that the batch duration decreases by almost 50% whereas the process rate is increasing by more than 100%. There is at least a performance improvment by adding more ressources but the performance is not increasing proportional to the amount of added ressources (sub-linear).
 
 ### Producer Analysis
 **Ressource Details**
@@ -190,8 +190,6 @@ Szenarien    | Executor |            Cores |            Memory | Duration
 Scenario 5   |        1 |                1 |             1 GB  |   10 min
 Scenario 6   |        1 |                2 |             1 GB  |   10 min
 Scenario 7   |        1 |                3 |             1 GB  |   10 min
-Scenario 8   |        1 |                6 |             1 GB  |   10 min
-
 
 **Producer Performance Metrics -- Streaming**
 In Streaming environment (creating transactions in endloss loop) the following performance metrics can be measured:
@@ -199,8 +197,8 @@ In Streaming environment (creating transactions in endloss loop) the following p
 -- muss  man nochmal neu machen --
 Szenarien    | Avg Input/ sec | Avg Process / sec 
 ------------ | -------------: | ----------------:  
-Szenario 4   |   1,382,213.64 |         60,675.81 
-Szenario 5   |   1,034,532.70 |         76,187.35 
+Szenario 5   |   1,382,213.64 |         60,675.81 
+Szenario 6   |   1,034,532.70 |         76,187.35 
 
 The numbers show that the producer clients does not really scale with more assigned ressources. There is no really effective performance increase in the processed data evolution. Within the default streaming behaviour, there are constantly generating new transactions. The producer ist able to proceed these tranactions permanantely to the kafka instances. Within this use case there is a bottleneck creatig by the generation of the transaction. For a real ("isolated") scalability analysis it is necessary to remove the bottleneck and generate the transactions **before** the producer starts to proceed the rows.
 
