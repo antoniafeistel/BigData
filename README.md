@@ -294,7 +294,7 @@ Szenario 6   |      99,024.35 |         92,833.61
 Szenario 7   |     109,684.37 |        102,148.29
 Szenario 8   |     109,684.37 |        102,148.29
 
-With more assigned ressources the producer is able to reduce the duration time for the specific job by 50% percent. 
+With more assigned ressources the producer is able to reduce the duration time to process the data by increasing the Avg Process / sec and the AVG Input / sec. Similiar to the consumer client, there is a sub-linear performance increase by adding more ressources to the component. 
 
 **What happens if just the data increases?**
 
@@ -333,48 +333,43 @@ Even if all consumer clients would fail in a productive environment. The data th
 ### Data / Use Case
 
 - Why is your problem a "big data problem"?
+
 Volume: yes, Menge der Daten (Many transaction data all over the world created every second) Velocity: Realtime Processing required Varierty: Receive data from different sources --> different data formats and data quality
 
 - Why can’t you solve it traditional storage/analytics/database technologies?
-traditional databasemanagemnt systems are not designed for streaming data evaluation --> no real time detection
-batch processing is too slow 
+
+Traditional databasemanagemnt systems are not designed for streaming data evaluation --> no real time detection and "traditional" batch-processing is too slow. 
   
 - Where does your prototype take shortcuts, what would have to be considered in real scenarios?
-Encoding of data (hash function) -> possible collision between different values
-ML-Model: is just trained once + no hyperparameter optimization
-Prototype is supporting just one schema of data generation
-producer-component is just a simulation of a real world event-source-component
+ - Encoding of data (hash function) -> possible collision between different values
+ - ML-Model is just trained once + no hyperparameter optimization
+ - Prototype is supporting just one schema of data generation
+ - Producer-component is just a simulation of a real world event-source-component
 
 ### Scaling
 - What happens when the amount of data increases in the orders of magnitude (1x/10x/100x... or
 2x/4x/8x/16x/...)?
-Performance will decrease --> Delay between generation of single row and fraud detection of the corresponding transaction
-To ensure "real-time-processing", it is necessary to increase hardware ressource ( kafka instances, consumer clients)
+ - Performance will decrease --> Delay between generation of single row and fraud detection of the corresponding transaction
+ - To ensure "real-time-processing", it is necessary to increase hardware ressource ( kafka instances, consumer clients)
 
 - What happens if request or query intake increases ore latency conditions decrease in magnitude?
-Same problem as described above. Processing will create delay between creation and detection --> Problem of not being real time. Fraud detection may be too late.
-
-- How does the "data" run through the system? Which paths are IO-bound/Memory-bound/CPU-
-bound?
-See Architecture for data flow.
-
-IO Bound: Reading of incoming transactions by procducer component, Receiving data from Kafka
-CPU Bound: ML-Model Training, Detect single Rows
-IO-Bound: Encoding of Data (Read Data from csv files, encode them and store them as parquet files)
+ - Same problem as described above. Processing will create delay between creation and detection --> Problem of not being real time. Fraud detection may be too late.
+ 
+- How does the "data" run through the system? Which paths are IO-bound/Memory-bound/CPU-bound?
+ - IO Bound: Reading of incoming transactions by procducer component, Receiving data from Kafka
+ - CPU Bound: ML-Model Training, Detect single Rows
+ - IO-Bound: Encoding of Data (Read Data from csv files, encode them and store them as parquet files)
 
 - Which paths are easy/more difficult to scale? How is scaling, how are data/requests/queries
 partitioned? What happens when data or queries skew and bias
-See scalability model for the streaming pipeline. Componentes are independent --> can be scaled independly. More explicit consumer-client applications could be more difficult to scale as a single consumer-client that is distrubtetd across the spark cluster.
-Multiple Kafka Brokers and Partitions.
-BIAS of lables: fraud detection (0,1) -> more 0 than 1
-Fraud Detection depends on model training
-Data are balanced for Model-Training
-
-- Is your system real-time capable? Are there any setup/bootstrapping etc. costs?
-YES, KAFKA Setup 
+ - Componentes are independent --> can be scaled independly. More explicit consumer-client applications could be more difficult to scale as a single consumer-client that is distrubtetd across the spark cluster.
+ - Multiple Kafka Brokers and Partitions.
+ - BIAS of lables: fraud detection (0,1) -> more 0 than 1
+ - Fraud Detection depends on model training
+ - Data are balanced for Model-Training
   
 - How would you dimension a real system or setup given realistic data or query sets?
-  PayPal as example (use KAFKA): 1500 Brokers, 20.000 Topics, 1,3 trillion messages a day, Anzahl Consumer: 1 Consumer (4 CPU), 1 topic -> 1 partition --> 20.000 Partitionen --> 20.000 CPus --> 5000 Consumer 
+ - PayPal as example (use KAFKA): 1500 Brokers, 20.000 Topics, 1,3 trillion messages a day, Anzahl Consumer: 1 Consumer (4 CPU), 1 topic -> 1 partition --> 20.000 Partitionen --> 20.000 CPus --> 5000 Consumer 
 
 ### Fault tolerance
 - How does the system behave under Node/CPU/Memory/Hardware/... errors and failures?
